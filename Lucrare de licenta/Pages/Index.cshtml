@@ -1,0 +1,67 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Pagina Principala";
+}
+<form method="get" id="search">
+    <div id="search-container">
+        <img class="icon" src="./resources/icons/search.svg" />
+        <label for="destination" >Destiantie</label>
+        <input list="destinations" name="destination" />
+        <datalist id="destinations">
+            @*POPULARE DIN BD*@
+            <option value="Portugalia"></option>
+        </datalist>        
+        <img class="icon" src="./Resources/Icons/calendar.svg" />
+        <label for="month">Luna de plecare</label>
+        <select name="month">
+            <option value="">Oricand</option>
+            @{
+                var now = DateTime.Now;
+                for(int i=0;i<=12;i++)
+                {
+                    var month = now.AddMonths(i);
+                    var val = month.ToString("MM-YYYY");
+                    var txt = month.ToString("MMMM yyyy", 
+                    System.Globalization.CultureInfo.CurrentCulture);
+                    <option value="@val">@txt</option>
+                }
+
+            }
+        </select>
+        <button class="c-button" type="button">Caută</button>
+    </div>
+</form>
+
+@*RECOMANDARILE SITE-ULUI*@
+<div id="container-destinatii">
+    @{
+        for(int i=0;i<8;i++)
+        {
+            <a class="card-destinatie" href="/">
+                <img class="cd-img" src="/Resources/stock/SIntra.jpg" />
+                <div class="cd-title">
+                    Portugalia
+                </div>
+                @*call to action*@
+                <div class="cd-cta">
+                    Caută acum
+                </div>
+            </a>
+        }
+    }
+</div>
+
+<div id="container-continente">
+    @{
+        for(int i = 0; i < 5; i++)
+        {
+            <a class="card-continent" href="/">
+                <img class="cc-img" src="~/Resources/Stock/SIntra.jpg"/>
+                <div class="cc-title">
+                    Europa
+                </div>
+            </a>
+        }
+    }
+</div>
