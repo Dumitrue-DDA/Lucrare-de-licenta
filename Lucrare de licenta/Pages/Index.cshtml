@@ -1,16 +1,29 @@
 ﻿@page
+@using Lucrare_de_licenta.Models
+@using System.Diagnostics
 @model IndexModel
 @{
     ViewData["Title"] = "Pagina Principala";
 }
+
 <form method="get" id="search">
     <div id="search-container">
         <img class="icon" src="./resources/icons/search.svg" />
         <label for="destination" >Destiantie</label>
         <input list="destinations" name="destination" />
         <datalist id="destinations">
-            @*POPULARE DIN BD*@
-            <option value="Portugalia"></option>
+            @{
+                if(Model.tarilist == null)
+                {
+                    <option value="Lista de tari este goala"></option>
+                }
+                else
+                foreach(Tara tara in Model.tarilist)
+                {
+                    <option value="tara.den_tara"></option>
+                }
+            }
+            
         </datalist>        
         <img class="icon" src="./Resources/Icons/calendar.svg" />
         <label for="month">Luna de plecare</label>
