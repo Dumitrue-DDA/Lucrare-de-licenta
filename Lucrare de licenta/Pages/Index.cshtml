@@ -1,30 +1,47 @@
 ﻿@page
 @using Lucrare_de_licenta.Models
 @using System.Diagnostics
+@using Adventour.Data;
 @model IndexModel
 @{
     ViewData["Title"] = "Pagina Principala";
+    List<string> continente = new List<string>
+    {
+        "Europa","Africa","Asia","America de Nord","America de Sud"
+    };
+    List<Tara> lista_test = new List<Tara>
+    {
+        new Tara
+        {
+            cod_tara = 1,
+            den_tara = "Portugalia",
+            continent = 1,
+            img_tara = "Resources\\Tari\\Portugalia.jpg"
+        }
+    };
 }
-
+<head>
+    <link rel="stylesheet" href="~/css/index.css" />
+</head>
 <form method="get" id="search">
     <div id="search-container">
         <img class="icon" src="./resources/icons/search.svg" />
         <label for="destination" >Destiantie</label>
         <input list="destinations" name="destination" />
-        <datalist id="destinations">
+        <div id="dest-suggestii" class="sugestii hidden">
             @{
-                if(Model.tarilist == null)
+                foreach(Tara tara in lista_test)
                 {
-                    <option value="Lista de tari este goala"></option>
-                }
-                else
-                foreach(Tara tara in Model.tarilist)
-                {
-                    <option value="tara.den_tara"></option>
+                    <div
+                    class="dest-item"
+                    onclick=""
+                    onmouseover=""
+                    >
+                    @tara.den_tara</div>
                 }
             }
             
-        </datalist>        
+        </div>        
         <img class="icon" src="./Resources/Icons/calendar.svg" />
         <label for="month">Luna de plecare</label>
         <select name="month">
@@ -49,12 +66,12 @@
 @*RECOMANDARILE SITE-ULUI*@
 <div id="container-destinatii">
     @{
-        for(int i=0;i<8;i++)
+        foreach(Tara tara in lista_test)
         {
             <a class="card-destinatie" href="/">
-                <img class="cd-img" src="/Resources/stock/SIntra.jpg" />
+                <img class="cd-img" src="@tara.img_tara" />
                 <div class="cd-title">
-                    Portugalia
+                    @tara.den_tara
                 </div>
                 @*call to action*@
                 <div class="cd-cta">
@@ -67,12 +84,12 @@
 
 <div id="container-continente">
     @{
-        for(int i = 0; i < 5; i++)
+        foreach(string continent in continente)
         {
             <a class="card-continent" href="/">
-                <img class="cc-img" src="~/Resources/Stock/SIntra.jpg"/>
+                <img class="cc-img" src="~/Resources/Stock/@(continent).jpg"/>
                 <div class="cc-title">
-                    Europa
+                    @continent
                 </div>
             </a>
         }

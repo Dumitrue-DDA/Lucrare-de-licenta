@@ -29,5 +29,7 @@ namespace Lucrare_de_licenta.Models
         [StringLength(500)]
         public string? desc_tara { get; set; }
 
+        [Column("pass", TypeName = "bit")]
+        public bool pass { get; set; } = true;
     }
 }

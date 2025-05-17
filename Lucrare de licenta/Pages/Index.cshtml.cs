@@ -7,7 +7,7 @@ namespace Lucrare_de_licenta.Pages;
 public class IndexModel : PageModel
 {
     private readonly ILogger<IndexModel> _logger;
-    private readonly AdventourContext _context;
+    private readonly AppDbContext _context;
 
     public IndexModel(ILogger<IndexModel> logger)
     {

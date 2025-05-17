@@ -1,0 +1,67 @@
+﻿@page
+@using Lucrare_de_licenta.Models
+@model Lucrare_de_licenta.Pages.SearchModel
+@{
+    ViewData["Title"] = "Pagina Principala";
+    List<string> continente = new List<string>
+    {
+        "Europa","Africa","Asia","America de Nord","America de Sud"
+    };
+    List<Tara> lista_test = new List<Tara>
+    {
+        new Tara
+        {
+            cod_tara = 1,
+            den_tara = "Portugalia",
+            continent = 1,
+            img_tara = "Resources\\Stock\\SIntra.jpg"
+        }
+    };
+}
+
+<div class="search-filters-container">
+    <div>
+        <label>Luna</label>
+        @{
+            var now = DateTime.Now;
+            for (int i = 0; i <= 12; i++)
+            {
+                var month = now.AddMonths(i);
+                var val = month.ToString("MM-YYYY");
+                var txt = month.ToString("MMMM yyyy",
+                System.Globalization.CultureInfo.CurrentCulture);
+                <a href="/Search/m=@val">@txt</a>
+            }
+        }
+    </div>
+    <div>
+        <label>Tara</label>
+        @{
+            foreach(Tara tara in lista_test)
+            {
+                <a>@(tara.den_tara)</a>
+            }
+        }
+    </div>
+    <div>
+        <label>Continent</label>
+        @{
+            foreach(string continent in continente)
+            {
+                <a>@(continent)</a>
+            }
+        }
+    </div>
+</div>
+<hr />
+<ul>
+    @for(int i=0;i<5;i++)
+    {
+        <li>
+            <strong></strong><br />
+            Destinatie:<br />
+            Start Date: <br />
+            Price:
+        </li>
+    }
+</ul>
