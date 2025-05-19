@@ -37,8 +37,8 @@ namespace Lucrare_de_licenta.Models
         public int cod_tur { get; set; }
 
         [ForeignKey("Punct")]
-        [Column("cod_punct")]
-        public int cod_punct { get; set; }
+        [Column("cod_punct", TypeName = "tinyint")]
+        public byte cod_punct { get; set; }
 
         public virtual Tur? Tur { get; set; }
         public virtual Punct_Plecare? Punct { get; set; }

@@ -1,13 +1,15 @@
 ﻿using Lucrare_de_licenta.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 namespace Adventour.Data
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<Utilizator, IdentityRole<int>, int>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) :
             base(options)
-        {
-        }
+        { }
+        public DbSet<Utilizator> utilizatori { get; set; }
         public DbSet<Beneficiar> beneficiari { get; set; }
         public DbSet<Camera> camere { get; set; }
         public DbSet<Categorie> categorii { get; set; }
@@ -23,7 +25,37 @@ namespace Adventour.Data
         public DbSet<Tara> tari { get; set; }
         public DbSet<Tur> tururi { get; set; }
         public DbSet<Tur_categorie> tur_categorii { get; set; }
-        public DbSet<Utilizator> utilizatori { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            var user = builder.Entity<Utilizator>();
+            user.ToTable("utilizatori");
+            user.Property(e => e.Id).HasColumnName("nr_utilizator");
+            user.Property(e => e.UserName).HasColumnName("nume");
+            user.Property(e => e.NormalizedUserName).HasColumnName("nume_normalizat");
+            user.Property(e => e.Email).HasColumnName("email");
+            user.Property(e => e.NormalizedEmail).HasColumnName("email_normalizat");
+            user.Property(e => e.EmailConfirmed).HasColumnName("email_confirmat");
+            user.Property(e => e.PasswordHash).HasColumnName("parola");
+            user.Property(e => e.SecurityStamp).HasColumnName("token_securitate");
+            user.Property(e => e.ConcurrencyStamp).HasColumnName("token_concurenta");
+            user.Property(e => e.PhoneNumber).HasColumnName("nr_telefon");
+            user.Property(e => e.PhoneNumberConfirmed).HasColumnName("telefon_confirmat");
+            user.Property(e => e.TwoFactorEnabled).HasColumnName("auth_doi_factori");
+            user.Property(e => e.LockoutEnd).HasColumnName("blocare_pana_la");
+            user.Property(e => e.LockoutEnabled).HasColumnName("blocare_activata");
+            user.Property(e => e.AccessFailedCount).HasColumnName("incercari_esuate");
+
+            builder.Entity<IdentityRole<int>>().ToTable("Roluri");
+            builder.Entity<IdentityUserRole<int>>().ToTable("UtilizatorRoluri");
+            builder.Entity<IdentityUserClaim<int>>().ToTable("CereriUtilizator");
+            builder.Entity<IdentityUserLogin<int>>().ToTable("LoginuriUtilizator");
+            builder.Entity<IdentityUserToken<int>>().ToTable("TokenuriUtilizator");
+            builder.Entity<IdentityRoleClaim<int>>().ToTable("CereriRol");
+        }
+
     }
 }
 

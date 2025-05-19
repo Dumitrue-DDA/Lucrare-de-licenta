@@ -16,7 +16,7 @@ namespace Lucrare_de_licenta.Models
         public string den_cazare { get; set; }
 
         [StringLength(500)]
-        [Column("desc_cazare", TypeName = "desc_cazare")]
+        [Column("desc_cazare", TypeName = "nvarchar(500)")]
         public string? desc_cazare { get; set; }
 
         [Required]

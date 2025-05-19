@@ -1,0 +1,23 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Lucrare_de_licenta.Models
+
+@inject SignInManager<Utilizator> SignInManager
+@inject UserManager<Utilizator> UserManager
+
+<ul class="navbar-nav">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" 
+            asp-page="/Identity/Account/Mangae" title="Manage">
+            Contul Meu
+        </a>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Identity/Account/Login">Conectare la cont</a>
+        </li>
+    }
+</ul>

@@ -7,8 +7,8 @@ namespace Lucrare_de_licenta.Models
     public class Tara
     {
         [Key]
-        [Column("cod_tara")]
-        public int cod_tara { get; set; }
+        [Column("cod_tara", TypeName = "tinyint")]
+        public byte cod_tara { get; set; }
 
         [Required]
         [Column("den_tara")]

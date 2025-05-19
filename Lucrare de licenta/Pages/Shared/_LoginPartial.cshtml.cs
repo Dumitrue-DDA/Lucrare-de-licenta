@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Lucrare_de_licenta.Pages
+namespace Lucrare_de_licenta.Pages.Shared
 {
-    public class Index1Model : PageModel
+    public class _LoginPartialModel : PageModel
     {
         public void OnGet()
         {
