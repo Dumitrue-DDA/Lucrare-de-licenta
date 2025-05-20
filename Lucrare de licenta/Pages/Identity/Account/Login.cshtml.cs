@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
 
+
 namespace Lucrare_de_licenta.Pages.Identity.Account
 {
     public class LoginModel : PageModel
@@ -74,7 +75,7 @@ namespace Lucrare_de_licenta.Pages.Identity.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Display(Name = "Remember me?")]
+            [Display(Name = "Tine-ma minte")]
             public bool RememberMe { get; set; }
         }
 
@@ -122,7 +123,7 @@ namespace Lucrare_de_licenta.Pages.Identity.Account
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, "Datele introduse sunt gresite.");
                     return Page();
                 }
             }

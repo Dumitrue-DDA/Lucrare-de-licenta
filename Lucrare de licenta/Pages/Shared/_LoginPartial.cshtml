@@ -4,20 +4,21 @@
 @inject SignInManager<Utilizator> SignInManager
 @inject UserManager<Utilizator> UserManager
 
-<ul class="navbar-nav">
+<div id="iden-container" class="flex-grow-0">
     @if (SignInManager.IsSignedIn(User))
     {
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" 
-            asp-page="/Identity/Account/Mangae" title="Manage">
-            Contul Meu
+        <a class="idenbtn text-dark" asp-area="Identity"
+           asp-page="/Identity/Account/Logout" title="Manage">
+                <img class="img-fluid" src="~/Resources/Icons/user.svg" style="width:25px" />
+                <span class="idenbtn-text">Contul Meu</span>
         </a>
-        </li>
     }
     else
     {
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Identity/Account/Login">Conectare la cont</a>
-        </li>
+        <a class="idenbtn text-dark" asp-area="Identity" 
+        asp-page="/Identity/Account/Login">
+            <img class="img-fluid" src="~/Resources/Icons/user.svg" style="width:25px"/>
+            <span class="idenbtn-text">Conectare la cont</span>
+        </a>
     }
-</ul>
+</div>

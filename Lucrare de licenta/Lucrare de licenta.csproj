@@ -25,7 +25,6 @@
   <ItemGroup>
     <Folder Include="Migrations\" />
     <Folder Include="Pages\Identity\Account\Manage\" />
-    <Folder Include="Pages\Shared\NewFolder\" />
     <Folder Include="wwwroot\css\Identity\" />
     <Folder Include="wwwroot\Resources\Continente\" />
     <Folder Include="wwwroot\Resources\Itinerarii\" />

@@ -11,19 +11,20 @@
           rel="stylesheet" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index"> 
-                    <img id ="logo" src="~/Resources/Logo.png" />
-                    <span style="font-family: Quicksand">Adven-tour</span>
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
-                data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+    <header class="shadow-sm">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm border-bottom mb-3">
+            <div class="container-fluid">
+                <button class="navbar-toggler order-2" type="button" data-bs-toggle="collapse"
+                        data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                <a class="navbar-brand order-1" asp-area="" asp-page="/Index"> 
+                    <img id ="logo" src="~/Resources/Logo.png" />
+                    <span style="font-family: Quicksand">Adven-tour</span>
+                </a>                
+                <partial name="_LoginPartial" />
+                <div class="navbar-collapse order-3 collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/Search">Tururi</a>
@@ -34,22 +35,18 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/">Despre noi</a>
                         </li>
-                        @if (User?.Identity?.IsAuthenticated == true && User.IsInRole("Admin"))
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/Admin/index">Admin</a>
-                            </li>
+                        @{
+                            if (User?.Identity?.IsAuthenticated == true && User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-page="/Admin/index">Admin</a>
+                                </li>
+                            }             
                         }
                     </ul>
                 </div>
-                <div>
-                    <partial name="_LoginPartial" />
-                </div>
             </div>
         </nav>
-        <div>
-
-        </div>
     </header>
     <div class="container">
         <main role="main">
@@ -57,9 +54,28 @@
         </main>
     </div>
 
-    <footer class="border-top footer">
-        <div class="container">
-            &copy; 2025 Adven-Tour SRL <a asp-area="" asp-page="/Privacy">Privacy</a>
+    <footer id="site_footer" class="border-top p-4">
+        <div id="footer_container" class="container">
+            <div id="socials-container">
+                <a class="social-link" target="_blank" href="https://github.com/Dumitrue-DDA/Lucrare-de-licenta">
+                    <img src="~/Resources/Icons/github.svg" />
+                </a>
+                <a class="social-link" target="_blank" href="www.linkedin.com/in/dumitru-andrei-despina">
+                    <img src="~/Resources/Icons/linkedin.svg" />
+                </a>
+                <a class="social-link" target="_blank" href="https://wa.me/40737631851">
+                    <img src="~/Resources/Icons/whatsapp.svg" />
+                </a>
+                <a class="social-link dummy-link" target="_blank" aria-disabled="true" href="">
+                    <img src="~/Resources/Icons/facebook.svg" />
+                </a>
+                <a class="social-link dummy-link" target="_blank" aria-disabled="true" href="">
+                    <img src="~/Resources/Icons/instagram.svg" />
+                </a>
+            </div>
+            <p class="mt-2">
+                &copy; 2025 Adven-Tour SRL
+            </p>
         </div>
     </footer>
 

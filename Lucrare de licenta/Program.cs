@@ -1,6 +1,8 @@
 using Adventour.Data;
 using Lucrare_de_licenta.Models;
+using Lucrare_de_licenta.Services;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -52,11 +54,14 @@ builder.Services.AddIdentity<Utilizator, IdentityRole<int>>(options =>
 
 })
 .AddEntityFrameworkStores<AppDbContext>()
+.AddErrorDescriber<LocErrorDescriber>()
 .AddDefaultTokenProviders();
 
 // Make sure you have the SignInManager and UserManager injected properly
 builder.Services.AddScoped<SignInManager<Utilizator>>();
 builder.Services.AddScoped<UserManager<Utilizator>>();
+
+builder.Services.AddSingleton<IEmailSender, NoOpEmailSender>();
 
 var app = builder.Build();
 
