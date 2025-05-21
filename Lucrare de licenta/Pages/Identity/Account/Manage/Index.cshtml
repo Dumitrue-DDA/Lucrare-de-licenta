@@ -1,0 +1,22 @@
+﻿@page
+@using System.Security.Claims
+@model Lucrare_de_licenta.Pages.Identity.Account.Manage.IndexModel
+@{
+    ViewData["Title"]="Contul meu";
+}
+<div class="row gap-3">
+    <partial name="_AccountNavPartial" /> 
+    <div class="col-9">
+        <h3>@ViewData["title"]</h3>
+        <p>Email</p>
+        <p>@User.FindFirstValue(ClaimTypes.Email)</p>
+        <p><a href="#">Change Email</a></p>
+        @{
+            if (User.IsInRole("admin"))
+            {
+                <p>id</p>
+                <p>@User.FindFirstValue(ClaimTypes.NameIdentifier)</p>
+            }
+        }
+    </div>
+</div>

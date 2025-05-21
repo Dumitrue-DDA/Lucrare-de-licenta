@@ -1,0 +1,8 @@
+﻿@model string
+@* Only render if there’s actually a message *@
+@if (!string.IsNullOrEmpty(Model))
+{
+    <div class="alert alert-success" role="alert">
+        @Model
+    </div>
+}

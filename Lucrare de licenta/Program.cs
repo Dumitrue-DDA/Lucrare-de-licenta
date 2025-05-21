@@ -74,6 +74,31 @@ if (!app.Environment.IsDevelopment())
 
 }
 
+// Adaugam rolurile si atribuim administratorului web rolul sau
+app.Lifetime.ApplicationStarted.Register(async () =>
+    {
+        using var scope = app.Services.CreateScope();
+        var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole<int>>>();
+
+        string[] roleNames = { "admin" };
+        foreach (var roleName in roleNames)
+        {
+            if (!await roleManager.RoleExistsAsync(roleName))
+            {
+                await roleManager.CreateAsync(new IdentityRole<int>(roleName));
+            }
+        }
+        var userManager = scope.ServiceProvider.GetRequiredService<UserManager<Utilizator>>();
+
+        var user = await userManager.FindByEmailAsync("despina.andrei2003@gmail.com");
+
+        if (user != null && !await userManager.IsInRoleAsync(user, "Admin"))
+        {
+            await userManager.AddToRoleAsync(user, "Admin");
+        }
+    }
+);
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 

@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using System.Security.Claims
+<!DOCTYPE html>
 <html lang="ro">
 <head>
     <meta charset="utf-8" />
@@ -25,7 +26,7 @@
                 </a>                
                 <partial name="_LoginPartial" />
                 <div class="navbar-collapse order-3 collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+                    <ul class="main-nav navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/Search">Tururi</a>
                         </li>
@@ -36,7 +37,7 @@
                             <a class="nav-link text-dark" asp-area="" asp-page="/">Despre noi</a>
                         </li>
                         @{
-                            if (User?.Identity?.IsAuthenticated == true && User.IsInRole("Admin"))
+                            if (User?.Identity?.IsAuthenticated == true && User.IsInRole("admin"))
                             {
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-area="" asp-page="/Admin/index">Admin</a>
@@ -54,13 +55,13 @@
         </main>
     </div>
 
-    <footer id="site_footer" class="border-top p-4">
+    <footer id="site_footer" class="border-top p-4 mt-3">
         <div id="footer_container" class="container">
             <div id="socials-container">
                 <a class="social-link" target="_blank" href="https://github.com/Dumitrue-DDA/Lucrare-de-licenta">
                     <img src="~/Resources/Icons/github.svg" />
                 </a>
-                <a class="social-link" target="_blank" href="www.linkedin.com/in/dumitru-andrei-despina">
+                <a class="social-link" target="_blank" href="https://www.linkedin.com/in/dumitru-andrei-despina">
                     <img src="~/Resources/Icons/linkedin.svg" />
                 </a>
                 <a class="social-link" target="_blank" href="https://wa.me/40737631851">
