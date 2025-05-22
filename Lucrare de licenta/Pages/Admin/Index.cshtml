@@ -4,14 +4,11 @@
     ViewData["Title"] = "Meniul de Admininstrator";
     Layout = "_Layout";
 }
-<head>
-    <link rel="stylesheet" href="~/css/admin/index.css"/>
-</head>
-<div id="admin-container">
-    <div class="navigation-">
-        <nav class="navbar">
-            <a></a>
-        </nav>
+<link rel="stylesheet" href="~/css/admin/index.css"/>
+<div class="row gap-3">
+    <partial name="_AdminNavPartial" />
+    <div class="col-9">
+        <h3>Pagina de Administrator</h3>
+        <p>Inregistrat ca @User?.Identity?.Name</p>
     </div>
-
 </div>

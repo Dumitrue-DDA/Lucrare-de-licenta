@@ -26,7 +26,7 @@
                 </a>                
                 <partial name="_LoginPartial" />
                 <div class="navbar-collapse order-3 collapse d-sm-inline-flex justify-content-between">
-                    <ul class="main-nav navbar-nav flex-grow-1">
+                    <ul class="main-nav navbar-nav flex-grow-1 gap-1">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/Search">Tururi</a>
                         </li>
@@ -36,14 +36,6 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/">Despre noi</a>
                         </li>
-                        @{
-                            if (User?.Identity?.IsAuthenticated == true && User.IsInRole("admin"))
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-page="/Admin/index">Admin</a>
-                                </li>
-                            }             
-                        }
                     </ul>
                 </div>
             </div>

@@ -1,0 +1,20 @@
+﻿#admin-nav {
+    border-right: 1px solid var(--text);
+}
+
+#admin-nav .nav-item {
+    margin-bottom: 0.5rem;
+}
+
+#admin-nav .nav-link {
+    color: var(--accent2);
+    font-weight: 400;
+    border-radius: 0;
+    border-bottom: 1px solid var(--background);
+    transition: ease-in-out 100ms;
+}
+
+#admin-nav .nav-link:hover {
+    color: var(--accent1);
+    border-bottom: 1px solid var(--accent1);
+}

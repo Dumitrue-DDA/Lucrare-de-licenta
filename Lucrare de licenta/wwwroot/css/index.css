@@ -1,21 +1,50 @@
-﻿.c-button
+﻿@media (min-width: 768px) {
+    #search-container {
+        margin: 0!important; /* remove negative margins */
+    }
+    #search-container > [class*="col-"] {
+        padding: 0!important; /* remove gutter padding */
+    }
+}
+
+/* make the floating wrapper only as wide as it needs to be */
+.form-floating-inline {
+    display: inline-block; /* shrink‐wrap to contents */
+    width: auto !important; /* override Bootstrap’s 100% */
+}
+
+    /* let the inner <input> size naturally (instead of 100%) */
+    .form-floating-inline > .form-control {
+        width: auto !important;
+        min-width: 0; /* don’t enforce Bootstrap’s 120px min */
+    }
+
+.c-button
 {
-    color: white;
+    color: var(--background);
     background: var(--accent1);
     border: none;
-    padding: 5px 15px;
-    margin: 0 10px;
 }
 
 #search-container {
-    display:flex;
-    width: 100%;
-    margin: auto;
     background: rgb(200,200,200,35%);
     padding: 16px;
     border-radius: 26px;
     border: solid rgb(200,200,200,10%);
-    vertical-align: central;
+
+    /* g-3 */
+    margin-top: -0.5rem;
+    margin-right: -0.5rem;
+    margin-bottom: -0.5rem;
+    margin-left: -0.5rem;
+}
+
+#search-container > [class*="col-"] {
+    /* half‐gutters as padding on each side */
+    padding-top: 0.5rem;
+    padding-right: 0.5rem;
+    padding-bottom: 0.5rem;
+    padding-left: 0.5rem;
 }
 
 .sugestii {

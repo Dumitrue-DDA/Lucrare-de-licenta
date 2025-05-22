@@ -8,6 +8,7 @@ public class IndexModel : PageModel
 {
     private readonly ILogger<IndexModel> _logger;
     private readonly AppDbContext _context;
+    public string Imagepath = "\\Resources";
 
     public IndexModel(ILogger<IndexModel> logger)
     {

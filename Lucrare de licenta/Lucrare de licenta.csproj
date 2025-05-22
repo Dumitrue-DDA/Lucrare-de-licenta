@@ -24,7 +24,6 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
-    <Folder Include="wwwroot\Resources\Continente\" />
     <Folder Include="wwwroot\Resources\Itinerarii\" />
     <Folder Include="wwwroot\Resources\Tururi\" />
     <Folder Include="wwwroot\Resources\Stock\" />

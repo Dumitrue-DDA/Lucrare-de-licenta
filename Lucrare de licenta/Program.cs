@@ -4,6 +4,7 @@ using Lucrare_de_licenta.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -62,6 +63,14 @@ builder.Services.AddScoped<SignInManager<Utilizator>>();
 builder.Services.AddScoped<UserManager<Utilizator>>();
 
 builder.Services.AddSingleton<IEmailSender, NoOpEmailSender>();
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("EsteAngajat", policy =>
+        policy.RequireAssertion(context =>
+            context.User?.Identity?.IsAuthenticated == true &&
+            context.User.Claims.Any(c => c.Type == ClaimTypes.Role)));
+});
 
 var app = builder.Build();
 

@@ -1,1 +1,8 @@
-﻿
+﻿.table-container {
+    overflow-x: auto;
+}
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: auto; /* or 'fixed' for equal column widths */
+}
