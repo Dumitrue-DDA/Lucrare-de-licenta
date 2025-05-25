@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Lucrare_de_licenta.Migrations
 {
     /// <inheritdoc />
-    public partial class Identity : Migration
+    public partial class Mg1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -26,7 +26,7 @@ namespace Lucrare_de_licenta.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "puncte_pecare",
+                name: "puncte_plecare",
                 columns: table => new
                 {
                     cod_punct = table.Column<byte>(type: "tinyint", nullable: false),
@@ -37,7 +37,7 @@ namespace Lucrare_de_licenta.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_puncte_pecare", x => x.cod_punct);
+                    table.PrimaryKey("PK_puncte_plecare", x => x.cod_punct);
                 });
 
             migrationBuilder.CreateTable(
@@ -178,9 +178,9 @@ namespace Lucrare_de_licenta.Migrations
                 {
                     table.PrimaryKey("PK_oferte", x => x.cod_oferta);
                     table.ForeignKey(
-                        name: "FK_oferte_puncte_pecare_cod_punct",
+                        name: "FK_oferte_puncte_plecare_cod_punct",
                         column: x => x.cod_punct,
-                        principalTable: "puncte_pecare",
+                        principalTable: "puncte_plecare",
                         principalColumn: "cod_punct",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -242,8 +242,8 @@ namespace Lucrare_de_licenta.Migrations
                 name: "LoginuriUtilizator",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    ProviderKey = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -263,8 +263,8 @@ namespace Lucrare_de_licenta.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<int>(type: "int", nullable: false),
-                    LoginProvider = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -689,7 +689,7 @@ namespace Lucrare_de_licenta.Migrations
                 name: "tari");
 
             migrationBuilder.DropTable(
-                name: "puncte_pecare");
+                name: "puncte_plecare");
 
             migrationBuilder.DropTable(
                 name: "tururi");

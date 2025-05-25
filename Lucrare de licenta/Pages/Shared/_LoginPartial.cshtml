@@ -4,7 +4,7 @@
 @inject SignInManager<Utilizator> SignInManager
 @inject UserManager<Utilizator> UserManager
 
-<div id="iden-container" class="flex-grow-0">
+<div id="iden-container" class="order-first order-sm-last flex-grow-0">
     @if (SignInManager.IsSignedIn(User))
     {
         <a class="idenbtn text-dark" asp-area="Identity"

@@ -5,6 +5,12 @@
     --accent2: #0c57df;
 }
 
+@media (max-width:400px) {
+    .navbar-brand span {
+        display: none;
+    }
+}
+
 /* md */
 @media (min-width: 768px) {
   html {
@@ -16,21 +22,18 @@
     .idenbtn-text {
         display: none;
     }
+    .main-nav {
+        margin-top: 0.5rem;
+    }
 }
 
 /* sm */
 @media (max-width: 576px) {
-    #iden-container {
-        order: 0 !important;
-    }
-
     .navbar-brand {
         position: absolute;
         left: 50%;
         transform: translateX(-50%);
         top: 0;
-        bottom: 0;
-        margin: 0.5rem;
     }
 
     .container-fluid {
@@ -38,15 +41,12 @@
     }
 }
 
-html {
-  font-size: 14px;
-}
-
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
-html {
+html { 
+  font-size: 14px;
   position: relative;
   min-height: 100%;
 }
@@ -56,6 +56,10 @@ body {
     color: var(--text);
     background-color: var(--background);
     margin-bottom: 60px;
+}
+
+header {
+    font-size: 16px;
 }
 
 footer a{
@@ -75,7 +79,7 @@ footer a:hover {
 }
 
 #logo {
-    height: 40px;
+    height: 50px;
     width: auto;
 }
 
@@ -129,11 +133,10 @@ label {
     transition: 100ms ease-in-out;
     border-radius: 25px;
     float:right;
-    order: 5 !important;
 }
 
 #iden-container:hover {
-    box-shadow: 0 0 1px 1px var(--accent1);
+    box-shadow: 0 0 0 2px rgb(12,192,223,0.5);
 }
 
 .idenbtn {

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Lucrare_de_licenta.Models
 {
-    [Table("puncte_pecare")]
+    [Table("puncte_plecare")]
     public class Punct_Plecare
     {
         [Key]

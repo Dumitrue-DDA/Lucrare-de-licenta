@@ -20,84 +20,108 @@
 <head>
     <link rel="stylesheet" href="~/css/index.css" />
 </head>
-<form method="get">
-    <div id="search-container" class="row gap-2 justify-content-center align-items-center">
-        <div class="form-floating col-12 col-md-3">
-            <input class="form-control" name="destination" placeholder="Destinatie" />
-            <label for="destination">Destiantie</label>
-        </div>
-        @* Caseta de sugestii pentru inputul respectiv
-        <div id="dest-suggestii" class="sugestii hidden">
-            @{
-                foreach(Tara tara in lista_test)
-                {
-                    <div
-                    class="dest-item"
-                    onclick=""
-                    onmouseover=""
-                    >
-                    @tara.den_tara</div>
-                }
-            }
-        </div> 
-        *@
-        <div class="form-floating col-12 col-md-3">
-            <input class="form-control" name="plecare" placeholder="Plecare" />
-            <label for="plecare">Plecare Din</label>
-        </div>
-        <div class="form-floating col-12 col-md-2">
-            <select class="form-select" name="month">
-                <option value="">Oricand</option>
-                @{
-                    var now = DateTime.Now;
-                    for (int i = 0; i <= 12; i++)
-                    {
-                        var month = now.AddMonths(i);
-                        var val = month.ToString("MM-YYYY");
-                        var txt = month.ToString("MMMM yyyy",
-                        System.Globalization.CultureInfo.CurrentCulture);
-                        <option value="@val">@txt</option>
-                    }
+<div class="container-fluid mt-5">
+    <form id="search-container" method="get" action="/Search">
+        <div class="form-row d-flex align-items-stretch">
+            <div class="form-floating flex-fill me-2">
+                <input id="input-destinatie" class="form-control dropdown-toggle" name="destination"
+                       placeholder="Destinatie" data-bs-toggle="dropdown" data-bs-auto-close="outside"
+                       autocomplete="off" />
+                    <i class="fas fa-times"></i>
+                <button type="button" style="display:none"
+                    class="btn-close position-absolute top-50 translate-middle-y end-0 me-2">
+                </button>
+                <label for="destination">Destiantie</label>
+                <ul class="dropdown-menu position-absolute start-0 w-100 p-3 mt-2 overflow-auto
+                            rounded bg-white shadow-lg dropdown-custom">
+                    <li class="my-1">
+                        <button class="dropdown-item"
+                            type="button" data-target="destination" data-value="exemplu"
+                                onclick="document.getElementById('input-destinatie').value='Atena'">
+                            <div>
+                                <div class="fw-medium">Atena</div>
+                                <small class="text-muted">Europa, Grecia</small>
+                            </div>
+                        </button>
+                    </li>
 
-                }
-            </select>
-            <label for="month">Luna</label>
+                </ul>
+            </div>
+            <div class="form-floating flex-fill me-2">
+                <input class="form-control" name="plecare" placeholder="Plecare"
+                       data-bs-toggle="dropdown" data-bs-auto-close="outside"
+                       autocomplete="off" id="input-plecare"/>
+                <button type="button" style="display:none"
+                        class="btn-close position-absolute top-50 translate-middle-y end-0 me-2">
+                </button>
+                <label for="plecare">Plecare Din</label>
+                <ul class="dropdown-menu position-absolute start-0 w-100 p-3 mt-2 overflow-auto
+                            rounded bg-white shadow-lg dropdown-custom">
+                    <li class="my-1">
+                        <button class="dropdown-item"
+                            type="button" data-target="destination" data-value="exemplu"
+                                onclick="document.getElementById('input-plecare').value='Baia Mare'">
+                            <div>
+                                <div class="fw-medium">Baia Mare</div>
+                                <small class="text-muted">Maramures, Romania</small>
+                            </div>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+                <div class="form-floating flex-fill me-2">
+                    <select class="form-select" name="month">
+                        <option value="">Oricand</option>
+                        @{
+                            var now = DateTime.Now;
+                            for (int i = 0; i <= 12; i++) {
+                                var month = now.AddMonths(i);
+                                var val = month.ToString("MM-yyyy");
+                                var txt = month.ToString("MMMM yyyy",
+                                System.Globalization.CultureInfo.CurrentCulture);
+                                <option value="@val">@txt</option>
+                            }
+                        }
+                    </select>
+                    <label for="month">Luna</label>
+            </div>
+            <div class="form-floating flex-fill me-2">
+                <input type="number"
+                        class="form-control"
+                        name="persoane"
+                        value="1"
+                        min="1"
+                        max="10">
+                <label for="persoane">Pers.</label>
+            </div>
+            <div class="form-floating d-flex align-items-center align-items-md-stretch" 
+            style="padding:5px 0">
+                <button class="c-button" type="submit">Caută</button>
+            </div>
         </div>
-        <div class="form-floating col-1">
-            <input type="number"
-                    class="form-control"
-                    name="persoane"
-                    value="1"
-                    min="1"
-                    max="10">
-            <label for="persoane">Pers.</label>
-        </div>
-        <div class="d-flex align-items-stretch col-12 col-md-1">
-            <button class="btn c-button h-100 " type="button">Caută</button>
-        </div>
-    </div>
-</form>
-
-@*RECOMANDARILE SITE-ULUI*@
-<div id="container-destinatii">
+    </form>
+</div>
+@* RECOMANDARILE SITE-ULUI *@
+<div id="container-destinatii" class="row-cols-1 row-cols-md-2 row-cols-lg-4 g-2">
     @{
         foreach(Tara tara in lista_test)
         {
-            <a class="card-destinatie" href="/">
-                <img class="cd-img" src="@tara.img_tara" />
-                <div class="cd-title">
-                    @tara.den_tara
-                </div>
-                @*call to action*@
-                <div class="cd-cta">
-                    Caută acum
-                </div>
-            </a>
+            <div class="col">
+                <a class="card-destinatie " href="/">
+                    <img class="cd-img" src="@tara.img_tara" />
+                    <div class="cd-title">
+                        @tara.den_tara
+                    </div>
+                    @*call to action*@
+                    <div class="cd-cta">
+                        Caută acum
+                    </div>
+                </a>
+            </div>
         }
     }
 </div>
-
-<div id="container-continente">
+<div id="container-continente" class="row-cols-2 row-cols-md-3 row-cols-lg-5 g-2">
     @{
         foreach(int codContinent in coduriContinente)
         {

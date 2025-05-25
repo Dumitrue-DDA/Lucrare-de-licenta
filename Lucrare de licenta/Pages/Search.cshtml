@@ -14,54 +14,38 @@
             cod_tara = 1,
             den_tara = "Portugalia",
             continent = 1,
-            img_tara = "Resources\\Stock\\SIntra.jpg"
+            img_tara = "Resources\\Tari\\Portugalia.jpg"
         }
     };
 }
-
-<div class="search-filters-container">
-    <div>
-        <label>Luna</label>
-        @{
-            var now = DateTime.Now;
-            for (int i = 0; i <= 12; i++)
-            {
-                var month = now.AddMonths(i);
-                var val = month.ToString("MM-YYYY");
-                var txt = month.ToString("MMMM yyyy",
-                System.Globalization.CultureInfo.CurrentCulture);
-                <a href="/Search/m=@val">@txt</a>
-            }
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-2">
+            <div class="d-md-none">
+                <button class="btn btn-primary w-100 mb-2" data-bs-toggle="collapse" data-bs-target="#filter-sidebar">
+                    toggle
+                </button>
+            </div>
+            <nav id="filter-sidebar" class="d-md-block collapse filter-sidebar">
+                <h4>Filtre de cautare</h4>
+                <hr />
+                <form method="get">
+                    hgjfghfg
+                </form>
+            </nav>
+        </div>
+    <div class="col ms-sm-auto col px-md-4">
+        <ul>
+        @for(int i=0;i<5;i++)
+        {
+            <li>
+                <strong></strong><br />
+                Destinatie:<br />
+                Start Date: <br />
+                Price:
+            </li>
         }
-    </div>
-    <div>
-        <label>Tara</label>
-        @{
-            foreach(Tara tara in lista_test)
-            {
-                <a>@(tara.den_tara)</a>
-            }
-        }
-    </div>
-    <div>
-        <label>Continent</label>
-        @{
-            foreach(string continent in continente)
-            {
-                <a>@(continent)</a>
-            }
-        }
+        </ul>
+        </div>
     </div>
 </div>
-<hr />
-<ul>
-    @for(int i=0;i<5;i++)
-    {
-        <li>
-            <strong></strong><br />
-            Destinatie:<br />
-            Start Date: <br />
-            Price:
-        </li>
-    }
-</ul>

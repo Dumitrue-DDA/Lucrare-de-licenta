@@ -1,50 +1,77 @@
-﻿@media (min-width: 768px) {
+﻿/* md */
+@media (min-width: 768px) {
     #search-container {
         margin: 0!important; /* remove negative margins */
     }
     #search-container > [class*="col-"] {
         padding: 0!important; /* remove gutter padding */
     }
+    .dropdown-custom {
+        padding: 1.5rem;
+    }
 }
-
-/* make the floating wrapper only as wide as it needs to be */
-.form-floating-inline {
-    display: inline-block; /* shrink‐wrap to contents */
-    width: auto !important; /* override Bootstrap’s 100% */
-}
-
-    /* let the inner <input> size naturally (instead of 100%) */
-    .form-floating-inline > .form-control {
-        width: auto !important;
-        min-width: 0; /* don’t enforce Bootstrap’s 120px min */
+@media (max-width: 768px) {
+    #search-container .form-row {
+        flex-direction: column;
     }
 
-.c-button
-{
-    color: var(--background);
-    background: var(--accent1);
-    border: none;
+    #search-container .form-floating {
+        margin-bottom: 10px;
+    }
+
+    #search-container .booking-form {
+        padding: 20px;
+    }
+    #search-container .c-button {
+        width: 100px;
+        height: 50px;
+    }
+}
+
+/* sm */
+@media (min-width: 576px) {
+    .dropdown-custom {
+        width: 520px;
+    }
+}
+
+@media (max-width: 576px) {
+
+}
+
+.form-floating-inline {
+    display: inline-block; 
+    width: auto !important;
+}
+
+.form-floating-inline > .form-control {
+    width: auto !important;
+    min-width: 0; 
 }
 
 #search-container {
     background: rgb(200,200,200,35%);
-    padding: 16px;
-    border-radius: 26px;
+    border-radius: 12px;
+    padding: 15px;
     border: solid rgb(200,200,200,10%);
-
-    /* g-3 */
-    margin-top: -0.5rem;
-    margin-right: -0.5rem;
-    margin-bottom: -0.5rem;
-    margin-left: -0.5rem;
 }
 
-#search-container > [class*="col-"] {
-    /* half‐gutters as padding on each side */
-    padding-top: 0.5rem;
-    padding-right: 0.5rem;
-    padding-bottom: 0.5rem;
-    padding-left: 0.5rem;
+#search-container .c-button {
+    color: var(--background);
+    background: var(--accent1);
+    transition: 100ms ease-in-out;
+}
+#search-container .c-button:hover {
+    color: var(--accent1);
+    background: var(--accent2);
+}
+
+.dropdown-custom {
+    height: auto;
+    max-height: 250px;
+    top: 100%;
+    z-index: 1030;
+    margin-left: 5px;
 }
 
 .sugestii {
@@ -64,20 +91,12 @@
 
 #container-destinatii {
     margin: 25px 75px;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
     align-content: center;
 }
 
-/* Medium screens — 4 columns */
-@media (min-width: 764px) {
-    #container-destinatii {
-        grid-template-columns: repeat(4, 1fr);
-    }
-}
-
 .card-destinatie {
+    max-height: 250px;
+    min-height: 150px;
     display: block;
     position: relative;
     overflow: hidden;
@@ -123,14 +142,13 @@
 }
 
 #container-continente {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    margin: 25px 75px;
     align-content: center;
-    gap: 25px;
-    margin: 10px;
 }
 
 .card-continent {
+    max-height: 200px;
+    min-height: 100px;
     display: block;
     vertical-align: central;
     position: relative;
@@ -140,9 +158,11 @@
     aspect-ratio: 1/1;
 }
 
+
 .cc-img {
     height: auto;
     width: 100%;
+    fill: var(--accent1);
 }
 
 .cc-title {
