@@ -106,7 +106,7 @@
     @{
         foreach(Tara tara in lista_test)
         {
-            <div class="col">
+            <div class="col d-flex justify-content-center">
                 <a class="card-destinatie " href="/">
                     <img class="cd-img" src="@tara.img_tara" />
                     <div class="cd-title">
@@ -121,12 +121,13 @@
         }
     }
 </div>
-<div id="container-continente" class="row-cols-2 row-cols-md-3 row-cols-lg-5 g-2">
+<div id="container-continente"
+     class="row-cols-2 row-cols-md-3 row-cols-lg-5 g-2 justify-content-center">
     @{
         foreach(int codContinent in coduriContinente)
         {
-            <a class="card-continent" href="/">
-                <img class="cc-img" src="~/Resources/Continente/@(codContinent).svg"/>
+            <a class="card-continent d-flex justify-content-center" href="/">
+                <img class="cc-img mb-2" src="~/Resources/Continente/@(codContinent).svg"/>
                 <div class="cc-title">
                     @switch (codContinent)
                     {

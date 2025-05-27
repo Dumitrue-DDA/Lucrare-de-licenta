@@ -10,7 +10,7 @@
         <h3>@ViewData["title"]</h3>
         <p>Email</p>
         <p>@User.FindFirstValue(ClaimTypes.Email)</p>
-        <p><a href="#">Change Email</a></p>
+        <p><a asp-page="../Logout">Iesi din cont</a></p>
         @{
             if (User.IsInRole("admin"))
             {

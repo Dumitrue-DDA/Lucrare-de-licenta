@@ -6,16 +6,16 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Lucrare_de_licenta.Pages.Identity.Account.Manage
 {
-    public class ForgotPasswordModel : PageModel
+    public class ChangePasswordModel : PageModel
     {
         private readonly UserManager<Utilizator> _userManager;
         private readonly SignInManager<Utilizator> _signInManager;
-        private readonly ILogger<ForgotPasswordModel> _logger;
+        private readonly ILogger<ChangePasswordModel> _logger;
 
-        public ForgotPasswordModel(
+        public ChangePasswordModel(
             UserManager<Utilizator> userManager,
             SignInManager<Utilizator> signInManager,
-        ILogger<ForgotPasswordModel> logger)
+        ILogger<ChangePasswordModel> logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;

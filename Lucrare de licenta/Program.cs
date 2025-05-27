@@ -14,6 +14,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddRazorPages();
 
+builder.Services.AddHttpClient();
+
 builder.Services.ConfigureApplicationCookie(options =>
 {
     // Cookie settings
@@ -49,7 +51,7 @@ builder.Services.AddIdentity<Utilizator, IdentityRole<int>>(options =>
     options.Lockout.MaxFailedAccessAttempts = 5;
     options.Lockout.AllowedForNewUsers = true;
 
-    // Optiuni pentru dezvoltare, de schimbat in productie
+    // !! Optiuni pentru dezvoltare, de schimbat in productie
     options.User.RequireUniqueEmail = false;
     options.SignIn.RequireConfirmedAccount = false;
 
@@ -58,11 +60,14 @@ builder.Services.AddIdentity<Utilizator, IdentityRole<int>>(options =>
 .AddErrorDescriber<LocErrorDescriber>()
 .AddDefaultTokenProviders();
 
+// In Program.cs
+builder.Services.Configure<SendGridOptions>(builder.Configuration.GetSection("SendGrid"));
+
 // Make sure you have the SignInManager and UserManager injected properly
 builder.Services.AddScoped<SignInManager<Utilizator>>();
 builder.Services.AddScoped<UserManager<Utilizator>>();
 
-builder.Services.AddSingleton<IEmailSender, NoOpEmailSender>();
+builder.Services.AddTransient<IEmailSender, EmailSender>();
 
 builder.Services.AddAuthorization(options =>
 {
@@ -80,7 +85,6 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
-
 }
 
 // Adaugam rolurile si atribuim administratorului web rolul sau

@@ -10,6 +10,7 @@
         padding: 1.5rem;
     }
 }
+
 @media (max-width: 768px) {
     #search-container .form-row {
         flex-direction: column;
@@ -162,22 +163,24 @@
 .cc-img {
     height: auto;
     width: 100%;
-    fill: var(--accent1);
+}
+.card-continent:hover .cc-img {
+    filter: brightness(10px);
 }
 
 .cc-title {
-    align-content: center;
     margin: auto;
     position: absolute;
     bottom: 0;
     color: var(--text);
     border-radius: 25px;
-    margin: auto;
     padding: 5px 10px;
     transition: ease-in-out 100ms;
+    background: var(--accent1);
+    color: var(--text);
 }
 
 .card-continent:hover .cc-title {
-    background: var(--accent1);
-    color: var(--text);
+    color: var(--background);
+    background: var(--accent2);
 }

@@ -1,0 +1,28 @@
+﻿@page "{handler?}"
+@model Lucrare_de_licenta.Pages.Identity.Account.ConfirmationModel
+@{
+    ViewData["Title"] = Model.Title ?? "Confirmare";
+}
+<div class="text-center">
+    <div class="alert alert-@Model.AlertType" role="alert">
+    <h1 class="alert-heading">@Model.Title</h1>
+
+    @if (!string.IsNullOrEmpty(Model.Message))
+    {
+        <p class="mb-0">@Html.Raw(Model.Message)</p>
+    }
+</div>
+
+<div class="mt-4">
+    <a href="@Model.CallBackUrl" class="btn btn-primary btn-lg">
+        @Model.ButtonText
+    </a>
+</div>
+
+@if (!string.IsNullOrEmpty(Model.AdditionalInfo))
+{
+    <div class="mt-4">
+        <small class="text-muted">@Html.Raw(Model.AdditionalInfo)</small>
+    </div>
+}
+</div>
