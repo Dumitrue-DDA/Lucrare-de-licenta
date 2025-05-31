@@ -35,10 +35,9 @@ builder.Services.AddRazorPages()
         options.Conventions.AuthorizeAreaPage("Identity", "/Identity/Account/Logout");
     });
 
-// Add this to enable the default UI
 builder.Services.AddIdentity<Utilizator, IdentityRole<int>>(options =>
 {
-    // Password settings.
+    // Setari parola
     options.Password.RequireDigit = true;
     options.Password.RequireLowercase = true;
     options.Password.RequireNonAlphanumeric = true;
@@ -46,12 +45,12 @@ builder.Services.AddIdentity<Utilizator, IdentityRole<int>>(options =>
     options.Password.RequiredLength = 6;
     options.Password.RequiredUniqueChars = 1;
 
-    // Lockout settings.
+    // Setari blocare cont
     options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
     options.Lockout.MaxFailedAccessAttempts = 5;
     options.Lockout.AllowedForNewUsers = true;
 
-    // !! Optiuni pentru dezvoltare, de schimbat in productie
+    // !! Optiuni pentru dezvoltare, de schimbat in productie !!
     options.User.RequireUniqueEmail = false;
     options.SignIn.RequireConfirmedAccount = false;
 
@@ -60,10 +59,8 @@ builder.Services.AddIdentity<Utilizator, IdentityRole<int>>(options =>
 .AddErrorDescriber<LocErrorDescriber>()
 .AddDefaultTokenProviders();
 
-// In Program.cs
 builder.Services.Configure<SendGridOptions>(builder.Configuration.GetSection("SendGrid"));
 
-// Make sure you have the SignInManager and UserManager injected properly
 builder.Services.AddScoped<SignInManager<Utilizator>>();
 builder.Services.AddScoped<UserManager<Utilizator>>();
 
@@ -79,7 +76,6 @@ builder.Services.AddAuthorization(options =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");

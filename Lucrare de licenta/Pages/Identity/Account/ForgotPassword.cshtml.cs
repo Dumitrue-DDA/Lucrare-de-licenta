@@ -39,9 +39,9 @@ namespace Lucrare_de_licenta.Pages.Identity.Account
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByEmailAsync(Input.Email);
-                if (user == null) // || !(await _userManager.IsEmailConfirmedAsync(user))
+                if (user == null) // || !(await _userManager.IsEmailConfirmedAsync(user)) - cu confirmarea mailului activata
                 {
-                    _logger.LogInformation("User is null");
+                    _logger.LogInformation("Utilizatorul este Null");
                     return RedirectToPage("./Conrirmation", new { type = "error" });
 
                 }
@@ -54,19 +54,19 @@ namespace Lucrare_de_licenta.Pages.Identity.Account
                     protocol: Request.Scheme);
 
                 // Debug: Log the generated URL
-                _logger.LogInformation("Generated callback URL: {CallbackUrl}", callbackUrl);
+                _logger.LogInformation("S-a generat link-ul de callback: {CallbackUrl}", callbackUrl);
 
                 try
                 {
                     await _emailSender.SendEmailAsync(
                         Input.Email,
                         "Reset Password",
-                        $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl!)}'>clicking here</a>.");
+                        $"Va rugam resetati parola prinm <a href='{HtmlEncoder.Default.Encode(callbackUrl!)}'>acest link</a>.");
                 }
                 catch (Exception ex)
                 {
                     _logger.LogError(ex, "Eroare la trimiterea emailul de resetare a parolei");
-                    ModelState.AddModelError(string.Empty, "An error occurred while sending the email.");
+                    ModelState.AddModelError(string.Empty, "A aparut o eroare in transmiterea emailului.");
                     return Page();
                 }
                 return RedirectToPage("./Confirmation", new { type = "emailsent" });

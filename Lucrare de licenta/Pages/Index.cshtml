@@ -107,7 +107,8 @@
         foreach(Tara tara in lista_test)
         {
             <div class="col d-flex justify-content-center">
-                <a class="card-destinatie " href="/">
+                <a class="card-destinatie " asp-page="/Search" 
+                asp-route-country="@tara.cod_tara">
                     <img class="cd-img" src="@tara.img_tara" />
                     <div class="cd-title">
                         @tara.den_tara
@@ -126,7 +127,8 @@
     @{
         foreach(int codContinent in coduriContinente)
         {
-            <a class="card-continent d-flex justify-content-center" href="/">
+            <a class="card-continent d-flex justify-content-center" 
+            asp-page="/Search" asp-route-continent="@codContinent">
                 <img class="cc-img mb-2" src="~/Resources/Continente/@(codContinent).svg"/>
                 <div class="cc-title">
                     @switch (codContinent)

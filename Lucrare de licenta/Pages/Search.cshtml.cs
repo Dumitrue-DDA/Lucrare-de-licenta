@@ -17,7 +17,8 @@ namespace Lucrare_de_licenta.Pages
         [BindProperty(SupportsGet = true)]
         public DateOnly? data { get; set; }
 
-
+        [BindProperty(SupportsGet = true)]
+        public int? continent { get; set; } = null;
         public void OnGet()
         {
 

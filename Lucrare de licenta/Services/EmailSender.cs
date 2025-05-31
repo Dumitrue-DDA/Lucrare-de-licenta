@@ -19,33 +19,33 @@ namespace Lucrare_de_licenta.Services
 
             if (string.IsNullOrEmpty(_sendGridOptions.ApiKey))
             {
-                _logger.LogWarning("SendGrid API Key is not configured. Emails will not be sent.");
+                _logger.LogWarning("Cheia API pentru SendGrid nu este configurata. Emailul nu a fost trimis.");
             }
             if (string.IsNullOrEmpty(_sendGridOptions.FromEmail))
             {
-                _logger.LogWarning("SendGrid From Email is not configured. Default values will be used.");
+                _logger.LogWarning("Emailul de transmitere pentru SendGrid nu a fost configurat. A fost folosita valoarea implicita.");
             }
 
             _httpClientFactory = httpClientFactory;
         }
         public async Task SendEmailAsync(string email, string subject, string htmlMessage)
         {
-            _logger.LogInformation("EmailSender constructor: ApiKey is '{ApiKey}', FromEmail is '{FromEmail}'",
+            _logger.LogInformation("Constructor EmailSender: ApiKey = '{ApiKey}', FromEmail = '{FromEmail}'",
                 _sendGridOptions.ApiKey ?? "NULL_OR_EMPTY",
                 _sendGridOptions.FromEmail ?? "NULL_OR_EMPTY");
 
             if (string.IsNullOrEmpty(_sendGridOptions.ApiKey))
             {
-                _logger.LogWarning("SendGrid API Key is missing from options. Email not sent to {Email}.", email);
+                _logger.LogWarning("Cheia API pentru SendGrid lipseste. Emailul nu a fost trimis catre {Email}.", email);
                 return;
             }
             if (string.IsNullOrEmpty(_sendGridOptions.FromEmail))
             {
-                _logger.LogWarning("SendGrid FromEmail is missing from options. Email not sent to {Email}.", email);
+                _logger.LogWarning("Emailul de transmitere pentru SendGrid lipseste. Emailul nu a fost trimis catre {Email}.", email);
                 return;
             }
 
-            _logger.LogInformation($"Sending email to {email} with subject '{subject}' using From: {_sendGridOptions.FromEmail}");
+            _logger.LogInformation($"Se trimite mailu catre {email} cu subiectul '{subject}' de la adresa: {_sendGridOptions.FromEmail}");
 
             var client = _httpClientFactory.CreateClient();
             client.DefaultRequestHeaders.Authorization =
@@ -78,20 +78,20 @@ namespace Lucrare_de_licenta.Services
                 );
                 if (response.IsSuccessStatusCode)
                 {
-                    _logger.LogInformation("Email sent successfully to {Email}", email);
+                    _logger.LogInformation("Emailul a fost trimis cu succes catre {Email}", email);
                 }
                 else
                 {
                     var errorBody = await response.Content.ReadAsStringAsync();
                     _logger.LogError(
-                        "Failed to send email to {Email}. Status Code: {StatusCode}, Body: {Body}",
+                        "Nu a putut fi trimis mailul catre {Email}. Status Code: {StatusCode}, Body: {Body}",
                         email, response.StatusCode, errorBody
                         );
                 }
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occurred while sending email to {Email}", email);
+                _logger.LogError(ex, "A aparut o eroare in incercarea de a trimite un mail catre {Email}", email);
                 throw;
             }
         }

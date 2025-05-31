@@ -1,0 +1,61 @@
+﻿@page  
+@model Lucrare_de_licenta.Pages.Admin.DbAddModel  
+@{  
+    Layout = "_Layout";  
+    ViewData["Title"] = "Adaugare inregistrari";  
+}  
+<link rel="stylesheet" href="/css/Admin/DbPages.css" />  
+
+<div class="row gap-3">  
+    <partial name="_AdminNavPartial" />  
+    <div class="col-2">  
+        <ul class="list-group-flush p-0">  
+            @foreach(string e in Model.GetAllEntityNames())  
+            {  
+                <li class="list-group-item db-add-item">  
+                    <a class="d-block text-decoration-none"
+                        asp-page="/Admin/DbAdd" asp-route-entity="@e">  
+                        @e.Substring(0,1).ToUpper()@e.Substring(1).ToLower()
+                    </a>  
+                </li>  
+            }  
+        </ul>  
+    </div>  
+    <div class="col-7">  
+        @if (Model.Entity != string.Empty)  
+        {  
+            <h2>Adaugare @Model.Entity</h2>  
+        }else  
+        {  
+            <h2>Adaugare de inregistrari</h2>  
+        }  
+        @if (Model.HasError && Model.Entity != string.Empty)  
+        {  
+            <span>@Model.ErrorMessage</span>  
+        }  
+        <form>  
+            @if (Model.Props != null && Model.Props.Any())  
+            {  
+                @foreach (var prop in Model.Props.Skip(1))  
+                {  
+                    <div class="form-floating my-3">  
+                        <span asp-validation-for="Values" class="text-danger"></span>  
+                        <input class="form-control"   
+                        asp-for="@Model.Values[prop.Name]"   
+                        value="@(Model.Values != null && Model.Values.ContainsKey(prop.Name)   
+                                    ? Model.Values[prop.Name] : string.Empty)"   
+                                placeholder="@Model.Values?[prop.Name] ?? string.Empty"/>  
+                        <label asp-for="@Model.Values[prop.Name]">  
+                            @prop.Name  
+                        </label>  
+                    </div>  
+                }  
+                <button type="submit" class="btn btn-primary mx-2 w-25">Adauga</button>  
+            }  
+            else  
+            {  
+                <div>Alege-ti o entitate pentru a adauga valori in baza de date</div>  
+            }  
+        </form>  
+    </div>  
+</div>

@@ -1,0 +1,51 @@
+﻿@page
+@model Lucrare_de_licenta.Pages.Admin.DbViewModel
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Vizualizare Inregistrari";
+}
+<link rel="stylesheet" href="/css/Admin/DbPages.css" />
+
+<div class="row gap-3">
+    <partial name="_AdminNavPartial" />
+    <div class="col-2">
+        <ul class="list-group-flush p-0">
+            @foreach (var e in Model.GetAllEntityNames())
+            {
+                <li class="list-group-item">
+                    <a asp-page="/Admin/DbView" asp-route-entity="@e">
+                        @e
+                    </a>
+                </li>
+            }
+        </ul>
+    </div>
+    <div class="col-7">
+        <h2>Adaugare @Model.Entity</h2>
+        @if (Model.HasError && Model.Props != null)
+        {
+            <span>@Model.ErrorMessage</span>
+        }
+        <table class="table">
+            <thead>
+                <tr>
+                    @foreach (var prop in Model.Props)
+                    {
+                        <th>@prop.Name</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var entry in Model.Entries)
+                {
+                    <tr>
+                        @foreach (var prop in Model.Props)
+                        {
+                            <td>@entry.ToString()</td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

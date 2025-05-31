@@ -1,0 +1,10 @@
+﻿.db-add-item a{
+    color: var(--accent2);
+    text-decoration: none;
+}
+.db-add-item:hover a{
+    color: var(--accent1);
+}
+.db-add-item:hover {
+    border-bottom: 1px solid var(--accent1);
+}

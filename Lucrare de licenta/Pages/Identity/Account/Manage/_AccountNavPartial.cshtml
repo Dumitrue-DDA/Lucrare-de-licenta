@@ -5,14 +5,6 @@
         <li class="nav-item">
             <a class="nav-link" asp-page="./Index">Profil</a>
         </li>
-        @{
-            if (User?.Identity?.IsAuthenticated == true && User.IsInRole("admin"))
-            {
-                <li class="nav-item">
-                    <a class="nav-link" asp-page="/Admin/index">Admin</a>
-                </li>
-            }
-        }
         <li class="nav-item">
             <a class="nav-link" asp-page="./ChangePassword">Schimbare parolă</a>
         </li>
@@ -25,5 +17,13 @@
         <li class="nav-item">
             <a class="nav-link" asp-page="./Payments">Plati</a>
         </li>
+        @{
+            if (User?.Identity?.IsAuthenticated == true && User.IsInRole("admin"))
+            {
+                <li class="nav-item">
+                    <a class="nav-link" asp-page="/Admin/index">Admin</a>
+                </li>
+            }
+        }
     </ul>
 </nav>

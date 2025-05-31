@@ -25,10 +25,66 @@ namespace Adventour.Data
         public DbSet<Tara> tari { get; set; }
         public DbSet<Tur> tururi { get; set; }
         public DbSet<Tur_categorie> tur_categorii { get; set; }
-
+        public DbSet<IdentityRole<int>> Roluri { get; set; }
+        public DbSet<IdentityUserRole<int>> UtilizatorRoluri { get; set; }
+        public DbSet<IdentityUserClaim<int>> CereriUtilizator { get; set; }
+        public DbSet<IdentityUserLogin<int>> LoginuriUtilizator { get; set; }
+        public DbSet<IdentityUserToken<int>> TokenuriUtilizator { get; set; }
+        public DbSet<IdentityRoleClaim<int>> CereriRol { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            // SECVENTE
+            builder.HasSequence<byte>("seq_tari", schema: "dbo")
+                .StartsAt(1)
+                .IncrementsBy(1);
+            builder.HasSequence<short>("seq_destinatii", schema: "dbo").
+                StartsAt(1)
+                .IncrementsBy(1);
+            builder.HasSequence<int>("seq_utilizatori", schema: "dbo")
+                .StartsAt(1)
+                .IncrementsBy(1);
+            builder.HasSequence<int>("seq_cazari", schema: "dbo")
+                .StartsAt(1)
+                .IncrementsBy(1);
+            builder.HasSequence<int>("seq_tururi", schema: "dbo")
+                .StartsAt(1)
+                .IncrementsBy(1);
+            builder.HasSequence<byte>("seq_categorii", schema: "dbo")
+                .StartsAt(1)
+                .IncrementsBy(1);
+            builder.HasSequence<int>("seq_tururi_categorii", schema: "dbo")
+                .StartsAt(1)
+                .IncrementsBy(1);
+            builder.HasSequence<int>("seq_itinerarii", schema: "dbo")
+                .StartsAt(1)
+                .IncrementsBy(1);
+            builder.HasSequence<int>("seq_destinatii_itinerarii", schema: "dbo")
+                .StartsAt(1)
+                .IncrementsBy(1);
+            builder.HasSequence<byte>("seq_puncte_plecare", schema: "dbo")
+                .StartsAt(1)
+                .IncrementsBy(1);
+            builder.HasSequence<int>("seq_oferte", schema: "dbo")
+                .StartsAt(1)
+                .IncrementsBy(1);
+            builder.HasSequence<int>("seq_rezervari", schema: "dbo")
+                .StartsAt(1)
+                .IncrementsBy(1);
+            builder.HasSequence<int>("seq_camere", schema: "dbo")
+                .StartsAt(1)
+                .IncrementsBy(1);
+            builder.HasSequence<int>("seq_beneficiari", schema: "dbo")
+                .StartsAt(1)
+                .IncrementsBy(1);
+            builder.HasSequence<int>("seq_plati", schema: "dbo")
+                .StartsAt(1)
+                .IncrementsBy(1);
+            builder.HasSequence<int>("seq_facturi", schema: "dbo")
+                .StartsAt(1)
+                .IncrementsBy(1);
+
 
             var user = builder.Entity<Utilizator>();
             user.ToTable("utilizatori");
