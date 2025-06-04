@@ -1,4 +1,7 @@
-﻿/* Physical Level Progress Bar Styles */
+﻿.card-header {
+    background-color: var(--accent1);
+    color: var(--background);
+}
 .physical-level-container {
     width: 100%;
     max-width: 200px;
@@ -7,46 +10,26 @@
 
 .physical-level-bar {
     display: flex;
-    gap: 4px;
+    justify-content:center;
     margin-bottom: 5px;
+    padding: 10px
 }
 
 .level-segment {
-    flex: 1;
-    height: 12px;
-    border-radius: 6px;
-    transition: all 0.3s ease;
+    transition: fill 0.3s ease;
 }
 
 .level-segment.active {
-    background: linear-gradient(45deg, #28a745, #20c997);
-    box-shadow: 0 2px 4px rgba(40, 167, 69, 0.3);
+    fill: var(--accent1);
+    stroke: var(--background);
+    stroke-width: 1px;
 }
 
 .level-segment.inactive {
-    background-color: #e9ecef;
-    border: 1px solid #dee2e6;
-}
-
-/* Different colors for different levels */
-.level-segment:nth-child(1).active {
-    background: linear-gradient(45deg, #28a745, #34ce57);
-}
-
-.level-segment:nth-child(2).active {
-    background: linear-gradient(45deg, #ffc107, #ffcd39);
-}
-
-.level-segment:nth-child(3).active {
-    background: linear-gradient(45deg, #fd7e14, #fd9644);
-}
-
-.level-segment:nth-child(4).active {
-    background: linear-gradient(45deg, #dc3545, #e55353);
-}
-
-.level-segment:nth-child(5).active {
-    background: linear-gradient(45deg, #6f42c1, #8e6dc8);
+    fill: transparent;
+    stroke: lightgray;
+    stroke-width: 1px;
+    stroke-linecap: round;
 }
 
 .level-labels {
@@ -54,8 +37,10 @@
     padding: 0 2px;
 }
 
-/* Hover effect */
-.physical-level-bar:hover .level-segment.active {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+.itinerariu .accordion-button:not(collapsed) {
+    background-color: var(--background);
+    color: var(--accent1);
+    font-weight: 500;
+    font-family: quicksand;
+    border: 2px solid var(--accent1);
 }

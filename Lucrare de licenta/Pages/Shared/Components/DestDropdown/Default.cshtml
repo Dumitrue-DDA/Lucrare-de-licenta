@@ -1,0 +1,71 @@
+﻿@using Lucrare_de_licenta.Pages.Shared.Components.ViewModels
+@model DestTarModel
+@{
+    ViewData["Title"] = "Default";
+
+    Func<string, string> capitalize = (input) => {
+        if (string.IsNullOrEmpty(input)) return input;
+        return char.ToUpper(input[0]) + input.Substring(1).ToLower();
+    };
+    Dictionary<byte, string> Continente = new Dictionary<byte, string> {
+        { 1, "Europa" },
+        { 2, "Africa" },
+        { 3, "Asia" },
+        { 4, "America de Nord" },
+        { 5, "America de Sud" }
+    };
+}
+<div class="dropdown-menu">
+    @if(Model != null)
+    {
+        <div class="d-flex">
+            <div class="p-1 flex-fill">
+                <ul class="px-1 list-unstyled">
+                    @foreach(Destinatie d in Model.Destinatii)
+                    {
+                        <li>
+                            <a class="dropdown-item" style="color:var(--accent1); font-weight: 500"
+                               asp-page="/Search" asp-route-destinatie="@d.cod_destinatie">
+                                @d.den_destinatie
+                                <small style="color:var(--text); font-weight: 400; font-size:10px">
+                                    @d.judet @d.Tara.den_tara
+                                </small>
+                            </a>
+                        </li>
+                    } 
+                </ul>
+            </div>
+            <div class="vr d-none d-lg-block"></div>
+            <div class="p-1 flex-fill">
+                <ul class="list-unstyled">
+                @foreach(var t in Model.Tari)
+                {
+                    <li>
+                        <a class="dropdown-item" style="color:var(--accent1); font-weight: 500"
+                            asp-page="/Search" asp-route-tara="@t.cod_tara">
+                            @t.den_tara
+                        </a>
+                    </li>
+                } 
+                </ul>
+            </div>
+            <div class="vr d-none d-lg-block"></div>
+            <div class="p-1 flex-fill">
+                <ul class="list-unstyled">
+                @foreach(var c in Continente){
+                    <li>
+                        <a class="dropdown-item" style="color:var(--accent1); font-weight: 500"
+                            asp-page="/Search" asp-route-continent="@c.Key">
+                            @c.Value
+                        </a>
+                    </li>
+                }
+                </ul>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="text-danger">Ne pare rau, a aparut o eroare.</div>
+    }
+</div>

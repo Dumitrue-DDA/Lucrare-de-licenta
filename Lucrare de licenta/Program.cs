@@ -18,7 +18,7 @@ builder.Services.AddHttpClient();
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
-    // Cookie settings
+    // setari cookie-uri
     options.Cookie.HttpOnly = true;
     options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
 
@@ -79,7 +79,9 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    // The default HSTS value is 30 days.
+    // You may want to change this for production scenarios,
+    // see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
@@ -108,8 +110,8 @@ app.Lifetime.ApplicationStarted.Register(async () =>
     }
 );
 
-app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseHttpsRedirection();
 
 app.UseRouting();
 

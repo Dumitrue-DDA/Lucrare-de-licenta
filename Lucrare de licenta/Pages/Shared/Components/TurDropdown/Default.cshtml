@@ -1,0 +1,49 @@
+﻿@using Lucrare_de_licenta.Pages.Shared.Components.ViewModels
+@model TurCategModel
+@{
+    ViewData["Title"] = "Default";
+
+    Func<string, string> capitalize = (input) => {
+        if (string.IsNullOrEmpty(input)) return input;
+        return char.ToUpper(input[0]) + input.Substring(1).ToLower();
+    };
+}
+<div class="dropdown-menu">
+    @if(Model != null)
+    {
+        <div class="d-flex">
+            <div class="p-1 flex-fill">
+                <ul class="px-1 list-unstyled">
+                    @foreach(Tur tur in Model.Tururi)
+                    {
+                        <li>
+                            <a class="dropdown-item" style="color:var(--accent1); font-weight: 500"
+                                asp-page="/Tour" asp-route-id="@tur.cod_tur">
+                                @tur.den_tur
+                            </a>
+                        </li>
+                    } 
+                </ul>
+            </div>
+            <div class="vr d-none d-lg-block"></div>
+            <div class="p-1 flex-fill">
+                <h5 class="text-center px-2" style="font-family: Quicksand">Categorii</h5>
+                <ul class="list-unstyled">
+                @foreach (Categorie categ in Model.Categorii)
+                {
+                    <li>
+                        <a class="dropdown-item" style="color:var(--accent1); font-weight: 500"
+                            asp-page="/Search" asp-route-categ="@categ.cod_categ">
+                            @capitalize(categ.den_categ)
+                        </a>
+                    </li>
+                } 
+                </ul>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="text-danger">Ne pare rau, a aparut o eroare.</div>
+    }
+</div>

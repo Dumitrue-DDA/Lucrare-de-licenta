@@ -4,6 +4,7 @@
 @inject SignInManager<Utilizator> SignInManager
 @inject UserManager<Utilizator> UserManager
 
+@* Afisam continut diferit daca utilizatorul este autentificat *@
 <div id="iden-container" class="order-first order-sm-last flex-grow-0">
     @if (SignInManager.IsSignedIn(User))
     {

@@ -4,6 +4,8 @@ using System.Diagnostics;
 
 namespace Lucrare_de_licenta.Pages;
 
+// PAGINA GENERATA AUTOMAT
+
 [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
 [IgnoreAntiforgeryToken]
 public class ErrorModel : PageModel

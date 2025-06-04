@@ -44,7 +44,7 @@ namespace Lucrare_de_licenta.Pages.Identity.Account
             [Required]
             public string Code { get; set; }
         }
-        public IActionResult OnGet(string code = null, string email = null)
+        public IActionResult OnGet(string? code = null, string? email = null)
         {
             if (code == null || email == null)
             {

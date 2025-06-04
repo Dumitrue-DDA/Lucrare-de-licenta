@@ -5,6 +5,7 @@ namespace Lucrare_de_licenta.Pages
 {
     public class SearchModel : PageModel
     {
+        // Variabilele de cautare
         [BindProperty(SupportsGet = true)]
         public string Plecare { get; set; } = string.Empty;
 
@@ -15,7 +16,7 @@ namespace Lucrare_de_licenta.Pages
         public int nr_pers { get; set; } = 1;
 
         [BindProperty(SupportsGet = true)]
-        public DateOnly? data { get; set; }
+        public DateOnly? data { get; set; } = null;
 
         [BindProperty(SupportsGet = true)]
         public int? continent { get; set; } = null;

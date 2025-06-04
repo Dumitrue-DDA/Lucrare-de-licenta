@@ -3,7 +3,9 @@
 @{
     ViewData["Title"] = Model.Tur.den_tur;
 }
+
 <link rel="stylesheet" href="~/css/tour.css" />
+
 <div class="container-fluid">
     <div class="row">
         <div class="cold-md-6 mb-4">
@@ -14,35 +16,54 @@
             </div>
         </div>
     </div>
+
     <div class="mb-4">
-        <div class="card-header bg-primary text-white">
+        <div class="card-header">
             <h2 class="card-title mb-0">@Model.Tur.den_tur</h2>
         </div>
         <div class="card-body">
             @if (!string.IsNullOrEmpty(Model.Tur.desc_tur))
             {
                 <div class="mb-4">
-                    <h5><i class="fas fa-info-circle text-info"></i> Description</h5>
                     <p class="text-muted">@Model.Tur.desc_tur</p>
                 </div>
             }
         </div>
-        <div class="row">
+
+        <div class="row justify-content-center">
+            <div class="col-sm-12 mb-3">
+                <div class="border rounded p-3 text-center">
+                    De la 100&euro; pe persoana
+                </div>
+            </div>
             <div class="col-sm-6 mb-3">
                 <div class="border rounded p-3 text-center">
                     <i class="fas fa-dumbbell text-warning fa-2x mb-2"></i>
                     <h6 class="mb-2">Solicitare Fizica</h6>
-
+                    @* Graficul ce reprezinta dificultatea fizica a turului*@
                     <div class="physical-level-container mb-2">
-                        <div class="physical-level-bar">
+                        @{
+                            var inaltime_max = 100;
+                            var latime_max = 250;
+                        }
+                        <svg class="physical-level-bar" viewBox="0 0 @latime_max @inaltime_max">
+                            <line stroke="lightgray" stroke-width="1px"
+                                  x1="0" x2="@latime_max" y1="@inaltime_max" y2="@inaltime_max"></line>
                             @for (int i = 1; i <= 5; i++)
                             {
-                                <div class="level-segment @(i <= Model.Tur.sol_fiz ? "active" : "inactive")">
-                                </div>
-                            }
-                        </div>
-                    </div>
+                                var latime = 50*i;
+                                var inaltime = 20*i;
 
+                                var p1 = $"{latime_max/2},{inaltime_max-inaltime}";
+                                var p2 = $"{(latime_max / 2) - (latime / 2)},{inaltime_max}";
+                                var p3 = $"{(latime_max / 2) + (latime / 2)},{inaltime_max}";
+                                var puncte = $"{p1} {p2} {p3}";
+                                <polygon class="level-segment @(i <= Model.Tur.sol_fiz ? "active" : "inactive")"
+                                points="@puncte" data-level="@i">
+                                </polygon>
+                            }
+                        </svg>
+                    </div>
                     <small class="text-muted">
                          @Model.Tur.sol_fiz din 5
                     </small>
@@ -50,16 +71,49 @@
             </div>
 
             <div class="col-sm-6 mb-3">
-                <div class="border rounded p-3 text-center">
+                <div class="border rounded p-3 text-center h-100">
                     <i class="fas fa-users text-success fa-2x mb-2"></i>
                     <h6>Marimea Grupului</h6>
-                    <strong>@Model.Tur.grup_minim - @Model.Tur.grup_maxim persoane</strong>
+                    <img class="" style="height:60px"
+                        src="~/Resources/Icons/group.svg"/>
+                    <p>
+                        Minim @Model.Tur.grup_minim <br />
+                        Maxim @Model.Tur.grup_maxim
+                    </p>
                 </div>
             </div>
         </div>
     </div>
+    <div>
+        <h3>Itinerariu</h3>
+        @foreach(Itinerariu i in Model.Itinerarii)
+        {
+            <div class="accordion-item itinerariu col-12 col-md-8 col-lg-6">
+            <h5 class="accordion-header">
+                    <button class="accordion-button" type="button"
+                            data-bs-toggle="collapse" data-bs-target="#collapse_@i.cod_itinerariu">
+                    Ziua @i.zi_activitate - @i.titlu_itin
+                </button>
+            </h5>
+            <div id="collapse_@i.cod_itinerariu" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                    @if(!string.IsNullOrEmpty(i.img_itin))
+                    {
+                        <img src="@Model.Imagepath@i.img_itin"/>
+                    }
+                    @foreach(string textDest in Model.GetItinDestText(i.cod_itinerariu))
+                    {
+                        <span class="badge text-dark">@textDest</span>
+                    }
+                    <br />
+                    @i.desc_itin
+                </div>
+            </div>
+        </div>
+        }
+    </div>
 
-    @* TESTE *@
+    @* TESTE CHEI STRAINE *@
     <div>
         tur categorii : @Model.Tururi_Categorii.Count
         categorii : @Model.Categorii.Count

@@ -5,6 +5,9 @@ using System.Text.Json;
 
 namespace Lucrare_de_licenta.Services
 {
+    /// <summary>
+    /// Serviciul ce se ocupa de trimis emailuri folosind SendGrid
+    /// </summary>
     public class EmailSender : IEmailSender
     {
         private readonly ILogger<EmailSender> _logger;

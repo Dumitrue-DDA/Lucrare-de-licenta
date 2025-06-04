@@ -13,6 +13,7 @@ namespace Lucrare_de_licenta.Pages
         {
             _context = context;
         }
+        public string Imagepath = "~\\Resources\\";
         public Tur? Tur { get; set; }
         public IList<Tur_categorie>? Tururi_Categorii { get; set; } = new List<Tur_categorie>();
         public IList<Categorie>? Categorii { get; set; } = new List<Categorie>();
@@ -23,6 +24,45 @@ namespace Lucrare_de_licenta.Pages
         public IList<Tara>? Tari { get; set; } = new List<Tara>();
         public IList<Oferta>? Oferte { get; set; } = new List<Oferta>();
         public IList<Punct_Plecare>? Puncte_Plecare { get; set; } = new List<Punct_Plecare>();
+
+        /// <summary>
+        /// Cauta destinatiile si tarile itinerariului cu codul dat.
+        /// Returneaza o lista cu string-uri de format denumire_destinatie - denumire_tara
+        /// </summary>
+        /// <param name="cod_itin">Codul Itinerariului</param>
+        /// <returns>Lista de string-uri</returns>
+        public List<string> GetItinDestText(int cod_itin)
+        {
+            List<string> rezultat = new List<string>();
+
+            // cautam tupluirle aferente codului in tabela de jonctiune
+            var dest_ids = Destinatii_Itinerarii
+                        .Where(di => di.cod_itinerariu == cod_itin)
+                        .Select(di => di.cod_destinatie)
+                        .ToList();
+
+            // preluam denumirile si codul tarii pentru destinatiile gasite
+            var dest = Destinatii
+                .Where(d => dest_ids.Contains(d.cod_destinatie))
+                .Select(d => new
+                {
+                    id_tara = d.cod_tara,
+                    den = d.den_destinatie
+                })
+                .ToList();
+
+            // cautam denumirile tarilor si inseram stringurile in lista de rezultate
+            foreach (var d in dest)
+            {
+                var den_tara = Tari
+                    .Where(t => t.cod_tara == d.id_tara)
+                    .Select(t => t.den_tara)
+                    .FirstOrDefault();
+                rezultat.Add($"{d.den} - {den_tara}");
+            }
+
+            return rezultat;
+        }
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
@@ -30,7 +70,7 @@ namespace Lucrare_de_licenta.Pages
                 return RedirectToPage("/Error");
             }
 
-            // Load the tour with a single query
+            // Cautam turul dupa codul sau
             Tur = await _context.tururi
                 .FirstOrDefaultAsync(t => t.cod_tur == id);
 
@@ -39,7 +79,7 @@ namespace Lucrare_de_licenta.Pages
                 return RedirectToPage("/Error");
             }
 
-            // Load categories in one query
+            // Initializam restul tabelelor necesare 
             Tururi_Categorii = await _context.tur_categorii
                 .Where(tc => tc.cod_tur == id)
                 .ToListAsync();
@@ -49,9 +89,9 @@ namespace Lucrare_de_licenta.Pages
                 .Where(c => categoryIds.Contains(c.cod_categ))
                 .ToListAsync();
 
-            // Load itineraries and related data in one query
             Itinerarii = await _context.itinerarii
                 .Where(i => i.cod_tur == id)
+                .OrderBy(i => i.zi_activitate) // ordonate dupa zi pentru afisarea usoara
                 .ToListAsync();
 
             var accommodationIds = Itinerarii
@@ -62,7 +102,6 @@ namespace Lucrare_de_licenta.Pages
 
             var itineraryIds = Itinerarii.Select(i => i.cod_itinerariu).ToList();
 
-            // Batch load accommodations
             if (accommodationIds.Any())
             {
                 Cazari = await _context.cazari
@@ -70,24 +109,20 @@ namespace Lucrare_de_licenta.Pages
                     .ToListAsync();
             }
 
-            // Batch load destination-itinerary mappings
             Destinatii_Itinerarii = await _context.destinatii_itinerarii
                 .Where(di => itineraryIds.Contains(di.cod_itinerariu))
                 .ToListAsync();
 
-            // Extract destination IDs and load destinations
             var destinationIds = Destinatii_Itinerarii.Select(di => di.cod_destinatie).Distinct().ToList();
             Destinatii = await _context.destinatii
                 .Where(d => destinationIds.Contains(d.cod_destinatie))
                 .ToListAsync();
 
-            // Extract country IDs and load countries
             var countryIds = Destinatii.Select(d => d.cod_tara).Distinct().ToList();
             Tari = await _context.tari
                 .Where(t => countryIds.Contains(t.cod_tara))
                 .ToListAsync();
 
-            // Load offers and departure points
             Oferte = await _context.oferte
                 .Where(o => o.cod_tur == id)
                 .ToListAsync();

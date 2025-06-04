@@ -2,6 +2,7 @@
 
 namespace Lucrare_de_licenta.Services
 {
+    // Schimbam textul erorilor librariei Identity
     public class LocErrorDescriber : IdentityErrorDescriber
     {
         public override IdentityError DefaultError()
