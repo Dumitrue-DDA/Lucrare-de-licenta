@@ -85,7 +85,11 @@ namespace Lucrare_de_licenta.Pages.Identity.Account
             {
                 ModelState.AddModelError(string.Empty, ErrorMessage);
             }
-
+            if (User.Identity.IsAuthenticated)
+            {
+                string url = Url.Page("/Manage");
+                RedirectToPage("/Identity/Account", new { ReturnUrl = url });
+            }
             returnUrl ??= Url.Content("~/");
 
             // Clear the existing external cookie to ensure a clean login process

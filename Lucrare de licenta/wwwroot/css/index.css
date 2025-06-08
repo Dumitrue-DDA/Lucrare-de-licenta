@@ -95,7 +95,9 @@
     overflow-y: auto;
     z-index: 1000;
 }
-
+.suggestion-text {
+    cursor: pointer;
+}
 .card-destinatie {
     max-height: 250px;
     min-height: 150px;

@@ -2,6 +2,7 @@ using Adventour.Data;
 using Lucrare_de_licenta.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace Lucrare_de_licenta.Pages
@@ -14,6 +15,12 @@ namespace Lucrare_de_licenta.Pages
             _context = context;
         }
         public string Imagepath = "~\\Resources\\";
+
+        public SelectList List_Puncte { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public int? id_Punct { get; set; }
+
         public Tur? Tur { get; set; }
         public IList<Tur_categorie>? Tururi_Categorii { get; set; } = new List<Tur_categorie>();
         public IList<Categorie>? Categorii { get; set; } = new List<Categorie>();
@@ -22,9 +29,55 @@ namespace Lucrare_de_licenta.Pages
         public IList<Destinatie_itinerariu>? Destinatii_Itinerarii { get; set; } = new List<Destinatie_itinerariu>();
         public IList<Destinatie>? Destinatii { get; set; } = new List<Destinatie>();
         public IList<Tara>? Tari { get; set; } = new List<Tara>();
-        public IList<Oferta>? Oferte { get; set; } = new List<Oferta>();
+        public IList<Oferta>? Oferte { get; set; } = new List<Oferta>
+        {
+            new Oferta {
+               cod_oferta= 1,
+               tip_transport = true,
+               pret_adult = 100m,
+               pret_copil = 50m,
+               data_plecare = new DateOnly(2025, 10, 10),
+               data_intoarcere = new DateOnly(2025, 10, 15),
+               loc_libere = 10,
+               cod_tur = 1,
+               cod_punct = 1,
+               Punct = new Punct_Plecare { cod_punct = 1, localitate = "Bucuresti" }
+            },
+            new Oferta
+            {
+               cod_oferta= 2,
+               tip_transport = false,
+               pret_adult = 90m,
+               pret_copil = 0,
+               data_plecare = new DateOnly(2025, 11, 10),
+               data_intoarcere = new DateOnly(2025, 11, 15),
+               loc_libere = 0,
+               cod_tur = 1,
+               cod_punct = 2
+            }
+        };
         public IList<Punct_Plecare>? Puncte_Plecare { get; set; } = new List<Punct_Plecare>();
 
+        public decimal? Pret_Min()
+        {
+            decimal pret = 0m;
+            if (!Oferte.Any())
+                return null;
+
+            foreach (Oferta o in Oferte)
+            {
+                if (o.loc_libere > 0 && o.pret_adult > 0)
+                {
+                    if (pret == 0)
+                    {
+                        pret = o.pret_adult;
+                    }
+                    pret = Math.Min(pret, o.pret_adult);
+                }
+            }
+            if (pret == 0m) return null;
+            return pret;
+        }
         /// <summary>
         /// Cauta destinatiile si tarile itinerariului cu codul dat.
         /// Returneaza o lista cu string-uri de format denumire_destinatie - denumire_tara
@@ -122,11 +175,12 @@ namespace Lucrare_de_licenta.Pages
             Tari = await _context.tari
                 .Where(t => countryIds.Contains(t.cod_tara))
                 .ToListAsync();
-
+            /* TESTE
             Oferte = await _context.oferte
-                .Where(o => o.cod_tur == id)
+                .Where(o => o.cod_tur == id && o.loc_libere > 0)
+                .Include("Punct")
                 .ToListAsync();
-
+            */
             var departurePointIds = Oferte.Select(o => o.cod_punct).Distinct().ToList();
             Puncte_Plecare = await _context.puncte_plecare
                 .Where(pp => departurePointIds.Contains(pp.cod_punct))

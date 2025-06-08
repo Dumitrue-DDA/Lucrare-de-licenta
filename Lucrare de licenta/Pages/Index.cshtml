@@ -14,63 +14,39 @@
     <form id="search-container" method="get" action="/Search">
         <div class="form-row d-flex align-items-stretch">
             <div class="form-floating flex-fill me-2">
-                <input id="input-id-destinatie" type="hidden" name="idDestinatie"/>
-                <input id="input-destinatie" class="form-control dropdown-toggle" name="destination"
-                       placeholder="Destinatie" data-bs-toggle="dropdown" data-bs-auto-close="outside"
+                <input id="input-destinatie" 
+                       class="form-control dropdown-toggle" 
+                       name="destination"
+                       placeholder="Destinatie" 
+                       data-bs-toggle="dropdown" 
+                       data-bs-auto-close="outside"
                        autocomplete="off" />
-                    <i class="fas fa-times"></i>
+                <div id="dropdown-destinatie" 
+                class="dropdown-menu position-absolute start-0 w-100 p-3 mt-2 overflow-auto
+                            rounded bg-white shadow-lg dropdown-custom"></div>
+                <i class="fas fa-times"></i>
                 <button type="button" style="display:none"
                     class="btn-close position-absolute top-50 translate-middle-y end-0 me-2">
                 </button>
                 <label for="destination">Destiantie</label>
-                <ul class="dropdown-menu position-absolute start-0 w-100 p-3 mt-2 overflow-auto
-                            rounded bg-white shadow-lg dropdown-custom">
-                    <li class="my-1">
-                        <button class="dropdown-item"
-                            type="button" data-target="destination" data-value="exemplu"
-                                onclick="document.getElementById('input-destinatie').value='Atena'">
-                            <div>
-                                <div class="fw-medium">Atena</div>
-                                <small class="text-muted">Europa, Grecia</small>
-                            </div>            
-                        </button>
-                    </li>
-
-                </ul>
             </div>
             <div class="form-floating flex-fill me-2">
-                <input id="input-id-plecare" type="hidden" name="idPunctPlecare" value="" />
-                <input class="form-control" name="plecare" placeholder="Plecare"
-                       data-bs-toggle="dropdown" data-bs-auto-close="outside"
-                       autocomplete="off" id="input-plecare" value=""/>
+                <input id="input-puncte-plecare" 
+                       class="form-control"
+                       name="plecare" 
+                       placeholder="Plecare"
+                       data-bs-toggle="dropdown" 
+                       data-bs-auto-close="outside"
+                       autocomplete="off"  
+                       value=""/>
+                <ul id="dropdown-puncte-plecare"
+                     class="dropdown-menu position-absolute start-0 w-100 p-3 mt-2 overflow-auto
+                            rounded bg-white shadow-lg dropdown-custom">
+                </ul>
                 <button type="button" style="display:none"
                         class="btn-close position-absolute top-50 translate-middle-y end-0 me-2">
                 </button>
                 <label for="plecare">Plecare Din</label>
-                <ul class="dropdown-menu position-absolute start-0 w-100 p-3 mt-2 overflow-auto
-                            rounded bg-white shadow-lg dropdown-custom"
-                            id="dropdown-plecare">
-                    @if(Model.Puncte_Plecare.Count>0)
-                    @foreach (Punct_Plecare p in Model.Puncte_Plecare) {
-                        <li class="my-1">
-                            <button class="dropdown-item"
-                                type="button" data-target="destination" data-value="exemplu"
-                                    onclick="setPunct('@p.localitate','@p.cod_punct'); return false">
-                                <div>
-                                    <div class="fw-medium">@p.localitate</div>
-                                    @if(string.IsNullOrWhiteSpace(p.judet))
-                                    {
-                                        <small class="text-muted">@p.judet</small>
-                                    }                            
-                                </div>
-                            </button>
-                        </li>
-                        }
-                    else
-                    {
-                        <div>Nu au fost gasite puncte de plecare</div>
-                    }
-                </ul>
             </div>
                 <div class="form-floating flex-fill me-2">
                     <select class="form-select" name="month">
@@ -157,34 +133,5 @@
 </div>
 
 @section Scripts{
-    <script>
-        function setPunct(name, id) {
-            document.getElementById('input-plecare').value = name;
-            document.getElementById('input-id-plecare').value = id;
-        }
-        function setDropdown(inputId, dropdownId) {
-            const input = document.getElementById(inputId);
-            const dropdown = document.getElementById(dropdownId);
-
-        // Afisarea meniului dropdown cand este in focus
-        input.addEventListener('focus', function() {
-            dropdown.classList.add('show');
-        });
-
-        // Ascunderea meniului dropdown
-        document.addEventListener('click', function(event) {
-            if (!input.contains(event.target) && !dropdown.contains(event.target)) {
-                dropdown.classList.remove('show');
-            }
-        });
-
-        // Previne ascunderea meniului cand utilizatorul apasa inauntrul lui
-        dropdown.addEventListener('mousedown', function(event) {
-            event.preventDefault();
-        });
-        }
-                // Initialize both dropdowns
-        setupDropdown('input-plecare', 'plecare-dropdown');
-        setupDropdown('input-destinatie', 'destinatie-dropdown');
-    </script>
+    <script src="~/js/autocomplete.js"></script>
 }

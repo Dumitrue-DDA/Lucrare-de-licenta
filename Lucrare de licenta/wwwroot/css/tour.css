@@ -39,8 +39,27 @@
 
 .itinerariu .accordion-button:not(collapsed) {
     background-color: var(--background);
-    color: var(--accent1);
+    color: var(--text);
     font-weight: 500;
     font-family: quicksand;
     border: 2px solid var(--accent1);
+}
+
+.offer-card-horizontal {
+    border-radius: 0.5rem;
+    overflow: hidden; 
+}
+
+.offer-card-horizontal .bg-light {
+    background-color: #f8f9fa !important;
+}
+
+@media (max-width: 767.98px) {
+    .offer-card-horizontal .col-md-4 {
+        justify-content: space-between !important; 
+        border-top: 1px solid #dee2e6;
+    }
+    .offer-card-horizontal .col-md-7 {
+        padding-bottom: 0.5rem;
+    }
 }

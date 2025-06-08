@@ -1,4 +1,36 @@
 ﻿@page
 @model Lucrare_de_licenta.Pages.AboutModel
 @{
+    ViewData["Title"] = "Despre noi";
 }
+<div class="container">
+    <div class="row">
+        <h1>@ViewData["Title"]</h1>
+        <hr />
+    </div>
+    <div class="row">
+        <div class="col-md-3 d-none d-md-block">
+            <nav class="sticky-nav-wrapper">
+                <ul id="pageSideNav" class="nav nav-pills flex-column">
+                    @foreach(SectionLink s in Model.ContentSections)
+                    {
+                        <li><a class="nav-link" href="#@s.Id">@s.Title</a></li>
+                    }
+                </ul>
+            </nav>
+        </div>
+        <div class="cold-md-3 d-block d-md-none">
+            <button class="navbar-toggler collapsed" type="button" 
+            data-bs-toggle="collapse" >
+            <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+        <div class="col-12 col-md-9">
+            <section id="@Model.ContentSections[0].Id" class="">
+                <h5>@Model.ContentSections[0].Title</h5>
+                <p>
+                </p>
+            </section>
+        </div>
+    </div>
+</div>

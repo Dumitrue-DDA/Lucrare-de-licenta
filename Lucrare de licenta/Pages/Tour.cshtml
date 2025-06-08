@@ -1,8 +1,11 @@
 ﻿@page
+@using System.Globalization
 @model Lucrare_de_licenta.Pages.TourModel
 @{
     ViewData["Title"] = Model.Tur.den_tur;
+    
 }
+
 
 <link rel="stylesheet" href="~/css/tour.css" />
 
@@ -18,25 +21,61 @@
     </div>
 
     <div class="mb-4">
-        <div class="card-header">
-            <h2 class="card-title mb-0">@Model.Tur.den_tur</h2>
+        <div class="card-header mb-3">
+            <h2 class="card-title mb-0" style="font-family:Quicksand">
+                @Model.Tur.den_tur
+            </h2>
         </div>
-        <div class="card-body">
-            @if (!string.IsNullOrEmpty(Model.Tur.desc_tur))
-            {
+        @if (!string.IsNullOrEmpty(Model.Tur.desc_tur))
+        {
+            <div class="card-body my-3">
                 <div class="mb-4">
                     <p class="text-muted">@Model.Tur.desc_tur</p>
                 </div>
-            }
-        </div>
+            </div>
+        }
 
-        <div class="row justify-content-center">
+        <div class="row">
             <div class="col-sm-12 mb-3">
-                <div class="border rounded p-3 text-center">
-                    De la 100&euro; pe persoana
+                <div class="row align-items-center border rounded py-2 px-5 text-center">
+                    <div class="col">
+                    @if(Model.Oferte.Any() || !(Model.Oferte == null))
+                    {
+                        // daca exista o oferta cu transport == false => bus == true
+                        // similar pentru avion
+                        var bus = Model.Oferte.Any(o => !o.tip_transport); 
+                        var avion = Model.Oferte.Any(o => o.tip_transport);
+                        if(bus)
+                        {
+                            <img class="img-fluid" style="height:50px"
+                                src="~/Resources/Icons/bus.png"/>
+                        }
+                        if(avion)
+                        {
+                            <img class="img-fluid" style="height:50px"
+                                src="~/Resources/Icons/airplane.png"/>
+                        }
+                    }
+                    </div>
+                    <div class="col">
+                        @Model.Itinerarii.LastOrDefault().zi_activitate zile / 
+                        @(Model.Itinerarii.LastOrDefault().zi_activitate - 1) nopti
+                    </div>
+                    @if(Model.Pret_Min()!= null)
+                    {
+                       <div class="col" style="font-size:12px">
+                           De la <br />
+                            <strong style="font-size:20px"> 
+                                @Model.Pret_Min()&euro; 
+                            </strong> <br />
+                           pe persoana</div>
+                    }else
+                    {
+                        <div class="text-danger">Nu exista oferte disponibile la momentul actual</div>
+                    }
                 </div>
             </div>
-            <div class="col-sm-6 mb-3">
+            <div class="col-sm-6 mb-3 p-0 pe-3">
                 <div class="border rounded p-3 text-center">
                     <i class="fas fa-dumbbell text-warning fa-2x mb-2"></i>
                     <h6 class="mb-2">Solicitare Fizica</h6>
@@ -70,7 +109,7 @@
                 </div>
             </div>
 
-            <div class="col-sm-6 mb-3">
+            <div class="col-sm-6 mb-3 p-0 ps-3">
                 <div class="border rounded p-3 text-center h-100">
                     <i class="fas fa-users text-success fa-2x mb-2"></i>
                     <h6>Marimea Grupului</h6>
@@ -84,46 +123,110 @@
             </div>
         </div>
     </div>
-    <div>
-        <h3>Itinerariu</h3>
-        @foreach(Itinerariu i in Model.Itinerarii)
-        {
-            <div class="accordion-item itinerariu col-12 col-md-8 col-lg-6">
-            <h5 class="accordion-header">
-                    <button class="accordion-button" type="button"
-                            data-bs-toggle="collapse" data-bs-target="#collapse_@i.cod_itinerariu">
-                    Ziua @i.zi_activitate - @i.titlu_itin
-                </button>
-            </h5>
-            <div id="collapse_@i.cod_itinerariu" class="accordion-collapse collapse">
-                <div class="accordion-body">
-                    @if(!string.IsNullOrEmpty(i.img_itin))
-                    {
-                        <img src="@Model.Imagepath@i.img_itin"/>
-                    }
-                    @foreach(string textDest in Model.GetItinDestText(i.cod_itinerariu))
-                    {
-                        <span class="badge text-dark">@textDest</span>
-                    }
-                    <br />
-                    @i.desc_itin
+    <div class="row">
+        <div class="col-12 col-md-6 order-1 order-md-0">
+            <h3>Itinerariu</h3>
+            @foreach(Itinerariu i in Model.Itinerarii)
+            {
+                <div class="accordion-item itinerariu">
+                    <h5 class="accordion-header">
+                            <button class="accordion-button" 
+                                    type="button"
+                                    data-bs-toggle="collapse" 
+                                    data-bs-target="#collapse_@i.cod_itinerariu">
+                            Ziua @i.zi_activitate - @i.titlu_itin
+                        </button>
+                    </h5>
+                    <div id="collapse_@i.cod_itinerariu" class="accordion-collapse collapse">
+                        <div class="accordion-body">
+                            @if(!string.IsNullOrEmpty(i.img_itin))
+                            {
+                                <img src="@Model.Imagepath@i.img_itin"/>
+                            }
+                            @foreach(string textDest in Model.GetItinDestText(i.cod_itinerariu))
+                            {
+                                <span class="badge text-dark">@textDest</span>
+                            }
+                            <br />
+                            @i.desc_itin
+                        </div>
+                    </div>
                 </div>
+            }
+        </div>
+        <div class="col-12 col-md-6 order-0 order-md-1">
+            <h3>Oferte</h3>
+            <div class="">
+                @if (Model.Oferte.Any())
+                {
+                    @foreach (Oferta o in Model.Oferte)
+                    {
+                        <div class="card offer-card p-3 mb-3 shadow-sm">
+                            <div class="row g-0">
+                                <div class="col-lg-2 d-flex align-items-center justify-content-center p-3">
+                                    @{
+                                        var transImg = o.tip_transport == false ? "airplane.png" : "bus.png";
+                                    }
+                                    <img class="img-fluid" style="height:40px"
+                                    src="~/Resources/Icons/@transImg" />
+                                </div>
+                                <div class="col-lg-6 card-body">
+                                    <div class="d-flex flex-wrap align-baseline">
+                                        <span class="mb-0 me-3">
+                                            <strong> Plecare: </strong>
+                                            @o.Punct?.localitate
+                                            <small>
+                                                @(o.Punct?.judet != null ? ", " + o.Punct.judet : "")
+                                            </small>
+                                        </span>
+                                        <span class="text-muted">
+                                            @o.data_plecare.ToString("dddd", new CultureInfo("ro-RO"))
+                                            @o.data_plecare
+                                        </span>
+                                    </div>
+                                    <div class="d-flex flex-wrap align-baseline mt-2">
+                                        <h6 class="mb-0 me-3">
+                                            Intoarcere:
+                                        </h6>
+                                        <span class="text-muted">
+                                            @o.data_intoarcere.ToString("dddd", new CultureInfo("ro-RO"))
+                                            @o.data_intoarcere
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 d-flex align-items-center justify-content-end p-3">
+                                    <div class="text-end me-3">
+                                        <div class="price-adult fw-bold">@o.pret_adult&euro; <span class="fw-normal text-muted">/ adult</span></div>
+                                        @if (o.pret_copil > 0)
+                                        {
+                                            <div class="price-child small text-muted">@o.pret_copil&euro; / copil</div>
+                                        }
+                                    </div>
+                                    <a asp-page="/Reserve" asp-route-oferta="@o.cod_oferta" class="btn btn-primary text-nowrap">
+                                        Rezervați
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="text-danger">Nu exista oferte disponibile la momentul actual</div>
+                }
             </div>
         </div>
-        }
-    </div>
-
-    @* TESTE CHEI STRAINE *@
-    <div>
-        tur categorii : @Model.Tururi_Categorii.Count
-        categorii : @Model.Categorii.Count
-        itinerarii : @Model.Itinerarii.Count
-        cazari : @Model.Cazari.Count
-        dest_itin : @Model.Destinatii_Itinerarii.Count
-        destinatii : @Model.Destinatii.Count
-        tari : @Model.Tari.Count
-        oferte : @Model.Oferte.Count
-        puncte plecare : @Model.Puncte_Plecare.Count
-
     </div>
 </div>
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const departurePointSelect = document.getElementById('departurePointSelect');
+            if (departurePointSelect) {
+                departurePointSelect.addEventListener('change', function () {
+                    this.form.submit();
+                });
+            }
+        });
+    </script>
+}
