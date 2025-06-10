@@ -44,22 +44,12 @@
     font-family: quicksand;
     border: 2px solid var(--accent1);
 }
-
-.offer-card-horizontal {
-    border-radius: 0.5rem;
-    overflow: hidden; 
+.offer-card{
+    transition: 100ms ease-in-out;
 }
-
-.offer-card-horizontal .bg-light {
-    background-color: #f8f9fa !important;
+.offer-card strong{
+    color: var(--accent1);
 }
-
-@media (max-width: 767.98px) {
-    .offer-card-horizontal .col-md-4 {
-        justify-content: space-between !important; 
-        border-top: 1px solid #dee2e6;
-    }
-    .offer-card-horizontal .col-md-7 {
-        padding-bottom: 0.5rem;
-    }
+.offer-card:hover{
+    filter:drop-shadow(5px 2.5px var(--accent1));
 }

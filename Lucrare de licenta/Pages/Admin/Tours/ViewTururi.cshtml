@@ -1,0 +1,147 @@
+﻿@page
+@model Lucrare_de_licenta.Pages.Admin.Tours.ViewTururiModel
+@{
+    ViewData["Title"] = "Administrare Tururi";
+}
+<div class="container-fluid mt-4">
+    <h2>Administrare Tururi</h2>
+    <div class="mb-3 d-flex justify-content-between align-items-center">
+        <a asp-page="./Create" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Adaugă Tur Nou
+        </a>
+        <button class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#filterPanel">
+            <i class="fas fa-filter"></i> Filtre
+        </button>
+    </div>
+    
+    <div class="collapse mb-4" id="filterPanel">
+        <div class="card card-body">
+            <form method="get" class="row g-3">
+                <div class="col-md-2">
+                    <label for="filterCod" class="form-label">Cod Tur</label>
+                    <input type="number" class="form-control form-control-sm" id="filterCod" name="FilterCod" value="@Model.FilterCod">
+                </div>
+                <div class="col-md-3">
+                    <label for="filterDenumire" class="form-label">Denumire</label>
+                    <input type="text" class="form-control form-control-sm" id="filterDenumire" name="FilterDenumire" value="@Model.FilterDenumire">
+                </div>
+                <div class="col-md-2">
+                    <label for="filterSolFizica" class="form-label">Sol. Fizică</label>
+                    <select class="form-select form-select-sm" id="filterSolFizica" name="FilterSolFizica">
+                        <option value="" selected="@string.IsNullOrEmpty(Model.FilterSolFizica)">Toate</option>
+                        @for (int i = 1; i <= 5; i++)
+                        {
+                            <option value="@i" selected="@(Model.FilterSolFizica == i.ToString())">@i</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="filterTara" class="form-label">Țara</label>
+                    <input type="text" class="form-control form-control-sm" id="filterTara" name="FilterTara" value="@Model.FilterTara">
+                </div>
+                <div class="col-md-2">
+                    <label for="filterOferte" class="form-label">Oferte</label>
+                    <select class="form-select form-select-sm" id="filterOferte" name="FilterOferte">
+                        <option value="" selected="@(Model.FilterOferte == null)">Toate</option>
+                        <option value="yes" selected="@(Model.FilterOferte == "yes")">Cu oferte</option>
+                        <option value="no" selected="@(Model.FilterOferte == "no")">Fără oferte</option>
+                    </select>
+                </div>
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary btn-sm">
+                        <i class="fas fa-search"></i> Caută
+                    </button>
+                    <a asp-page="./ViewTururi" class="btn btn-outline-secondary btn-sm">
+                        <i class="fas fa-times"></i> Resetează filtrele
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+<div class="table-responsive">
+    <table class="table table-striped table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Cod Tur</th>
+                <th>Denumire</th>
+                <th>Sol. Fizică</th>
+                <th>Grup</th>
+                <th>Zile</th>
+                <th>Categorii</th>
+                <th>Țări</th>
+                <th>Destinații</th>
+                <th>Oferte</th>
+                <th>Rezervări</th>
+                <th>Acțiuni</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (!Model.Tururi.Any())
+            {
+                <tr>
+                    <td colspan="11" class="text-danger">Nu au fost găsite tururi!</td>
+                </tr>
+            }
+            else
+            {
+                @foreach (var tur in Model.Tururi)
+                {
+                    <tr>
+                        <td>@tur.cod_tur</td>
+                        <td>@tur.den_tur</td>
+                        <td>@tur.sol_fiz / 5</td>
+                        <td>@tur.grup_minim - @tur.grup_maxim pers.</td>
+                        <td>@tur.zile</td>
+                        <td>
+                            @if (tur.categorii?.Any() == true)
+                            {
+                                <small>@string.Join(", ", tur.categorii)</small>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">Niciuna</span>
+                            }
+                        </td>
+                        <td>
+                            @if (tur.tari?.Any() == true)
+                            {
+                                <small>@string.Join(", ", tur.tari)</small>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">Niciuna</span>
+                            }
+                        </td>
+                        <td>
+                            @if (tur.destinatii?.Any() == true)
+                            {
+                                <small>@string.Join(", ", tur.destinatii)</small>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">Niciuna</span>
+                            }
+                        </td>
+                        <td>@tur.nr_oferte</td>
+                        <td>@tur.nr_rezervari</td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <a asp-page="./Edit" asp-route-id="@tur.cod_tur" class="btn btn-sm btn-primary">
+                                    <i class="fas fa-edit"></i> Edit
+                                </a>
+                                <a asp-page="./Details" asp-route-id="@tur.cod_tur" class="btn btn-sm btn-info">
+                                    <i class="fas fa-info-circle"></i> Detalii
+                                </a>
+                                <a asp-page="./Delete" asp-route-id="@tur.cod_tur" class="btn btn-sm btn-danger">
+                                    <i class="fas fa-trash"></i> Șterge
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+</div>

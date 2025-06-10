@@ -41,10 +41,10 @@
                     <div class="col">
                     @if(Model.Oferte.Any() || !(Model.Oferte == null))
                     {
-                        // daca exista o oferta cu transport == false => bus == true
+                        // daca exista o oferta cu transport == false => avion == true
                         // similar pentru avion
-                        var bus = Model.Oferte.Any(o => !o.tip_transport); 
-                        var avion = Model.Oferte.Any(o => o.tip_transport);
+                        var avion = Model.Oferte.Any(o => !o.tip_transport);
+                        var bus = Model.Oferte.Any(o => o.tip_transport);
                         if(bus)
                         {
                             <img class="img-fluid" style="height:50px"
@@ -161,16 +161,16 @@
                 {
                     @foreach (Oferta o in Model.Oferte)
                     {
-                        <div class="card offer-card p-3 mb-3 shadow-sm">
-                            <div class="row g-0">
-                                <div class="col-lg-2 d-flex align-items-center justify-content-center p-3">
+                        <div class="card offer-card mb-3 shadow-sm">
+                            <div class="row g-0 p-1">
+                                <div class="col-lg-2 d-flex align-items-center justify-content-center p-2">
                                     @{
                                         var transImg = o.tip_transport == false ? "airplane.png" : "bus.png";
                                     }
                                     <img class="img-fluid" style="height:40px"
                                     src="~/Resources/Icons/@transImg" />
                                 </div>
-                                <div class="col-lg-6 card-body">
+                                <div class="col-lg-6 card-body p-2">
                                     <div class="d-flex flex-wrap align-baseline">
                                         <span class="mb-0 me-3">
                                             <strong> Plecare: </strong>
@@ -185,27 +185,36 @@
                                         </span>
                                     </div>
                                     <div class="d-flex flex-wrap align-baseline mt-2">
-                                        <h6 class="mb-0 me-3">
-                                            Intoarcere:
-                                        </h6>
+                                        <span class="mb-0 me-3">
+                                            <strong>Intoarcere:</strong>
+                                        </span>
                                         <span class="text-muted">
                                             @o.data_intoarcere.ToString("dddd", new CultureInfo("ro-RO"))
                                             @o.data_intoarcere
                                         </span>
                                     </div>
                                 </div>
-                                <div class="col-lg-4 d-flex align-items-center justify-content-end p-3">
+                                <div class="col-lg-2 d-flex align-items-center justify-content-end p-2">
                                     <div class="text-end me-3">
-                                        <div class="price-adult fw-bold">@o.pret_adult&euro; <span class="fw-normal text-muted">/ adult</span></div>
+                                    <strong>@o.loc_libere</strong><br/>
+                                    locuri libere
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 d-flex align-items-center justify-content-end p-2">
+                                    <div class="text-end me-3">
+                                        <div class="price-adult">
+                                            <strong>@o.pret_adult&euro;</strong>
+                                            <span class="fw-normal text-muted">/ adult</span>
+                                            </div>
                                         @if (o.pret_copil > 0)
                                         {
                                             <div class="price-child small text-muted">@o.pret_copil&euro; / copil</div>
                                         }
                                     </div>
-                                    <a asp-page="/Reserve" asp-route-oferta="@o.cod_oferta" class="btn btn-primary text-nowrap">
-                                        Rezervați
-                                    </a>
+
                                 </div>
+                                <a asp-page="/Reserve" asp-route-oferta="@o.cod_oferta" class="stretched-link">
+                                </a>
                             </div>
                         </div>
                     }

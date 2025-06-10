@@ -33,7 +33,7 @@ namespace Lucrare_de_licenta.Pages
         {
             new Oferta {
                cod_oferta= 1,
-               tip_transport = true,
+               tip_transport = false,
                pret_adult = 100m,
                pret_copil = 50m,
                data_plecare = new DateOnly(2025, 10, 10),
@@ -46,7 +46,7 @@ namespace Lucrare_de_licenta.Pages
             new Oferta
             {
                cod_oferta= 2,
-               tip_transport = false,
+               tip_transport = true,
                pret_adult = 90m,
                pret_copil = 0,
                data_plecare = new DateOnly(2025, 11, 10),

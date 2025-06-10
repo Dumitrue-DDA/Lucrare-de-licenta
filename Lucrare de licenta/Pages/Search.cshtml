@@ -1,5 +1,6 @@
 ﻿@page
 @using Lucrare_de_licenta.Models
+@using Lucrare_de_licenta.ViewModels
 @model Lucrare_de_licenta.Pages.SearchModel
 @{
     ViewData["Title"] = "Pagina Principala";
@@ -18,34 +19,112 @@
         }
     };
 }
+<link rel="stylesheet" href="~/css/search.css" />
 <div class="container-fluid">
     <div class="row">
         <div class="col-2">
             <div class="d-md-none">
-                <button class="btn btn-primary w-100 mb-2" data-bs-toggle="collapse" data-bs-target="#filter-sidebar">
-                    toggle
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#admin-nav">
+                    <span class="navbar-toggler-icon"></span>
                 </button>
             </div>
-            <nav id="filter-sidebar" class="d-md-block collapse filter-sidebar">
+            <nav id="filter-sidebar" class="nav nav-pills flex-column filter-sidebar">
                 <h4>Filtre de cautare</h4>
                 <hr />
                 <form method="get">
-                    hgjfghfg
+                    <div>
+                    @foreach(Destinatie d in Model._context.destinatii)
+                    {
+                        
+                    }
+                    </div>
                 </form>
             </nav>
         </div>
-    <div class="col ms-sm-auto col px-md-4">
-        <ul>
-        @for(int i=0;i<5;i++)
-        {
-            <li>
-                <strong></strong><br />
-                Destinatie:<br />
-                Start Date: <br />
-                Price:
-            </li>
-        }
-        </ul>
+        <div class="col ms-sm-auto px-md-4">
+            <div id="tur-card-container" class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4">
+                @if(Model.Tururi.Any())
+                {
+                    @foreach (TurCardViewModel tur in Model.Tururi)
+                    {
+                        <div class="card tur-card border-0 p-0 shadow-sm overflow-hidden h-100">
+                            <a class="stretched-link text-decoration-none"
+                            asp-page="/Tour"
+                            asp-route-id="@tur.cod_tur">
+                            </a>
+                            <img class="card-img-top h-50"
+                                src="@(tur.img_tur ?? "\\error.png")" />
+                            <div class="card-body px-3 py-2 position-relative d-flex flex-column">
+                                <div class="card-title-bar">
+                                    <h6 class="text-center fs-5 mb-1 card-title"
+                                        style="font-family:Quicksand;color:var(--accent1)">
+                                        @tur.den_tur
+                                    </h6>
+                                </div>
+                                <div>@string.Join(" - ",tur.Categorii)</div>
+                                <div>@string.Join(" - ",tur.Destinatii)</div>
+                                <p class="card-text text-muted">
+                                    @Model.Truncate(tur.desc_tur, 50)
+                                </p>
+                            </div>
+                            <div class="card-footer mt-auto">
+                                <div class="row align-items-center text-center">
+                                    <div class="col-4 icons">
+                                        @if(tur.tip_transport.HasValue)
+                                        {
+                                            @switch (tur.tip_transport.Value)
+                                            {
+                                                case 0:
+                                                    {
+                                                        <img class="img-fluid" style="height:35px"
+                                                             src="~/Resources/Icons/airplane.png" />
+                                                        break;
+                                                    }
+                                                case 1:
+                                                    {
+                                                        <img class="img-fluid" style="height:35px"
+                                                         src="~/Resources/Icons/bus.png" />
+                                                        break;
+                                                    }
+                                                case 2:
+                                                    {
+                                                        <img class="img-fluid" style="height:35px"
+                                                         src="~/Resources/Icons/airplane.png" />
+                                                        <img class="img-fluid" style="height:35px"
+                                                         src="~/Resources/Icons/bus.png" />
+                                                        break;
+                                                    }
+                                            }
+                                        }
+                                    </div>
+                                    <div class="col-4">
+                                        6 zile / <br/>
+                                        5 nopti
+                                    </div>
+                                    <div class="col-4">
+                                        @if(tur.pret_min.HasValue)
+                                        {
+                                            <text>de la <br/>
+                                            <strong>@tur.pret_min.ToString()&euro;</strong><br />
+                                            / persoana</text>
+                                        }
+                                        else
+                                        {
+                                            <text>Pret indisponibil</text>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="text-danger">
+                        Nu au fost gasite tururi cu filtrele selectate
+                    </div>
+                }
+            </div>
         </div>
     </div>
 </div>
