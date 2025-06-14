@@ -2,3 +2,42 @@
 @model Lucrare_de_licenta.Pages.Admin.Clients.IndexModel
 @{
 }
+<div class="row gap-3">
+    <partial name="_AdminNavPartial" />
+    <div class="col-9 table-container">
+        <h3>@ViewData["Title"]</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Numar Utilizator</th>
+                    <th>Nume</th>
+                    <th>Email</th>
+                    <th>Email confirmat</th>
+
+                    <th>Numar de telefon</th>
+                    <th>Confirmare nr. telefon</th>
+                    <th>Autentificare in doi pasi</th>
+                    <th>Blocare cont pana la</th>
+                    <th>Blocare activa</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var u in Model.Utilizatori)
+                {
+                    <tr>
+                        <td>@u.Id</td>
+                        <td>@u.UserName</td>
+                        <td>@u.Email</td>
+                        <td>@u.EmailConfirmed</td>
+
+                        <td>@u.PhoneNumber</td>
+                        <td>@u.PhoneNumberConfirmed</td>
+                        <td>@u.TwoFactorEnabled</td>
+                        <td>@u.LockoutEnd</td>
+                        <td>@u.LockoutEnabled</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

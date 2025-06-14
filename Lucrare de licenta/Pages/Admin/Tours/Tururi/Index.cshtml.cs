@@ -3,13 +3,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
-namespace Lucrare_de_licenta.Pages.Admin.Tours
+namespace Lucrare_de_licenta.Pages.Admin.Tours.Tururi
 {
-    public class ViewTururiModel : PageModel
+    public class IndexModel : PageModel
     {
         public AppDbContext _context;
 
-        public ViewTururiModel(AppDbContext context)
+        public IndexModel(AppDbContext context)
         {
             _context = context;
         }
@@ -28,10 +28,14 @@ namespace Lucrare_de_licenta.Pages.Admin.Tours
         public string FilterTara { get; set; }
 
         [BindProperty(SupportsGet = true)]
-        public string FilterOferte
-        {
-            get; set;
-        }
+        public string FilterOferte { get; set; }
+
+        // sortarea afisarilor dupa coloana tabelei
+        [BindProperty(SupportsGet = true)]
+        public string SortColumn { get; set; } = "cod_tur";
+
+        [BindProperty(SupportsGet = true)]
+        public string SortOrder { get; set; } = "asc";
 
         // modelul de view pentru un tur
         public class TurViewModel
@@ -144,7 +148,7 @@ namespace Lucrare_de_licenta.Pages.Admin.Tours
                 };
             }).ToList();
 
-            // Apply filters
+            // Aplicam filtrele
             var filteredViewModels = viewModels;
 
             if (!string.IsNullOrEmpty(FilterCod) && int.TryParse(FilterCod, out int codFilter))
@@ -190,6 +194,36 @@ namespace Lucrare_de_licenta.Pages.Admin.Tours
                         .ToList();
                 }
             }
+
+            // Aplicarea sortarii
+            filteredViewModels = SortColumn?.ToLower() switch
+            {
+                "cod_tur" => SortOrder?.ToLower() == "desc"
+                    ? filteredViewModels.OrderByDescending(t => t.cod_tur).ToList()
+                    : filteredViewModels.OrderBy(t => t.cod_tur).ToList(),
+
+                "den_tur" => SortOrder?.ToLower() == "desc"
+                    ? filteredViewModels.OrderByDescending(t => t.den_tur).ToList()
+                    : filteredViewModels.OrderBy(t => t.den_tur).ToList(),
+
+                "sol_fiz" => SortOrder?.ToLower() == "desc"
+                    ? filteredViewModels.OrderByDescending(t => t.sol_fiz).ToList()
+                    : filteredViewModels.OrderBy(t => t.sol_fiz).ToList(),
+
+                "zile" => SortOrder?.ToLower() == "desc"
+                    ? filteredViewModels.OrderByDescending(t => t.zile).ToList()
+                    : filteredViewModels.OrderBy(t => t.zile).ToList(),
+
+                "nr_oferte" => SortOrder?.ToLower() == "desc"
+                    ? filteredViewModels.OrderByDescending(t => t.nr_oferte).ToList()
+                    : filteredViewModels.OrderBy(t => t.nr_oferte).ToList(),
+
+                "nr_rezervari" => SortOrder?.ToLower() == "desc"
+                    ? filteredViewModels.OrderByDescending(t => t.nr_rezervari).ToList()
+                    : filteredViewModels.OrderBy(t => t.nr_rezervari).ToList(),
+
+                _ => filteredViewModels.OrderBy(t => t.cod_tur).ToList()
+            };
 
             Tururi = filteredViewModels;
         }

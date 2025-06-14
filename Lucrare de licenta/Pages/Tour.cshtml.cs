@@ -29,33 +29,7 @@ namespace Lucrare_de_licenta.Pages
         public IList<Destinatie_itinerariu>? Destinatii_Itinerarii { get; set; } = new List<Destinatie_itinerariu>();
         public IList<Destinatie>? Destinatii { get; set; } = new List<Destinatie>();
         public IList<Tara>? Tari { get; set; } = new List<Tara>();
-        public IList<Oferta>? Oferte { get; set; } = new List<Oferta>
-        {
-            new Oferta {
-               cod_oferta= 1,
-               tip_transport = false,
-               pret_adult = 100m,
-               pret_copil = 50m,
-               data_plecare = new DateOnly(2025, 10, 10),
-               data_intoarcere = new DateOnly(2025, 10, 15),
-               loc_libere = 10,
-               cod_tur = 1,
-               cod_punct = 1,
-               Punct = new Punct_Plecare { cod_punct = 1, localitate = "Bucuresti" }
-            },
-            new Oferta
-            {
-               cod_oferta= 2,
-               tip_transport = true,
-               pret_adult = 90m,
-               pret_copil = 0,
-               data_plecare = new DateOnly(2025, 11, 10),
-               data_intoarcere = new DateOnly(2025, 11, 15),
-               loc_libere = 0,
-               cod_tur = 1,
-               cod_punct = 2
-            }
-        };
+        public IList<Oferta>? Oferte { get; set; } = new List<Oferta>();
         public IList<Punct_Plecare>? Puncte_Plecare { get; set; } = new List<Punct_Plecare>();
 
         public decimal? Pret_Min()
@@ -175,12 +149,12 @@ namespace Lucrare_de_licenta.Pages
             Tari = await _context.tari
                 .Where(t => countryIds.Contains(t.cod_tara))
                 .ToListAsync();
-            /* TESTE
+
             Oferte = await _context.oferte
                 .Where(o => o.cod_tur == id && o.loc_libere > 0)
                 .Include("Punct")
                 .ToListAsync();
-            */
+
             var departurePointIds = Oferte.Select(o => o.cod_punct).Distinct().ToList();
             Puncte_Plecare = await _context.puncte_plecare
                 .Where(pp => departurePointIds.Contains(pp.cod_punct))

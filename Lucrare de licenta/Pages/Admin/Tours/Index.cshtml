@@ -1,18 +1,39 @@
 ﻿@page "/Admin/Tours"
 @model Lucrare_de_licenta.Pages.Admin.Tours.IndexModel
 @{
+    ViewData["Title"] = "Administrare Tururi si Oferte";
 }
 <div>
-    <a asp-page="/Admin/Tours/AddTur">
-        Adauga Tur
-    </a><br />
-    <a asp-page="/Admin/Tours/ViewTururi">
-        Vizualizare Tururi
-    </a><br />
-    <a asp-page="/Admin/Tours/AddOferta">
-        Adauga Oferta
-    </a><br />
-    <a asp-page="/Admin/Tours/ViewOferte">
-        Vizualizare Oferte
-    </a>
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body d-flex flex-column">
+                    <h3>Tururi</h3>
+                    <a class="btn btn-primary my-3"
+                        asp-page="/Admin/Tours/Tururi/Add">
+                        Adauga Tur
+                    </a>
+                    <a  class="btn btn-secondary"
+                        asp-page="/Admin/Tours/Tururi/Index">
+                        Vizualizare Tururi
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-5 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body d-flex flex-column">
+                    <h3>Oferte</h3>
+                    <a class="btn btn-primary my-3"
+                        asp-page="/Admin/Tours/Oferte/Add">
+                        Adauga Oferta
+                    </a>
+                    <a  class="btn btn-secondary"
+                        asp-page="/Admin/Tours/Oferte/Index">
+                        Vizualizare Oferte
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

@@ -1,0 +1,470 @@
+﻿@page
+@model Lucrare_de_licenta.Pages.Admin.Tours.Tururi.AddModel
+@{
+    ViewData["Title"] = "Adaugă Tur Nou";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+<div class="container-fluid mt-4">
+    <h2>Adaugă Tur Nou</h2>
+    <form asp-action="Add" method="post" enctype="multipart/form-data">
+        <div class="row">
+            <div class="col-md-8">
+                <!-- Informații principale tur -->
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Informații Principale</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <span class="text-danger">* Campuri Obligatorii</span>
+                            <div class="col-md-12">
+                                <label asp-for="Tur.den_tur" class="form-label">Denumire Tur <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" asp-for="Tur.den_tur" required>
+                                <span asp-validation-for="Tur.den_tur" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-12">
+                                <label asp-for="Tur.desc_tur" class="form-label">Descriere</label>
+                                <textarea class="form-control" asp-for="Tur.desc_tur" rows="4"></textarea>
+                                <span asp-validation-for="Tur.desc_tur" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-4">
+                                <label asp-for="Tur.sol_fiz" class="form-label">Solicitare Fizică <span class="text-danger">*</span></label>
+                                <select class="form-select" asp-for="Tur.sol_fiz" required>
+                                    <option value="">-- Selectează --</option>
+                                    @for (int i = 1; i <= 5; i++)
+                                    {
+                                        <option value="@i">@i - @(i == 1 ? "Foarte Ușor" : i == 2 ? "Ușor" : i == 3 ? "Moderat" : i == 4 ? "Dificil" : "Foarte Dificil")</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="Tur.sol_fiz" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-4">
+                                <label asp-for="Tur.grup_minim" class="form-label">Grup Minim <span class="text-danger">*</span></label>
+                                <input type="number" class="form-control" asp-for="Tur.grup_minim" min="1" max="255" required>
+                                <span asp-validation-for="Tur.grup_minim" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-4">
+                                <label asp-for="Tur.grup_maxim" class="form-label">Grup Maxim <span class="text-danger">*</span></label>
+                                <input type="number" class="form-control" asp-for="Tur.grup_maxim" min="1" max="255" required>
+                                <span asp-validation-for="Tur.grup_maxim" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-12">
+                                <label asp-for="ImageFile" class="form-label">Imagine Tur <span class="text-danger">*</span></label>
+                                <input type="file" class="form-control" asp-for="ImageFile" accept="image/*" required>
+                                <small class="form-text text-muted">Format recomandat: JPEG, PNG</small>
+                                <span asp-validation-for="ImageFile" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Itinerariu -->
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Itinerariu</h5>
+                        <button type="button" class="btn btn-sm btn-light" id="addItineraryBtn">
+                            <i class="fas fa-plus"></i> Adaugă Zi
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div id="itineraryContainer">
+                            <div class="itinerary-template d-none">
+                                <div class="card mb-3 itinerary-item">
+                                    <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                                        <h6 class="mb-0">Ziua <span class="day-number"></span></h6>
+                                        <button type="button" class="btn btn-sm btn-danger remove-itinerary">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row g-3">
+                                            <div class="col-md-12">
+                                                <label class="form-label">Titlu<span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" name="Itinerarii[INDEX].titlu_itin">
+                                                <input type="hidden" name="Itinerarii[INDEX].zi_activitate" class="day-input">
+                                            </div>
+                                            <div class="col-md-12">
+                                                <label class="form-label">Descriere</label>
+                                                <textarea class="form-control" name="Itinerarii[INDEX].desc_itin" rows="2"></textarea>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <label class="form-label">Imagine</label>
+                                                <input type="file" class="form-control" name="ItineraryImages[INDEX]" accept="image/*">
+                                            </div>
+                                            <div class="col-md-12">
+                                                <label class="form-label">Destinații<span class="text-danger">*</span></label>
+                                                <div class="destination-search-container mb-2">
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control destination-search" placeholder="Caută destinație...">
+                                                        <button type="button" class="btn btn-outline-primary search-destination-btn">
+                                                            <i class="fas fa-search"></i>
+                                                        </button>
+                                                    </div>
+                                                    <div class="destination-results d-none position-absolute bg-white w-100 shadow-sm border rounded"
+                                                         style="max-height: 200px; overflow-y: auto; z-index: 1000;"></div>
+                                                </div>
+                                                <div class="selected-itinerary-destinations"></div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <label class="form-label">Cazare</label>
+                                                <div class="input-group">
+                                                    <select class="form-select cazare-select" name="Itinerarii[INDEX].cod_cazare">
+                                                        <option value="">-- Fără cazare --</option>
+                                                        @foreach (var cazare in Model.CazariList)
+                                                        {
+                                                            <option value="@cazare.Value" data-destinatie="@Model.CazariDestinatii[cazare.Value]">@cazare.Text</option>
+                                                        }
+                                                    </select>
+                                                    <a href="../Cazari/Create" target="_blank" class="btn btn-outline-secondary">
+                                                        <i class="fas fa-plus"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Container pentru itinerarii -->
+                            <div id="itineraryItems">
+                            </div>
+                            <div class="text-center" id="noItineraryMessage">
+                                <p class="text-muted">Nu există zile în itinerariu. Apăsați pe "Adaugă Zi" pentru a adăuga prima zi.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Destinatii și categorii -->
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Categorii</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label class="form-label">Categorii pentru acest tur</label>
+                            <div class="category-search-container mb-2">
+                                <div class="input-group">
+                                    <input type="text" class="form-control category-search" placeholder="Caută categorie...">
+                                    <button type="button" class="btn btn-outline-primary search-category-btn">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                                <div class="category-results d-none position-absolute bg-white w-100 shadow-sm border rounded"
+                                     style="max-height: 200px; overflow-y: auto; z-index: 1000;">
+                                </div>
+                            </div>
+                            <div id="selectedCategories" class="mt-2">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+        </div>
+        <div class="d-flex justify-content-between mt-3 mb-5">
+            <a asp-page="./Index" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Înapoi la listă
+            </a>
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save"></i> Salvează Tur
+            </button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).ready(function() {
+            let dayCounter = 0;
+
+            // Adaugam o noua zi în itinerariu
+            $("#addItineraryBtn").click(function() {
+                dayCounter++;
+
+                // Ascundem mesajul "nu exista zile"
+                $("#noItineraryMessage").hide();
+
+                const template = $(".itinerary-template").clone();
+                template.removeClass("itinerary-template d-none").addClass("itinerary-day");
+
+                // Actualizeazam numarul zilei și numele câmpurilor
+                template.find(".day-number").text(dayCounter);
+                template.find(".day-input").val(dayCounter);
+
+                // Inlocuim INDEX cu index real
+                const currentIndex = dayCounter - 1;
+                template.html(template.html().replace(/INDEX/g, currentIndex));
+
+                // Adaugam in container
+                $("#itineraryItems").append(template);
+
+                // Re-sortam zilele in ordine crescatoare
+                sortItineraryDays();
+            });
+
+            // Stergem o zi din itinerariu
+            $(document).on("click", ".remove-itinerary", function() {
+                $(this).closest(".itinerary-day").remove();
+
+                // Recalculam zilele
+                renumberDays();
+
+                // Aratam mesajul daca nu mai exista zile
+                if ($("#itineraryItems").children().length === 0) {
+                    $("#noItineraryMessage").show();
+                }
+            });
+
+            // Adaugam o destinație
+            $("#addDestinationBtn").click(function() {
+                const destinationId = $("#destinatieSelect").val();
+                const destinationText = $("#destinatieSelect option:selected").text();
+
+                if (destinationId) {
+                    // Verificam daca destinatia exista deja
+                    if ($("#dest_" + destinationId).length === 0) {
+                        const destElement = `
+                            <div class="mb-2 d-flex justify-content-between align-items-center">
+                                <span>${destinationText}</span>
+                                <input type="hidden" name="SelectedDestinatii" value="${destinationId}" id="dest_${destinationId}">
+                                <button type="button" class="btn btn-sm btn-outline-danger remove-destination" data-id="${destinationId}">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>`;
+                        $("#selectedDestinations").append(destElement);
+                    }
+
+                    $("#destinatieSelect").val("");
+                }
+            });
+
+            // Stergem o destinatie
+            $(document).on("click", ".remove-destination", function() {
+                const destId = $(this).data("id");
+                $(this).parent().remove();
+            });
+
+            // Functie de sortat zilele
+            function sortItineraryDays() {
+                const items = $("#itineraryItems > .itinerary-day").get();
+                items.sort(function(a, b) {
+                    const dayA = parseInt($(a).find(".day-number").text());
+                    const dayB = parseInt($(b).find(".day-number").text());
+                    return dayA - dayB;
+                });
+
+                $("#itineraryItems").empty().append(items);
+            }
+
+            // Functie de renumerotare a zilelor
+            function renumberDays() {
+                dayCounter = 0;
+                $("#itineraryItems > .itinerary-day").each(function() {
+                    dayCounter++;
+
+                    $(this).find(".day-number").text(dayCounter);
+
+                    $(this).find(".day-input").val(dayCounter);
+
+                    const inputs = $(this).find("input, textarea, select");
+                    inputs.each(function() {
+                        const name = $(this).attr("name");
+                        if (name) {
+                            const newName = name.replace(/\[\d+\]/g, "[" + (dayCounter - 1) + "]");
+                            $(this).attr("name", newName);
+                        }
+                    });
+                });
+            }
+            // Validare grup minim si maxim
+            $("#Tur_grup_minim, #Tur_grup_maxim").change(function() {
+                const min = parseInt($("#Tur_grup_minim").val()) || 0;
+                const max = parseInt($("#Tur_grup_maxim").val()) || 0;
+
+                if (min > max && max > 0) {
+                    alert("Grupul minim nu poate fi mai mare decât grupul maxim!");
+                    $("#Tur_grup_minim").val(max);
+                }
+            });
+
+            // Cautare destinatie
+        $(document).on("input", ".destination-search", function() {
+            const searchTerm = $(this).val().toLowerCase();
+            const $resultsContainer = $(this).closest('.destination-search-container').find('.destination-results');
+
+            if (searchTerm.length < 2) {
+                $resultsContainer.addClass('d-none').empty();
+                return;
+            }
+
+            $resultsContainer.removeClass('d-none').empty();
+
+            const destinations = [];
+            $('#destinatieSelect option').each(function() {
+                if ($(this).val() && $(this).text().toLowerCase().includes(searchTerm)) {
+                    destinations.push({
+                        id: $(this).val(),
+                        name: $(this).text()
+                    });
+                }
+            });
+
+            // Adaugare rezultate in meniul dropdown
+            if (destinations.length > 0) {
+                destinations.forEach(dest => {
+                    $resultsContainer.append(`
+                        <div class="p-2 border-bottom destination-result" data-id="${dest.id}" data-name="${dest.name}">
+                            ${dest.name}
+                        </div>
+                    `);
+                });
+            } else {
+                $resultsContainer.append(`
+                    <div class="p-2 text-muted">Nu s-au găsit rezultate</div>
+                `);
+            }
+        });
+
+        $(document).on("click", ".destination-result", function() {
+            const destId = $(this).data('id');
+            const destName = $(this).data('name');
+            const $itineraryItem = $(this).closest('.itinerary-item');
+            const itineraryIndex = $itineraryItem.find('.day-input').val() - 1;
+            const $selectedContainer = $(this).closest('.col-md-12').find('.selected-itinerary-destinations');
+            const destElementId = `dest_itin_${itineraryIndex}_${destId}`;
+
+            $(this).closest('.destination-results').addClass('d-none').empty();
+            $(this).closest('.destination-search-container').find('.destination-search').val('');
+
+            if ($('#' + destElementId).length === 0) {
+                const destElement = `
+                    <div class="badge bg-info text-dark me-2 mb-2 p-2">
+                        <span>${destName}</span>
+                        <input type="hidden" name="Itinerarii[${itineraryIndex}].SelectedDestinatii" value="${destId}" id="${destElementId}">
+                        <button type="button" class="btn-close btn-close-white btn-sm ms-1 remove-itin-dest" aria-label="Close"></button>
+                    </div>`;
+                $selectedContainer.append(destElement);
+            }
+
+            updateCazareOptions($itineraryItem, destId);
+        });
+
+        $(document).on("click", ".remove-itin-dest", function() {
+            const $badge = $(this).closest('.badge');
+            const $itineraryItem = $(this).closest('.itinerary-item');
+            $badge.remove();
+
+            const remainingDestinations = $itineraryItem.find('.selected-itinerary-destinations input[type="hidden"]');
+            if (remainingDestinations.length === 0) {
+                resetCazareOptions($itineraryItem);
+            }
+        });
+
+        $(document).on("click", ".search-destination-btn", function() {
+            $(this).closest('.input-group').find('.destination-search').trigger('input');
+        });
+
+        function updateCazareOptions($itineraryItem, destinationId) {
+            const $cazareSelect = $itineraryItem.find('.cazare-select');
+            const selectedCazare = $cazareSelect.val();
+
+            $cazareSelect.find('option').each(function() {
+                if (!$(this).val() || $(this).data('destinatie') == destinationId) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+
+            if (selectedCazare && $cazareSelect.find(`option[value="${selectedCazare}"]:visible`).length === 0) {
+                $cazareSelect.val('');
+            }
+        }
+
+        function resetCazareOptions($itineraryItem) {
+            $itineraryItem.find('.cazare-select option').show();
+        }
+
+        function renumberDays() {
+            $("#itineraryItems > .itinerary-day").each(function(index) {
+                const currentIndex = index;
+
+                $(this).find('.selected-itinerary-destinations input[type="hidden"]').each(function() {
+                    const destId = $(this).val();
+                    const newId = `dest_itin_${currentIndex}_${destId}`;
+                    $(this).attr('name', `Itinerarii[${currentIndex}].SelectedDestinatii`);
+                    $(this).attr('id', newId);
+                });
+            });
+        }
+        });
+                $(document).on("input", ".category-search", function() {
+            const searchTerm = $(this).val().toLowerCase();
+            const $resultsContainer = $(this).closest('.category-search-container').find('.category-results');
+
+            if (searchTerm.length < 1) {
+                $resultsContainer.addClass('d-none').empty();
+                return;
+            }
+
+            $resultsContainer.removeClass('d-none').empty();
+
+            const categories = [];
+            @foreach (var category in Model.CategoriiList)
+            {
+                    <text>
+                    if ("@category.Text".toLowerCase().includes(searchTerm)) {
+                        categories.push({
+                            id: "@category.Value",
+                            name: "@category.Text"
+                        });
+                    }
+                    </text>
+            }
+
+            if (categories.length > 0) {
+                categories.forEach(cat => {
+                    $resultsContainer.append(`
+                        <div class="p-2 border-bottom category-result" data-id="${cat.id}" data-name="${cat.name}">
+                            ${cat.name}
+                        </div>
+                    `);
+                });
+            } else {
+                $resultsContainer.append(`
+                    <div class="p-2 text-muted">Nu s-au găsit rezultate</div>
+                `);
+            }
+        });
+
+        $(document).on("click", ".category-result", function() {
+            const catId = $(this).data('id');
+            const catName = $(this).data('name');
+            const catElementId = `cat_selected_${catId}`;
+
+            $(this).closest('.category-results').addClass('d-none').empty();
+            $(this).closest('.category-search-container').find('.category-search').val('');
+
+            if ($('#' + catElementId).length === 0) {
+                const catElement = `
+                    <div class="badge bg-success text-white me-2 mb-2 p-2">
+                        <span>${catName}</span>
+                        <input type="hidden" name="SelectedCategorii" value="${catId}" id="${catElementId}">
+                        <button type="button" class="btn-close btn-close-white btn-sm ms-1 remove-category" aria-label="Close"></button>
+                    </div>`;
+                $("#selectedCategories").append(catElement);
+            }
+        });
+
+        $(document).on("click", ".remove-category", function() {
+            $(this).closest('.badge').remove();
+        });
+
+        $(document).on("click", ".search-category-btn", function() {
+            $(this).closest('.input-group').find('.category-search').trigger('input');
+        });
+    </script>
+}

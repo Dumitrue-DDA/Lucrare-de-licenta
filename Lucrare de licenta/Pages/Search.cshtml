@@ -8,16 +8,6 @@
     {
         "Europa","Africa","Asia","America de Nord","America de Sud"
     };
-    List<Tara> lista_test = new List<Tara>
-    {
-        new Tara
-        {
-            cod_tara = 1,
-            den_tara = "Portugalia",
-            continent = 1,
-            img_tara = "Resources\\Tari\\Portugalia.jpg"
-        }
-    };
 }
 <link rel="stylesheet" href="~/css/search.css" />
 <div class="container-fluid">
@@ -33,10 +23,7 @@
                 <hr />
                 <form method="get">
                     <div>
-                    @foreach(Destinatie d in Model._context.destinatii)
-                    {
-                        
-                    }
+                    
                     </div>
                 </form>
             </nav>
@@ -98,8 +85,8 @@
                                         }
                                     </div>
                                     <div class="col-4">
-                                        6 zile / <br/>
-                                        5 nopti
+                                        @tur.zile zile /<br />
+                                        @(tur.zile - 1) nopti
                                     </div>
                                     <div class="col-4">
                                         @if(tur.pret_min.HasValue)

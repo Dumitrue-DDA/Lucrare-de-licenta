@@ -1,0 +1,271 @@
+﻿@page
+@model Lucrare_de_licenta.Pages.Admin.Tours.Oferte.IndexModel
+@{
+    ViewData["Title"] = "Administrare Oferte";
+}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+<div class="container-fluid mt-4">
+    <h2>Administrare Oferte</h2>
+    <div class="mb-3 d-flex justify-content-between align-items-center">
+        <a asp-page="./Add" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Adaugă Ofertă Nouă
+        </a>
+        <button class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#filterPanel">
+            <i class="fas fa-filter"></i> Filtre
+        </button>
+    </div>
+
+    <div class="collapse mb-4" id="filterPanel">
+        <div class="card card-body">
+            <form method="get" class="row g-3">
+                <div class="col-md-2">
+                    <label for="filterCod" class="form-label">Cod Ofertă</label>
+                    <input type="number" class="form-control form-control-sm" id="filterCod" name="FilterCod" value="@Model.FilterCod">
+                </div>
+                <div class="col-md-3">
+                    <label for="filterTur" class="form-label">Denumire Tur</label>
+                    <input type="text" class="form-control form-control-sm" id="filterTur" name="FilterTur" value="@Model.FilterTur">
+                </div>
+                <div class="col-md-2">
+                    <label for="filterDataStart" class="form-label">De la data</label>
+                    <input type="date" class="form-control form-control-sm" id="filterDataStart" name="FilterDataStart" value="@Model.FilterDataStart?.ToString("yyyy-MM-dd")">
+                </div>
+                <div class="col-md-2">
+                    <label for="filterDataEnd" class="form-label">Până la data</label>
+                    <input type="date" class="form-control form-control-sm" id="filterDataEnd" name="FilterDataEnd" value="@Model.FilterDataEnd?.ToString("yyyy-MM-dd")">
+                </div>
+                <div class="col-md-3">
+                    <label for="filterStatus" class="form-label">Status</label>
+                    <select class="form-select form-select-sm" id="filterStatus" name="FilterStatus">
+                        <option value="" selected="@string.IsNullOrEmpty(Model.FilterStatus)">Toate</option>
+                        <option value="in curs" selected="@(Model.FilterStatus == "active")">In curs</option>
+                        <option value="expirata" selected="@(Model.FilterStatus == "expired")">Expirata</option>
+                        <option value="upcoming" selected="@(Model.FilterStatus == "upcoming")">Viitoare</option>
+                    </select>
+                </div>
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary btn-sm">
+                        <i class="fas fa-search"></i> Caută
+                    </button>
+                    <a asp-page="./Index" class="btn btn-outline-secondary btn-sm">
+                        <i class="fas fa-times"></i> Resetează filtrele
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>
+                        <a asp-page="./Index"
+                           asp-route-sortColumn="cod_oferta"
+                           asp-route-sortOrder="@(Model.SortColumn == "cod_oferta" && Model.SortOrder == "asc" ? "desc" : "asc")"
+                           asp-route-FilterCod="@Model.FilterCod"
+                           asp-route-FilterTur="@Model.FilterTur"
+                           asp-route-FilterDataStart="@Model.FilterDataStart?.ToString("yyyy-MM-dd")"
+                           asp-route-FilterDataEnd="@Model.FilterDataEnd?.ToString("yyyy-MM-dd")"
+                           asp-route-FilterStatus="@Model.FilterStatus"
+                           class="text-white text-decoration-none d-block w-100 h-100 py-2 px-2 d-flex justify-content-between align-items-center">
+                            <span>Cod Ofertă</span>
+                            @if (Model.SortColumn == "cod_oferta")
+                            {
+                                <i class="fas fa-sort-@(Model.SortOrder == "asc" ? "up" : "down") text-white"></i>
+                            }
+                            else
+                            {
+                                <i class="fas fa-sort text-white-50"></i>
+                            }
+                        </a>
+                    </th>
+                    <th>
+                        <a asp-page="./Index"
+                           asp-route-sortColumn="tur"
+                           asp-route-sortOrder="@(Model.SortColumn == "tur" && Model.SortOrder == "asc" ? "desc" : "asc")"
+                           asp-route-FilterCod="@Model.FilterCod"
+                           asp-route-FilterTur="@Model.FilterTur"
+                           asp-route-FilterDataStart="@Model.FilterDataStart?.ToString("yyyy-MM-dd")"
+                           asp-route-FilterDataEnd="@Model.FilterDataEnd?.ToString("yyyy-MM-dd")"
+                           asp-route-FilterStatus="@Model.FilterStatus"
+                           class="text-white text-decoration-none d-block w-100 h-100 py-2 px-2 d-flex justify-content-between align-items-center">
+                            <span>Tur</span>
+                            @if (Model.SortColumn == "tur")
+                            {
+                                <i class="fas fa-sort-@(Model.SortOrder == "asc" ? "up" : "down") text-white"></i>
+                            }
+                            else
+                            {
+                                <i class="fas fa-sort text-white-50"></i>
+                            }
+                        </a>
+                    </th>
+                    <th>
+                        <a asp-page="./Index"
+                           asp-route-sortColumn="data_plecare"
+                           asp-route-sortOrder="@(Model.SortColumn == "data_plecare" && Model.SortOrder == "asc" ? "desc" : "asc")"
+                           asp-route-FilterCod="@Model.FilterCod"
+                           asp-route-FilterTur="@Model.FilterTur"
+                           asp-route-FilterDataStart="@Model.FilterDataStart?.ToString("yyyy-MM-dd")"
+                           asp-route-FilterDataEnd="@Model.FilterDataEnd?.ToString("yyyy-MM-dd")"
+                           asp-route-FilterStatus="@Model.FilterStatus"
+                           class="text-white text-decoration-none d-block w-100 h-100 py-2 px-2 d-flex justify-content-between align-items-center">
+                            <span>Data plecare</span>
+                            @if (Model.SortColumn == "data_plecare")
+                            {
+                                <i class="fas fa-sort-@(Model.SortOrder == "asc" ? "up" : "down") text-white"></i>
+                            }
+                            else
+                            {
+                                <i class="fas fa-sort text-white-50"></i>
+                            }
+                        </a>
+                    </th>
+                    <th>
+                        <a asp-page="./Index"
+                           asp-route-sortColumn="data_retur"
+                           asp-route-sortOrder="@(Model.SortColumn == "data_retur" && Model.SortOrder == "asc" ? "desc" : "asc")"
+                           asp-route-FilterCod="@Model.FilterCod"
+                           asp-route-FilterTur="@Model.FilterTur"
+                           asp-route-FilterDataStart="@Model.FilterDataStart?.ToString("yyyy-MM-dd")"
+                           asp-route-FilterDataEnd="@Model.FilterDataEnd?.ToString("yyyy-MM-dd")"
+                           asp-route-FilterStatus="@Model.FilterStatus"
+                           class="text-white text-decoration-none d-block w-100 h-100 py-2 px-2 d-flex justify-content-between align-items-center">
+                            <span>Data retur</span>
+                            @if (Model.SortColumn == "data_retur")
+                            {
+                                <i class="fas fa-sort-@(Model.SortOrder == "asc" ? "up" : "down") text-white"></i>
+                            }
+                            else
+                            {
+                                <i class="fas fa-sort text-white-50"></i>
+                            }
+                        </a>
+                    </th>
+                    <th>
+                        <a asp-page="./Index"
+                           asp-route-sortColumn="pret"
+                           asp-route-sortOrder="@(Model.SortColumn == "pret" && Model.SortOrder == "asc" ? "desc" : "asc")"
+                           asp-route-FilterCod="@Model.FilterCod"
+                           asp-route-FilterTur="@Model.FilterTur"
+                           asp-route-FilterDataStart="@Model.FilterDataStart?.ToString("yyyy-MM-dd")"
+                           asp-route-FilterDataEnd="@Model.FilterDataEnd?.ToString("yyyy-MM-dd")"
+                           asp-route-FilterStatus="@Model.FilterStatus"
+                           class="text-white text-decoration-none d-block w-100 h-100 py-2 px-2 d-flex justify-content-between align-items-center">
+                            <span>Preț (€)</span>
+                            @if (Model.SortColumn == "pret")
+                            {
+                                <i class="fas fa-sort-@(Model.SortOrder == "asc" ? "up" : "down") text-white"></i>
+                            }
+                            else
+                            {
+                                <i class="fas fa-sort text-white-50"></i>
+                            }
+                        </a>
+                    </th>
+                    <th>
+                        <a asp-page="./Index"
+                           asp-route-sortColumn="locuri"
+                           asp-route-sortOrder="@(Model.SortColumn == "locuri" && Model.SortOrder == "asc" ? "desc" : "asc")"
+                           asp-route-FilterCod="@Model.FilterCod"
+                           asp-route-FilterTur="@Model.FilterTur"
+                           asp-route-FilterDataStart="@Model.FilterDataStart?.ToString("yyyy-MM-dd")"
+                           asp-route-FilterDataEnd="@Model.FilterDataEnd?.ToString("yyyy-MM-dd")"
+                           asp-route-FilterStatus="@Model.FilterStatus"
+                           class="text-white text-decoration-none d-block w-100 h-100 py-2 px-2 d-flex justify-content-between align-items-center">
+                            <span>Locuri</span>
+                            @if (Model.SortColumn == "locuri")
+                            {
+                                <i class="fas fa-sort-@(Model.SortOrder == "asc" ? "up" : "down") text-white"></i>
+                            }
+                            else
+                            {
+                                <i class="fas fa-sort text-white-50"></i>
+                            }
+                        </a>
+                    </th>
+                    <th>Punct plecare</th>
+                    <th>
+                        <a asp-page="./Index"
+                           asp-route-sortColumn="rezervari"
+                           asp-route-sortOrder="@(Model.SortColumn == "rezervari" && Model.SortOrder == "asc" ? "desc" : "asc")"
+                           asp-route-FilterCod="@Model.FilterCod"
+                           asp-route-FilterTur="@Model.FilterTur"
+                           asp-route-FilterDataStart="@Model.FilterDataStart?.ToString("yyyy-MM-dd")"
+                           asp-route-FilterDataEnd="@Model.FilterDataEnd?.ToString("yyyy-MM-dd")"
+                           asp-route-FilterStatus="@Model.FilterStatus"
+                           class="text-white text-decoration-none d-block w-100 h-100 py-2 px-2 d-flex justify-content-between align-items-center">
+                            <span>Rezervări</span>
+                            @if (Model.SortColumn == "rezervari")
+                            {
+                                <i class="fas fa-sort-@(Model.SortOrder == "asc" ? "up" : "down") text-white"></i>
+                            }
+                            else
+                            {
+                                <i class="fas fa-sort text-white-50"></i>
+                            }
+                        </a>
+                    </th>
+                    <th>Status</th>
+                    <th>Acțiuni</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (!Model.Oferte.Any())
+                {
+                    <tr>
+                        <td colspan="11" class="text-danger">Nu au fost găsite oferte!</td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var oferta in Model.Oferte)
+                    {
+                        <tr>
+                            <td>@oferta.cod_oferta</td>
+                            <td>@oferta.den_tur</td>
+                            <td>@oferta.data_plecare.ToString("dd.MM.yyyy")</td>
+                            <td>@oferta.data_retur.ToString("dd.MM.yyyy")</td>
+                            <td>@oferta.pret.ToString("N2") €</td>
+                            <td>@oferta.loc_libere din @oferta.grup_maxim</td>
+                            <td>@oferta.punct_plecare</td>
+                            <td>@oferta.nr_rezervari</td>
+                            <td>
+                                @{
+                                    var today = DateOnly.FromDateTime(DateTime.Today);
+                                    if (oferta.data_plecare > today)
+                                    {
+                                        <span class="badge bg-primary">Viitoare</span>
+                                    }
+                                    else if (oferta.data_retur < today)
+                                    {
+                                        <span class="badge bg-secondary">Expirată</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-success">Activă</span>
+                                    }
+                                }
+                            </td>
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <a asp-page="./Edit" asp-route-id="@oferta.cod_oferta" class="btn btn-sm btn-primary">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </a>
+                                    <a asp-page="./View" asp-route-id="@oferta.cod_oferta" class="btn btn-sm btn-info">
+                                        <i class="fas fa-info-circle"></i> Detalii
+                                    </a>
+                                    <a asp-page="./Delete" asp-route-id="@oferta.cod_oferta" class="btn btn-sm btn-danger">
+                                        <i class="fas fa-trash"></i> Șterge
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

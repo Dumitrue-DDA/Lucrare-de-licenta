@@ -1,0 +1,182 @@
+﻿@page
+@model Lucrare_de_licenta.Pages.Admin.Tours.Oferte.AddModel
+@{
+    ViewData["Title"] = "Adaugă Ofertă Nouă";
+}
+
+<div class="container-fluid mt-4">
+    <h2>Adaugă Ofertă Nouă</h2>
+    <div class="card">
+        <div class="card-body">
+            <form method="post" class="row g-3">
+                <div class="col-md-6">
+                    <label asp-for="Oferta.tip_transport" class="form-label">Tip Transport</label>
+                    <div class="d-flex">
+                        <div class="form-check me-4">
+                            <input class="form-check-input"  type="radio" asp-for="Oferta.tip_transport" id="transportAutocar" value="true">
+                            <label class="form-check-label" for="transportAutocar">Autocar</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" asp-for="Oferta.tip_transport" id="transportAvion" value="false">
+                            <label class="form-check-label" for="transportAvion">Avion</label>
+                        </div>
+                    </div>
+                    <span asp-validation-for="Oferta.tip_transport" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Oferta.cod_tur" class="form-label">Tur</label>
+                    <div class="input-group d-flex align-items-center">
+                        <select class="form-select" asp-for="Oferta.cod_tur">
+                            <option value="">-- Selectează un tur --</option>
+                            @foreach(var t in Model.Tururi)
+                            {
+                                <option value="@t.cod_tur">
+                                    @t.display
+                                </option>
+                            }
+                        </select>
+                        <a href="../Tururi/Add" target="_blank" class="btn btn-outline-secondary">
+                            <i class="fas fa-plus"></i>
+                        </a>
+                    </div>
+                    <span asp-validation-for="Oferta.cod_tur" class="text-danger"></span>
+                </div>
+
+                <input type="hidden" asp-for="Oferta.data_plecare" />
+
+                <div class="col-md-6">
+                    <label asp-for="Oferta.cod_punct" class="form-label">Punct de Plecare</label>
+                    <div class="input-group">
+                        <select class="form-select" id="punctePlecareSelect" asp-for="Oferta.cod_punct">
+                            <option value="">-- Selectează un punct de plecare --</option>
+                            @foreach (var p in Model.Puncte_Plecare)
+                            {
+                                <option value="@p.cod_punct" data-tip-transport="@p.tip_transport.ToString().ToLower()">
+                                    @p.localitate, @p.adresa
+                                </option>
+                            }
+                        </select>
+                        <a href="../PunctePlecare/Create" target="_blank" class="btn btn-outline-secondary">
+                            <i class="fas fa-plus"></i>
+                        </a>
+                    </div>
+                    <span asp-validation-for="Oferta.cod_punct" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Oferta.pret_adult" class="form-label">Preț Adult (€)</label>
+                    <div class="input-group">
+                        <input type="number" step="0.05" min="0" class="form-control" asp-for="Oferta.pret_adult">
+                    </div>
+                    <span asp-validation-for="Oferta.pret_adult" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Oferta.pret_copil" class="form-label">Preț Copil (€)</label>
+                    <div class="input-group">
+                        <div class="input-group-text">
+                            <input class="form-check-input mt-0" type="checkbox"
+                                   id="enablePretCopilCheckbox">
+                        </div>
+                        <input type="number" step="0.05" min="0" class="form-control"
+                               id="pretCopilInput" asp-for="Oferta.pret_copil">
+                    </div>
+
+                    <span asp-validation-for="Oferta.pret_copil" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Oferta.data_plecare" class="form-label">Data Plecare</label>
+                    <input type="date" class="form-control" asp-for="Oferta.data_plecare" min="@DateTime.Today.ToString("yyyy-MM-dd")">
+                    <span asp-validation-for="Oferta.data_plecare" class="text-danger"></span>
+                </div>
+
+                <div class="col-12 mt-4">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Salvează Oferta
+                    </button>
+                    <a asp-page="./Index" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left"></i> Înapoi la listă
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.getElementById('Oferta_cod_tur').addEventListener('change', function() {
+            document.getElementById('tourSelectionForm').submit();
+        });
+        document.addEventListener('DOMContentLoaded', function () {
+            const radioButtons = document.querySelectorAll('input[name="transportFilter"]');
+            const puncteSelect = document.getElementById('punctePlecareSelect');
+            const originalOptions = Array.from(puncteSelect.options);
+
+            const checkbox = document.getElementById('enablePretCopilCheckbox');
+            const input = document.getElementById('pretCopilInput');
+
+            function repopulatePunctePlecare() {
+                const filterValue = document.querySelector('input[name="transportFilter"]:checked').value;
+
+                puncteSelect.innerHTML = '';
+
+                originalOptions.forEach(option => {
+                    if (option.value === "") {
+                        puncteSelect.appendChild(option.cloneNode(true));
+                        return; 
+                    }
+
+                    const optionTransportType = option.dataset.tipTransport;
+
+                    if (filterValue === 'all' || filterValue === optionTransportType) {
+                        puncteSelect.appendChild(option.cloneNode(true));
+                    }
+                });
+            }
+
+            function toggleInputState() {
+                input.disabled = !checkbox.checked;
+
+                if (input.disabled) {
+                    input.value = '';
+                }
+            }
+
+            checkbox.addEventListener('change', toggleInputState);
+
+            toggleInputState();
+            radioButtons.forEach(radio => {
+                radio.addEventListener('change', repopulatePunctePlecare);
+            });
+
+            repopulatePunctePlecare();
+        });
+        $(document).ready(function() {
+            $('#Oferta_cod_tur').change(function() {
+                const turId = $(this).val();
+                if (turId) {
+                    const startDate = $('#Oferta_data_plecare').val();
+                    if (startDate) {
+                        const date = new Date(startDate);
+                        date.setDate(date.getDate() + 1); 
+                        $('#Oferta_data_intoarcere').attr('min', startDate);
+                    }
+                }
+            });
+
+            $('#Oferta_data_plecare').change(function() {
+                const startDate = $(this).val();
+                $('#Oferta_data_intoarcere').attr('min', startDate);
+
+                const endDate = $('#Oferta_data_intoarcere').val();
+                if (endDate && endDate < startDate) {
+                    $('#Oferta_data_intoarcere').val(startDate);
+                }
+            });
+        });
+    </script>
+}

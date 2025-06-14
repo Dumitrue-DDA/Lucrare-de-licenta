@@ -77,7 +77,7 @@ namespace Lucrare_de_licenta.Pages
                         join tara in _context.tari on destinatie.cod_tara equals tara.cod_tara into tariGroup
                         from tara in tariGroup.DefaultIfEmpty()
 
-                        group new { destinatie, tara, oferta } by new
+                        group new { destinatie, tara, oferta, itinerariu } by new
                         {
                             tur.cod_tur,
                             tur.den_tur,
@@ -95,6 +95,10 @@ namespace Lucrare_de_licenta.Pages
                             tip_transport =
                             (g.Any(x => x.oferta != null && x.oferta.tip_transport == false) && g.Any(x => x.oferta != null && x.oferta.tip_transport == true)) ? 2 :
                             (g.Any(x => x.oferta != null && x.oferta.tip_transport == true)) ? 1 : 0,
+
+                            zile = g.Where(x => x.itinerariu != null)
+                                    .Select(x => x.itinerariu.zi_activitate)
+                                    .Max(),
 
                             pret_min = g.Where(x => x.oferta != null && x.oferta.pret_adult > 0m)
                                           .Select(x => (decimal?)x.oferta.pret_adult)
