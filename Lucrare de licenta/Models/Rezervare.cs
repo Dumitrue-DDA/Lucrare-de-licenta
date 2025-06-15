@@ -14,6 +14,15 @@ namespace Lucrare_de_licenta.Models
         [Column("data_rezervare", TypeName = "date")]
         public DateOnly data_rezervare { get; set; }
 
+        [Column("email_contact")]
+        public string? email_contact { get; set; }
+
+        [Column("tel_contact")]
+        public string? tel_contact { get; set; }
+
+        [Column("suma_totala")]
+        public decimal? suma_totala { get; set; }
+
         [Required]
         [Range(1, 4)]
         [Column("status_rezervare", TypeName = "tinyint")]

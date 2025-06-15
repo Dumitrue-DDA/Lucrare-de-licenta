@@ -3,7 +3,6 @@
 @model Lucrare_de_licenta.Pages.TourModel
 @{
     ViewData["Title"] = Model.Tur.den_tur;
-    
 }
 
 
@@ -213,7 +212,7 @@
                                     </div>
 
                                 </div>
-                                <a asp-page="/Reserve" asp-route-oferta="@o.cod_oferta" class="stretched-link">
+                                <a asp-page="/Booking/Index" asp-route-cod_oferta="@o.cod_oferta" class="stretched-link">
                                 </a>
                             </div>
                         </div>

@@ -1,0 +1,289 @@
+﻿@page
+@model Lucrare_de_licenta.Pages.Booking.IndexModel
+@{
+    ViewData["Title"] = "Rezervare";
+}
+<div class="container mt-4">
+    <h2>@ViewData["Title"]</h2>
+        <div class="card mb-4">
+            <div class="card-header" style="color:var(--background);background-color: var(--accent1)">
+                <h4>Detalii rezervare</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h5 class="mb-3">@Model.Oferta.Tur?.den_tur</h5>
+                        <div class="row mb-2">
+                            <div class="col-md-4 fw-bold">Plecare:</div>
+                            <div class="col-md-8">
+                            @Model.Oferta.data_plecare.ToString("dd MMMM yyyy")
+                            @(Model.Oferta.Punct != null ? $"din {Model.Oferta.Punct.localitate}" : "")
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-md-4 fw-bold">Întoarcere:</div>
+                        <div class="col-md-8">@Model.Oferta.data_intoarcere.ToString("dd MMMM yyyy")</div>
+                        </div>
+                    @if (Model.Oferta.Punct?.adresa != null)
+                        {
+                            <div class="row mb-2">
+                                <div class="col-md-4 fw-bold">Punct de întâlnire:</div>
+                                <div class="col-md-8">
+                                    @Model.Oferta.Punct.localitate, <br/>
+                                    @Model.Oferta.Punct.adresa
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <div class="price-info">
+                            <div class="price-adult fs-5">
+                            <span class="fw-bold">@Model.Oferta.pret_adult €</span> / adult
+                            </div>
+                            @if (Model.Oferta.pret_copil > 0)
+                            {
+                                <div class="price-child">
+                                <span class="fw-bold">@Model.Oferta.pret_copil €</span> / copil
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-danger my-3">Campurile obligatorii sunt marcate cu <i>*</i></div>
+    <form method="post" id="bookingForm">
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h4>Detalii de contact</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="FormData.Email" class="form-label">
+                            Email<i class="text-danger">*</i>
+                            </label>
+                        <input asp-for="FormData.Email" class="form-control" />
+                        <span asp-validation-for="FormData.Email" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="FormData.Telefon" class="form-label">Telefon</label>
+                        <input asp-for="FormData.Telefon" class="form-control" />
+                        <span asp-validation-for="FormData.Telefon" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="camereContainer">
+            @for (int i = 0; i < Model.FormData.Camere.Count; i++)
+            {
+                <div class="card mb-4 camera-card">
+                    <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
+                        <h4>Camera @(i + 1)</h4>
+                        @if (i > 0)
+                        {
+                            <button type="button" class="btn btn-danger btn-sm remove-camera">Șterge camera</button>
+                        }
+                    </div>
+                    <div class="card-body">
+                        <div class="beneficiari-container">
+                            @for (int j = 0; j < Model.FormData.Camere[i].Beneficiari.Count; j++)
+                            {
+                                <div class="card mb-3 beneficiar-card">
+                                    <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                                        <h5>Persoana @(j + 1)</h5>
+                                        @if (j > 0)
+                                        {
+                                            <button type="button" class="btn btn-danger btn-sm remove-beneficiar">Șterge persoana</button>
+                                        }
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-4 mb-3">
+                                                <label class="form-label">Nume<i class="text-danger">*</i></label>
+                                                <input asp-for="FormData.Camere[i].Beneficiari[j].Nume" class="form-control" />
+                                                <span asp-validation-for="FormData.Camere[i].Beneficiari[j].Nume" class="text-danger"></span>
+                                            </div>
+                                            <div class="col-md-4 mb-3">
+                                                <label class="form-label">Prenume<i class="text-danger">*</i></label>
+                                                <input asp-for="FormData.Camere[i].Beneficiari[j].Prenume" class="form-control" />
+                                                <span asp-validation-for="FormData.Camere[i].Beneficiari[j].Prenume" class="text-danger"></span>
+                                            </div>
+                                            <div class="col-md-4 mb-3">
+                                                <label class="form-label">Data nasterii<i class="text-danger">*</i></label>
+                                                <input asp-for="FormData.Camere[i].Beneficiari[j].Data_Nastere" class="form-control" 
+                                                type="date" 
+                                                value="@Model.curr_date" />
+                                                <span asp-validation-for="FormData.Camere[i].Beneficiari[j].Data_Nastere" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        <button type="button" class="btn btn-secondary add-beneficiar mt-2">Adauga persoana</button>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div class="mb-4">
+            <button type="button" id="addCameraBtn" class="btn btn-primary">Adauga camera</button>
+        </div>
+
+        <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-success btn-lg">Finalizeaza Rezervarea</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).ready(function() {
+            // Limite
+            const MAX_CAMERE = 3;
+            const MAX_BENEFICIARI_PER_CAMERA = 5;
+
+            // Functia care se asigura ca toate elementele sunt actualizate
+            function updateUI() {
+                const cameraCount = $(".camera-card").length;
+
+                $("#addCameraBtn").prop("disabled", cameraCount >= MAX_CAMERE);
+
+                $(".camera-card").each(function(cameraIndex) {
+                    const cameraCard = $(this);
+                    const beneficiariContainer = cameraCard.find(".beneficiari-container");
+                    const beneficiarCount = beneficiariContainer.find(".beneficiar-card").length;
+
+                    cameraCard.find(".card-header h4").text(`Camera ${cameraIndex + 1}`);
+
+                    cameraCard.find(".add-beneficiar").prop("disabled", beneficiarCount >= MAX_BENEFICIARI_PER_CAMERA);
+
+                    cameraCard.find(".beneficiar-card").each(function(beneficiarIndex) {
+                        const beneficiarCard = $(this);
+
+                        beneficiarCard.find(".card-header h5").text(`Persoana ${beneficiarIndex + 1}`);
+
+                        beneficiarCard.find("input").each(function() {
+                            const input = $(this);
+                            const name = input.attr("name");
+                            if (name) {
+                                const newName = name.replace(/Camere\[\d+\]\.Beneficiari\[\d+\]/,
+                                                           `Camere[${cameraIndex}].Beneficiari[${beneficiarIndex}]`);
+                                input.attr("name", newName);
+                            }
+                        });
+                    });
+                });
+            }
+    
+            // Functii ptr Butoane
+
+            // Adaugare camera
+            $("#addCameraBtn").click(function() {
+                if ($(".camera-card").length >= MAX_CAMERE) {
+                    alert(`Ați atins numărul maxim de ${MAX_CAMERE} camere.`);
+                    return;
+                }
+
+                const cameraIndex = $(".camera-card").length;
+                const newCameraHtml = `
+                    <div class="card mb-4 camera-card">
+                        <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
+                            <h4>Camera ${cameraIndex + 1}</h4>
+                            <button type="button" class="btn btn-danger btn-sm remove-camera">Sterge camera</button>
+                        </div>
+                        <div class="card-body">
+                            <div class="beneficiari-container">
+                                <!-- A new camera always starts with one person -->
+                                <div class="card mb-3 beneficiar-card">
+                                    <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                                        <h5>Persoana 1</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-4 mb-3">
+                                                <label class="form-label">Nume<i class="text-danger">*</i></label>
+                                                <input name="FormData.Camere[${cameraIndex}].Beneficiari[0].Nume" class="form-control" />
+                                            </div>
+                                            <div class="col-md-4 mb-3">
+                                                <label class="form-label">Prenume<i class="text-danger">*</i></label>
+                                                <input name="FormData.Camere[${cameraIndex}].Beneficiari[0].Prenume" class="form-control" />
+                                            </div>
+                                            <div class="col-md-4 mb-3">
+                                                <label class="form-label">Data nasterii<i class="text-danger">*</i></label>
+                                                <input name="FormData.Camere[${cameraIndex}].Beneficiari[0].Data_Nastere" class="form-control" 
+                                                type="date"
+                                                value="@Model.curr_date"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-secondary add-beneficiar mt-2">Adauga persoana</button>
+                        </div>
+                    </div>`;
+                $("#camereContainer").append(newCameraHtml);
+                updateUI(); 
+            });
+
+            // Adaugare beneficiar
+            $(document).on("click", ".add-beneficiar", function() {
+                const cameraCard = $(this).closest(".camera-card");
+                const beneficiariContainer = cameraCard.find(".beneficiari-container");
+                const beneficiarCount = beneficiariContainer.find(".beneficiar-card").length;
+
+                if (beneficiarCount >= MAX_BENEFICIARI_PER_CAMERA) {
+                    alert(`Ați atins numărul maxim de ${MAX_BENEFICIARI_PER_CAMERA} persoane pentru această cameră.`);
+                    return;
+                }
+
+                const cameraIndex = $(".camera-card").index(cameraCard);
+                const newBeneficiarHtml = `
+                    <div class="card mb-3 beneficiar-card">
+                        <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                            <h5>Persoana ${beneficiarCount + 1}</h5>
+                            <button type="button" class="btn btn-danger btn-sm remove-beneficiar">Sterge persoana</button>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label">Nume<i class="text-danger">*</i></label>
+                                    <input name="FormData.Camere[${cameraIndex}].Beneficiari[${beneficiarCount}].Nume" class="form-control" />
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label">Prenume<i class="text-danger">*</i></label>
+                                    <input name="FormData.Camere[${cameraIndex}].Beneficiari[${beneficiarCount}].Prenume" class="form-control" />
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label">Data nasterii<i class="text-danger">*</i></label>
+                                    <input name="FormData.Camere[${cameraIndex}].Beneficiari[${beneficiarCount}].Data_Nastere" class="form-control" 
+                                    type="date"
+                                    value="@Model.curr_date"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+                beneficiariContainer.append(newBeneficiarHtml);
+                updateUI(); 
+            });
+
+            // Eliminare beneficiar
+            $(document).on("click", ".remove-beneficiar", function() {
+                $(this).closest(".beneficiar-card").remove();
+                updateUI(); 
+            });
+
+            // Eliminare camera
+            $(document).on("click", ".remove-camera", function() {
+                $(this).closest(".camera-card").remove();
+                updateUI(); 
+            });
+
+            // Initializare
+            updateUI(); 
+        });
+    </script>
+}
