@@ -1,0 +1,46 @@
+﻿@page
+@model Lucrare_de_licenta.Pages.Identity.Account.Manage.RezervariModel
+@{
+}
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>Data Rezervarii</th>
+            <th>Status</th>
+            <th>Tur</th>
+            <th>Data Plecare</th>
+            <th>Data Intoarcere</th>
+            <th>Actiuni</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Rezervari)
+        {
+            <tr>
+                <td>@item.data_rezervare.ToString("dd/MM/yyyy")</td>
+                <td>
+                    @{
+                        string status = item.status_rezervare switch
+                        {
+                            1 => "In Asteptare",
+                            2 => "Confirmata",
+                            3 => "Anulata",
+                            4 => "Finalizata",
+                            _ => "Nestiut"
+                        };
+                    }
+                    <span class="badge @(item.status_rezervare switch { 1 => "bg-warning", 2 => "bg-success", 3 => "bg-danger", 4 => "bg-info", _ => "bg-secondary" })">@status</span>
+                </td>
+                <td>@(item.Oferta?.Tur?.den_tur ?? "N/A")</td>
+                <td>@(item.Oferta?.data_plecare.ToString("dd/MM/yyyy") ?? "N/A")</td>
+                <td>@(item.Oferta?.data_intoarcere.ToString("dd/MM/yyyy") ?? "N/A")</td>
+                <td>
+                    <div class="btn-group">
+                        <a asp-page="/Tour" asp-route-id="@item.cod_tur" class="btn btn-sm btn-info">Detalii Tur</a>
+                        <a asp-page="./Anulare" asp-route-id="@item.cod_rezervare" class="btn btn-sm btn-danger">Anuleaza rezervare</a>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

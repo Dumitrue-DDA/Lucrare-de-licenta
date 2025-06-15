@@ -8,14 +8,11 @@
         <li class="nav-item">
             <a class="nav-link" asp-page="./ChangePassword">Schimbare parolă</a>
         </li>
-        <li class="nav-item d-none">
-            <a class="nav-link" asp-page="./TwoFactorAuthentication">Autentificare în doi pași</a>
+        <li class="nav-item">
+            <a class="nav-link" asp-page="./Rezervari">Rezervari</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" asp-page="./Reservations">Rezervari</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" asp-page="./Payments">Plati</a>
+            <a class="nav-link" asp-page="./Plati">Plati</a>
         </li>
         @{
             if (User?.Identity?.IsAuthenticated == true && User.IsInRole("admin"))
