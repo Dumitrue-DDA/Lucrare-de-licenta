@@ -1,10 +1,12 @@
 using Adventour.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
 namespace Lucrare_de_licenta.Pages.Admin.Tours.Tururi
 {
+    [Authorize(Roles = "admin, man_soft, ing_soft, man_op, spec_dez")]
     public class IndexModel : PageModel
     {
         public AppDbContext _context;

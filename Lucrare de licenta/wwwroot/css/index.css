@@ -5,11 +5,11 @@
 /* md */
 @media (min-width: 768px) {
     #search-container {
-        margin: 0 !important; /* remove negative margins */
+        margin: 0 !important; 
     }
 
     #search-container > [class*="col-"] {
-        padding: 0 !important; /* remove gutter padding */
+        padding: 0 !important;
     }
 
     .dropdown-custom {

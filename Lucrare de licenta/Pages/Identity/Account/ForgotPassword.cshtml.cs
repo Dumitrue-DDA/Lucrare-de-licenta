@@ -39,6 +39,7 @@ namespace Lucrare_de_licenta.Pages.Identity.Account
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByEmailAsync(Input.Email);
+                // !PENTRU PRODUCTIE!
                 if (user == null) // || !(await _userManager.IsEmailConfirmedAsync(user)) - cu confirmarea mailului activata
                 {
                     _logger.LogInformation("Utilizatorul este Null");
@@ -53,7 +54,6 @@ namespace Lucrare_de_licenta.Pages.Identity.Account
                     values: new { code = code, email = Input.Email },
                     protocol: Request.Scheme);
 
-                // Debug: Log the generated URL
                 _logger.LogInformation("S-a generat link-ul de callback: {CallbackUrl}", callbackUrl);
 
                 try

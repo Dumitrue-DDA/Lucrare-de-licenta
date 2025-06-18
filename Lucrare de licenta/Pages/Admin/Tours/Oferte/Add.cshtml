@@ -13,11 +13,13 @@
                     <label asp-for="Oferta.tip_transport" class="form-label">Tip Transport</label>
                     <div class="d-flex">
                         <div class="form-check me-4">
-                            <input class="form-check-input"  type="radio" asp-for="Oferta.tip_transport" id="transportAutocar" value="true">
+                            <input class="form-check-input"  type="radio" asp-for="Oferta.tip_transport"
+                            id="transportAutocar" value="true">
                             <label class="form-check-label" for="transportAutocar">Autocar</label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" asp-for="Oferta.tip_transport" id="transportAvion" value="false">
+                            <input class="form-check-input" type="radio" asp-for="Oferta.tip_transport"
+                            id="transportAvion" value="false">
                             <label class="form-check-label" for="transportAvion">Avion</label>
                         </div>
                     </div>
@@ -52,12 +54,14 @@
                             <option value="">-- Selectează un punct de plecare --</option>
                             @foreach (var p in Model.Puncte_Plecare)
                             {
-                                <option value="@p.cod_punct" data-tip-transport="@p.tip_transport.ToString().ToLower()">
+                                <option value="@p.cod_punct" 
+                                data-tip-transport="@p.tip_transport.ToString().ToLower()">
                                     @p.localitate, @p.adresa
                                 </option>
                             }
                         </select>
-                        <a href="../PunctePlecare/Create" target="_blank" class="btn btn-outline-secondary">
+                        <a href="../PunctePlecare/Create" target="_blank" 
+                        class="btn btn-outline-secondary">
                             <i class="fas fa-plus"></i>
                         </a>
                     </div>
@@ -67,7 +71,8 @@
                 <div class="col-md-6">
                     <label asp-for="Oferta.pret_adult" class="form-label">Preț Adult (€)</label>
                     <div class="input-group">
-                        <input type="number" step="0.05" min="0" class="form-control" asp-for="Oferta.pret_adult">
+                        <input type="number" step="0.05" min="0" class="form-control"
+                        asp-for="Oferta.pret_adult">
                     </div>
                     <span asp-validation-for="Oferta.pret_adult" class="text-danger"></span>
                 </div>
@@ -88,7 +93,8 @@
 
                 <div class="col-md-6">
                     <label asp-for="Oferta.data_plecare" class="form-label">Data Plecare</label>
-                    <input type="date" class="form-control" asp-for="Oferta.data_plecare" min="@DateTime.Today.ToString("yyyy-MM-dd")">
+                    <input type="date" class="form-control" asp-for="Oferta.data_plecare" 
+                    min="@DateTime.Today.ToString("yyyy-MM-dd")">
                     <span asp-validation-for="Oferta.data_plecare" class="text-danger"></span>
                 </div>
 
@@ -119,8 +125,10 @@
             const checkbox = document.getElementById('enablePretCopilCheckbox');
             const input = document.getElementById('pretCopilInput');
 
+            // Aratam doar pucntele de plecare cu acelasi tip de transport ca cel selectat
             function repopulatePunctePlecare() {
-                const filterValue = document.querySelector('input[name="transportFilter"]:checked').value;
+                const filterValue = document.querySelector('input[name="transportFilter"]:checked')
+                .value;
 
                 puncteSelect.innerHTML = '';
 

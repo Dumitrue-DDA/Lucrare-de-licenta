@@ -20,7 +20,7 @@ namespace Lucrare_de_licenta.Models
         [Column("tel_contact")]
         public string? tel_contact { get; set; }
 
-        [Column("suma_totala")]
+        [Column("suma_totala", TypeName = "decimal(10,2)")]
         public decimal? suma_totala { get; set; }
 
         [Required]

@@ -20,39 +20,53 @@
                         <div class="row g-3">
                             <span class="text-danger">* Campuri Obligatorii</span>
                             <div class="col-md-12">
-                                <label asp-for="Tur.den_tur" class="form-label">Denumire Tur <span class="text-danger">*</span></label>
+                                <label asp-for="Tur.den_tur" class="form-label">Denumire Tur 
+                                    <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" asp-for="Tur.den_tur" required>
                                 <span asp-validation-for="Tur.den_tur" class="text-danger"></span>
                             </div>
                             <div class="col-md-12">
                                 <label asp-for="Tur.desc_tur" class="form-label">Descriere</label>
-                                <textarea class="form-control" asp-for="Tur.desc_tur" rows="4"></textarea>
+                                <textarea class="form-control" asp-for="Tur.desc_tur" rows="4">
+
+                                </textarea>
                                 <span asp-validation-for="Tur.desc_tur" class="text-danger"></span>
                             </div>
                             <div class="col-md-4">
-                                <label asp-for="Tur.sol_fiz" class="form-label">Solicitare Fizică <span class="text-danger">*</span></label>
+                                <label asp-for="Tur.sol_fiz" class="form-label">Solicitare Fizică 
+                                    <span class="text-danger">*</span></label>
                                 <select class="form-select" asp-for="Tur.sol_fiz" required>
                                     <option value="">-- Selectează --</option>
                                     @for (int i = 1; i <= 5; i++)
                                     {
-                                        <option value="@i">@i - @(i == 1 ? "Foarte Ușor" : i == 2 ? "Ușor" : i == 3 ? "Moderat" : i == 4 ? "Dificil" : "Foarte Dificil")</option>
+                                        <option value="@i">
+                                            @i - @(i == 1 ? "Foarte Ușor" : i == 2 ? 
+                                            "Ușor" : i == 3 ? "Moderat" : i == 4 ? "Dificil" : 
+                                            "Foarte Dificil")
+                                        </option>
                                     }
                                 </select>
                                 <span asp-validation-for="Tur.sol_fiz" class="text-danger"></span>
                             </div>
                             <div class="col-md-4">
-                                <label asp-for="Tur.grup_minim" class="form-label">Grup Minim <span class="text-danger">*</span></label>
-                                <input type="number" class="form-control" asp-for="Tur.grup_minim" min="1" max="255" required>
+                                <label asp-for="Tur.grup_minim" class="form-label">Grup Minim 
+                                    <span class="text-danger">*</span></label>
+                                <input type="number" class="form-control" asp-for="Tur.grup_minim" 
+                                min="1" max="255" required>
                                 <span asp-validation-for="Tur.grup_minim" class="text-danger"></span>
                             </div>
                             <div class="col-md-4">
-                                <label asp-for="Tur.grup_maxim" class="form-label">Grup Maxim <span class="text-danger">*</span></label>
-                                <input type="number" class="form-control" asp-for="Tur.grup_maxim" min="1" max="255" required>
+                                <label asp-for="Tur.grup_maxim" class="form-label">Grup Maxim 
+                                    <span class="text-danger">*</span></label>
+                                <input type="number" class="form-control" asp-for="Tur.grup_maxim" 
+                                min="1" max="255" required>
                                 <span asp-validation-for="Tur.grup_maxim" class="text-danger"></span>
                             </div>
                             <div class="col-md-12">
-                                <label asp-for="ImageFile" class="form-label">Imagine Tur <span class="text-danger">*</span></label>
-                                <input type="file" class="form-control" asp-for="ImageFile" accept="image/*" required>
+                                <label asp-for="ImageFile" class="form-label">Imagine Tur 
+                                    <span class="text-danger">*</span></label>
+                                <input type="file" class="form-control" asp-for="ImageFile" 
+                                accept="image/*" required>
                                 <small class="form-text text-muted">Format recomandat: JPEG, PNG</small>
                                 <span asp-validation-for="ImageFile" class="text-danger"></span>
                             </div>
@@ -62,7 +76,8 @@
 
                 <!-- Itinerariu -->
                 <div class="card mb-4">
-                    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <div class="card-header bg-primary text-white d-flex 
+                                justify-content-between align-items-center">
                         <h5 class="mb-0">Itinerariu</h5>
                         <button type="button" class="btn btn-sm btn-light" id="addItineraryBtn">
                             <i class="fas fa-plus"></i> Adaugă Zi
@@ -72,9 +87,11 @@
                         <div id="itineraryContainer">
                             <div class="itinerary-template d-none">
                                 <div class="card mb-3 itinerary-item">
-                                    <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                                    <div class="card-header bg-light d-flex justify-content-between 
+                                                align-items-center">
                                         <h6 class="mb-0">Ziua <span class="day-number"></span></h6>
-                                        <button type="button" class="btn btn-sm btn-danger remove-itinerary">
+                                        <button type="button" class="btn btn-sm btn-danger 
+                                                                     remove-itinerary">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </div>
@@ -97,12 +114,14 @@
                                                 <label class="form-label">Destinații<span class="text-danger">*</span></label>
                                                 <div class="destination-search-container mb-2">
                                                     <div class="input-group">
-                                                        <input type="text" class="form-control destination-search" placeholder="Caută destinație...">
+                                                        <input type="text" class="form-control destination-search" 
+                                                        placeholder="Caută destinație...">
                                                         <button type="button" class="btn btn-outline-primary search-destination-btn">
                                                             <i class="fas fa-search"></i>
                                                         </button>
                                                     </div>
-                                                    <div class="destination-results d-none position-absolute bg-white w-100 shadow-sm border rounded"
+                                                    <div class="destination-results d-none position-absolute bg-white w-100 
+                                                                shadow-sm border rounded"
                                                          style="max-height: 200px; overflow-y: auto; z-index: 1000;"></div>
                                                 </div>
                                                 <div class="selected-itinerary-destinations"></div>
@@ -114,7 +133,9 @@
                                                         <option value="">-- Fără cazare --</option>
                                                         @foreach (var cazare in Model.CazariList)
                                                         {
-                                                            <option value="@cazare.Value" data-destinatie="@Model.CazariDestinatii[cazare.Value]">@cazare.Text</option>
+                                                            <option value="@cazare.Value" data-destinatie="@Model.CazariDestinatii[cazare.Value]">
+                                                                @cazare.Text
+                                                                </option>
                                                         }
                                                     </select>
                                                     <a href="../Cazari/Create" target="_blank" class="btn btn-outline-secondary">
@@ -130,7 +151,10 @@
                             <div id="itineraryItems">
                             </div>
                             <div class="text-center" id="noItineraryMessage">
-                                <p class="text-muted">Nu există zile în itinerariu. Apăsați pe "Adaugă Zi" pentru a adăuga prima zi.</p>
+                                <p class="text-muted">
+                                    Nu există zile în itinerariu. 
+                                    Apăsați pe "Adaugă Zi" pentru a adăuga prima zi.
+                                    </p>
                             </div>
                         </div>
                     </div>
@@ -147,12 +171,15 @@
                             <label class="form-label">Categorii pentru acest tur</label>
                             <div class="category-search-container mb-2">
                                 <div class="input-group">
-                                    <input type="text" class="form-control category-search" placeholder="Caută categorie...">
-                                    <button type="button" class="btn btn-outline-primary search-category-btn">
+                                    <input type="text" class="form-control category-search" 
+                                    placeholder="Caută categorie...">
+                                    <button type="button" class="btn btn-outline-primary 
+                                                                 search-category-btn">
                                         <i class="fas fa-search"></i>
                                     </button>
                                 </div>
-                                <div class="category-results d-none position-absolute bg-white w-100 shadow-sm border rounded"
+                                <div class="category-results d-none position-absolute bg-white w-100 
+                                            shadow-sm border rounded"
                                      style="max-height: 200px; overflow-y: auto; z-index: 1000;">
                                 </div>
                             </div>
@@ -229,8 +256,10 @@
                         const destElement = `
                             <div class="mb-2 d-flex justify-content-between align-items-center">
                                 <span>${destinationText}</span>
-                                <input type="hidden" name="SelectedDestinatii" value="${destinationId}" id="dest_${destinationId}">
-                                <button type="button" class="btn btn-sm btn-outline-danger remove-destination" data-id="${destinationId}">
+                                <input type="hidden" name="SelectedDestinatii" value="${destinationId}" 
+                                id="dest_${destinationId}">
+                                <button type="button" class="btn btn-sm btn-outline-danger 
+                                remove-destination" data-id="${destinationId}">
                                     <i class="fas fa-times"></i>
                                 </button>
                             </div>`;
@@ -293,7 +322,8 @@
             // Cautare destinatie
         $(document).on("input", ".destination-search", function() {
             const searchTerm = $(this).val().toLowerCase();
-            const $resultsContainer = $(this).closest('.destination-search-container').find('.destination-results');
+            const $resultsContainer = $(this).closest('.destination-search-container')
+            .find('.destination-results');
 
             if (searchTerm.length < 2) {
                 $resultsContainer.addClass('d-none').empty();
@@ -316,7 +346,8 @@
             if (destinations.length > 0) {
                 destinations.forEach(dest => {
                     $resultsContainer.append(`
-                        <div class="p-2 border-bottom destination-result" data-id="${dest.id}" data-name="${dest.name}">
+                        <div class="p-2 border-bottom destination-result" data-id="${dest.id}" 
+                        data-name="${dest.name}">
                             ${dest.name}
                         </div>
                     `);
@@ -333,7 +364,8 @@
             const destName = $(this).data('name');
             const $itineraryItem = $(this).closest('.itinerary-item');
             const itineraryIndex = $itineraryItem.find('.day-input').val() - 1;
-            const $selectedContainer = $(this).closest('.col-md-12').find('.selected-itinerary-destinations');
+            const $selectedContainer = $(this).closest('.col-md-12')
+            .find('.selected-itinerary-destinations');
             const destElementId = `dest_itin_${itineraryIndex}_${destId}`;
 
             $(this).closest('.destination-results').addClass('d-none').empty();
@@ -343,8 +375,10 @@
                 const destElement = `
                     <div class="badge bg-info text-dark me-2 mb-2 p-2">
                         <span>${destName}</span>
-                        <input type="hidden" name="Itinerarii[${itineraryIndex}].SelectedDestinatii" value="${destId}" id="${destElementId}">
-                        <button type="button" class="btn-close btn-close-white btn-sm ms-1 remove-itin-dest" aria-label="Close"></button>
+                        <input type="hidden" name="Itinerarii[${itineraryIndex}]
+                        .SelectedDestinatii" value="${destId}" id="${destElementId}">
+                        <button type="button" class="btn-close btn-close-white btn-sm ms-1 
+                        remove-itin-dest" aria-label="Close"></button>
                     </div>`;
                 $selectedContainer.append(destElement);
             }
@@ -357,7 +391,8 @@
             const $itineraryItem = $(this).closest('.itinerary-item');
             $badge.remove();
 
-            const remainingDestinations = $itineraryItem.find('.selected-itinerary-destinations input[type="hidden"]');
+            const remainingDestinations = $itineraryItem.find('.selected-itinerary-destinations 
+            input[type="hidden"]');
             if (remainingDestinations.length === 0) {
                 resetCazareOptions($itineraryItem);
             }
@@ -379,7 +414,8 @@
                 }
             });
 
-            if (selectedCazare && $cazareSelect.find(`option[value="${selectedCazare}"]:visible`).length === 0) {
+            if (selectedCazare && $cazareSelect.find(`option[value="${selectedCazare}"]:visible`)
+            .length === 0) {
                 $cazareSelect.val('');
             }
         }
@@ -403,7 +439,8 @@
         });
                 $(document).on("input", ".category-search", function() {
             const searchTerm = $(this).val().toLowerCase();
-            const $resultsContainer = $(this).closest('.category-search-container').find('.category-results');
+            const $resultsContainer = $(this).closest('.category-search-container')
+            .find('.category-results');
 
             if (searchTerm.length < 1) {
                 $resultsContainer.addClass('d-none').empty();
@@ -428,7 +465,8 @@
             if (categories.length > 0) {
                 categories.forEach(cat => {
                     $resultsContainer.append(`
-                        <div class="p-2 border-bottom category-result" data-id="${cat.id}" data-name="${cat.name}">
+                        <div class="p-2 border-bottom category-result" data-id="${cat.id}" 
+                        data-name="${cat.name}">
                             ${cat.name}
                         </div>
                     `);
@@ -452,8 +490,10 @@
                 const catElement = `
                     <div class="badge bg-success text-white me-2 mb-2 p-2">
                         <span>${catName}</span>
-                        <input type="hidden" name="SelectedCategorii" value="${catId}" id="${catElementId}">
-                        <button type="button" class="btn-close btn-close-white btn-sm ms-1 remove-category" aria-label="Close"></button>
+                        <input type="hidden" name="SelectedCategorii" value="${catId}" 
+                        id="${catElementId}">
+                        <button type="button" class="btn-close btn-close-white btn-sm ms-1 
+                        remove-category" aria-label="Close"></button>
                     </div>`;
                 $("#selectedCategories").append(catElement);
             }

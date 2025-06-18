@@ -16,15 +16,20 @@ builder.Services.AddRazorPages();
 
 builder.Services.AddHttpClient();
 
+// setari cookie-uri
 builder.Services.ConfigureApplicationCookie(options =>
 {
-    // setari cookie-uri
     options.Cookie.HttpOnly = true;
-    options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+    options.Cookie.SameSite = SameSiteMode.Lax;
 
+    // pagini
     options.LoginPath = "/Identity/Account/Login";
     options.LogoutPath = "/Identity/Account/Logout";
     options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+
+    // expirare
+    options.ExpireTimeSpan = TimeSpan.FromHours(24);
     options.SlidingExpiration = true;
 });
 
@@ -35,6 +40,7 @@ builder.Services.AddRazorPages()
         options.Conventions.AuthorizeAreaPage("Identity", "/Identity/Account/Logout");
     });
 
+// setari Autentificare 
 builder.Services.AddIdentity<Utilizator, IdentityRole<int>>(options =>
 {
     // Setari parola
@@ -59,8 +65,10 @@ builder.Services.AddIdentity<Utilizator, IdentityRole<int>>(options =>
 .AddErrorDescriber<LocErrorDescriber>()
 .AddDefaultTokenProviders();
 
+// Serviciul sendgrid
 builder.Services.Configure<SendGridOptions>(builder.Configuration.GetSection("SendGrid"));
 
+// Serviciile de administrare a autentificarii si a utilizatorilor
 builder.Services.AddScoped<SignInManager<Utilizator>>();
 builder.Services.AddScoped<UserManager<Utilizator>>();
 
@@ -79,19 +87,25 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
-    // The default HSTS value is 30 days.
-    // You may want to change this for production scenarios,
-    // see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
-// Adaugam rolurile si atribuim administratorului web rolul sau
+// Adaugare roluri
 app.Lifetime.ApplicationStarted.Register(async () =>
     {
         using var scope = app.Services.CreateScope();
         var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole<int>>>();
 
-        string[] roleNames = { "admin" };
+
+        // in ordinea codurilor
+        string[] roleNames = {
+            "admin", // Administrator Web
+            "man_soft", // Manager Software
+            "ing_soft", // Inginer Software
+            "man_op", // Manager Operatiuni
+            "spec_dez", // Specialist Dezvoltare servicii turistice
+            "fin" // (departament) Finante
+        };
         foreach (var roleName in roleNames)
         {
             if (!await roleManager.RoleExistsAsync(roleName))
@@ -101,6 +115,8 @@ app.Lifetime.ApplicationStarted.Register(async () =>
         }
         var userManager = scope.ServiceProvider.GetRequiredService<UserManager<Utilizator>>();
 
+        // !SETARI DE TEST! \\
+        // setarea automata a rolului de administrator pentru contul cu un mail dat
         var user = await userManager.FindByEmailAsync("despina.andrei2003@gmail.com");
 
         if (user != null && !await userManager.IsInRoleAsync(user, "Admin"))

@@ -1,10 +1,12 @@
 using Adventour.Data;
 using Lucrare_de_licenta.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
 namespace Lucrare_de_licenta.Pages.Admin.Bookings
 {
+    [Authorize(Roles = "admin, man_op")]
     public class IndexModel : PageModel
     {
         private readonly AppDbContext _context;

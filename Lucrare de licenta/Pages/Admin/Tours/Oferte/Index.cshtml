@@ -11,37 +11,51 @@
         <a asp-page="./Add" class="btn btn-primary">
             <i class="fas fa-plus"></i> Adaugă Ofertă Nouă
         </a>
-        <button class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#filterPanel">
+        <button class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse" 
+        data-bs-target="#filterPanel">
             <i class="fas fa-filter"></i> Filtre
         </button>
     </div>
 
+    @* Filtre de cautare*@
     <div class="collapse mb-4" id="filterPanel">
         <div class="card card-body">
             <form method="get" class="row g-3">
                 <div class="col-md-2">
                     <label for="filterCod" class="form-label">Cod Ofertă</label>
-                    <input type="number" class="form-control form-control-sm" id="filterCod" name="FilterCod" value="@Model.FilterCod">
+                    <input type="number" class="form-control form-control-sm" id="filterCod" 
+                    name="FilterCod" value="@Model.FilterCod">
                 </div>
                 <div class="col-md-3">
                     <label for="filterTur" class="form-label">Denumire Tur</label>
-                    <input type="text" class="form-control form-control-sm" id="filterTur" name="FilterTur" value="@Model.FilterTur">
+                    <input type="text" class="form-control form-control-sm" id="filterTur" 
+                    name="FilterTur" value="@Model.FilterTur">
                 </div>
                 <div class="col-md-2">
                     <label for="filterDataStart" class="form-label">De la data</label>
-                    <input type="date" class="form-control form-control-sm" id="filterDataStart" name="FilterDataStart" value="@Model.FilterDataStart?.ToString("yyyy-MM-dd")">
+                    <input type="date" class="form-control form-control-sm" id="filterDataStart" 
+                    name="FilterDataStart" value="@Model.FilterDataStart?.ToString("yyyy-MM-dd")">
                 </div>
                 <div class="col-md-2">
                     <label for="filterDataEnd" class="form-label">Până la data</label>
-                    <input type="date" class="form-control form-control-sm" id="filterDataEnd" name="FilterDataEnd" value="@Model.FilterDataEnd?.ToString("yyyy-MM-dd")">
+                    <input type="date" class="form-control form-control-sm" id="filterDataEnd" 
+                    name="FilterDataEnd" value="@Model.FilterDataEnd?.ToString("yyyy-MM-dd")">
                 </div>
                 <div class="col-md-3">
                     <label for="filterStatus" class="form-label">Status</label>
                     <select class="form-select form-select-sm" id="filterStatus" name="FilterStatus">
-                        <option value="" selected="@string.IsNullOrEmpty(Model.FilterStatus)">Toate</option>
-                        <option value="in curs" selected="@(Model.FilterStatus == "active")">In curs</option>
-                        <option value="expirata" selected="@(Model.FilterStatus == "expired")">Expirata</option>
-                        <option value="upcoming" selected="@(Model.FilterStatus == "upcoming")">Viitoare</option>
+                        <option value="" selected="@string.IsNullOrEmpty(Model.FilterStatus)">
+                            Toate
+                        </option>
+                        <option value="in curs" selected="@(Model.FilterStatus == "active")">
+                            In curs
+                        </option>
+                        <option value="expirata" selected="@(Model.FilterStatus == "expired")">
+                            Expirata
+                        </option>
+                        <option value="upcoming" selected="@(Model.FilterStatus == "upcoming")">
+                            Viitoare
+                        </option>
                     </select>
                 </div>
                 <div class="col-12">

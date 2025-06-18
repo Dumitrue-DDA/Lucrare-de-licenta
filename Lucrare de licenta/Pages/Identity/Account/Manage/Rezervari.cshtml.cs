@@ -16,13 +16,19 @@ namespace Lucrare_de_licenta.Pages.Identity.Account.Manage
             _userManager = userManager;
         }
 
-        public Utilizator User { get; set; }
+        public Utilizator CurrentUser { get; set; }
         public int UserId { get; set; }
         public IList<Rezervare> Rezervari { get; set; } = new List<Rezervare>();
 
         public async Task OnGetAsync()
         {
-            UserId = (int)_userManager.GetUserId(User);
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+
+            CurrentUser = user;
+
+            var userIdString = await _userManager.GetUserIdAsync(user);
+            UserId = int.Parse(userIdString);
+
             Rezervari = await _context.rezervari
                 .Where(r => r.nr_utilizator == UserId)
                 .Include(r => r.Oferta)

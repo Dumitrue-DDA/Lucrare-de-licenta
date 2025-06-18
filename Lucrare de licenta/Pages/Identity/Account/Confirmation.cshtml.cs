@@ -24,6 +24,8 @@ namespace Lucrare_de_licenta.Pages.Identity.Account
             string alertType = "success"
             )
         {
+
+            // switch pentru mesajul de confirmare potrivit
             switch (type?.ToLower())
             {
                 case "passwordreset":
@@ -80,7 +82,6 @@ namespace Lucrare_de_licenta.Pages.Identity.Account
                     break;
             }
 
-            // Override with custom parameters if provided
             if (!string.IsNullOrEmpty(title)) Title = title;
             if (!string.IsNullOrEmpty(message)) Message = message;
             if (!string.IsNullOrEmpty(callBackUrl)) CallBackUrl = callBackUrl;

@@ -1,11 +1,13 @@
 ﻿using Adventour.Data;
 using Lucrare_de_licenta.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
 namespace Lucrare_de_licenta.Pages.Admin.Tours.Oferte
 {
+    [Authorize(Roles = "admin, spec_dez")]
     public class AddModel : PageModel
     {
         private readonly AppDbContext _context;
@@ -59,12 +61,12 @@ namespace Lucrare_de_licenta.Pages.Admin.Tours.Oferte
         {
             if (!ModelState.IsValid)
             {
-                // Reload reference data for the form
+                // Reincarcarea datelor de referenta
                 await LoadReferenceData();
                 return Page();
             }
 
-            // Get the selected tour's details
+            // preluam datele turului selectat
             var tour = await _context.tururi
                 .Where(t => t.cod_tur == Oferta.cod_tur)
                 .FirstOrDefaultAsync();
@@ -76,7 +78,7 @@ namespace Lucrare_de_licenta.Pages.Admin.Tours.Oferte
                 return Page();
             }
 
-            // Calculate data_intoarcere based on data_plecare and nr_zile
+            // Calcularea datei de intoarcere dupa nr de zile in tur
             var nrZile = await _context.itinerarii
                 .Where(i => i.cod_tur == Oferta.cod_tur)
                 .Select(i => i.zi_activitate)
@@ -84,7 +86,7 @@ namespace Lucrare_de_licenta.Pages.Admin.Tours.Oferte
 
             Oferta.data_intoarcere = Oferta.data_plecare.AddDays(nrZile);
 
-            // Set loc_libere to grup_maxim of the selected tour
+            // Setam locurile libere ca marimea grupului maxim
             Oferta.loc_libere = tour.grup_maxim;
 
             _context.oferte.Add(Oferta);
@@ -95,24 +97,22 @@ namespace Lucrare_de_licenta.Pages.Admin.Tours.Oferte
 
         public async Task<IActionResult> OnPostSelectTourAsync()
         {
-            // This handles the tour selection change without full page submit
             if (Oferta.cod_tur <= 0)
                 return Page();
 
-            // Reset form state
+            // Resetare formular
             ModelState.Clear();
 
-            // Get tour details
+            // Preluare detalii tur
             var tour = await _context.tururi
                 .Where(t => t.cod_tur == Oferta.cod_tur)
                 .FirstOrDefaultAsync();
 
             if (tour != null)
             {
-                // Set loc_libere to the grup_maxim value
                 Oferta.loc_libere = tour.grup_maxim;
 
-                // Calculate return date
+                // Calcularea datei de intoarcere
                 var nrZile = await _context.itinerarii
                     .Where(i => i.cod_tur == Oferta.cod_tur)
                     .Select(i => i.zi_activitate)
@@ -125,7 +125,7 @@ namespace Lucrare_de_licenta.Pages.Admin.Tours.Oferte
             return Page();
         }
 
-        // Helper method to load reference data
+        // Incarcarea datelor referentiale
         private async Task LoadReferenceData()
         {
             Puncte_Plecare = await _context.puncte_plecare

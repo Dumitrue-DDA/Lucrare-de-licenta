@@ -4,6 +4,17 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 namespace Adventour.Data
 {
+    /// <summary>
+    /// Contextul Bazei de date. Ofera acces la modelele ce reprezinta tabelele si permite
+    /// efectuarea de interogari asupra acestora.
+    /// </summary>
+    /// <remarks>
+    /// Extinde clasa <see cref="IdentityDbContext{TUser, TRole, TKey}"/> pentru a integra
+    /// functionalitatea librariei Core Identity.
+    /// Dam override la metoda <see cref="OnModelCreating(ModelBuilder)"/> pentru a defini
+    /// secventele si pentru atribuirea manuala a tabelelor implicite Identity. 
+    /// Astfel ne asiguram ca modelele corespund corect tabelelor din baza de date.
+    /// </remarks>
     public class AppDbContext : IdentityDbContext<Utilizator, IdentityRole<int>, int>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) :
@@ -85,7 +96,7 @@ namespace Adventour.Data
                 .StartsAt(1)
                 .IncrementsBy(1);
 
-
+            // Atribuirea entitatilor la tabelele si coloanele potrivite
             var user = builder.Entity<Utilizator>();
             user.ToTable("utilizatori");
             user.Property(e => e.Id).HasColumnName("nr_utilizator");

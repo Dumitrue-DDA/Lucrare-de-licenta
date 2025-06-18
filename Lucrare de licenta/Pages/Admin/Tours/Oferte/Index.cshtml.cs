@@ -1,10 +1,12 @@
 ﻿using Adventour.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
 namespace Lucrare_de_licenta.Pages.Admin.Tours.Oferte
 {
+    [Authorize(Roles = "admin, man_soft, ing_soft, man_op, spec_dez")]
     public class IndexModel : PageModel
     {
         private readonly AppDbContext _context;
@@ -57,13 +59,13 @@ namespace Lucrare_de_licenta.Pages.Admin.Tours.Oferte
 
         public async Task OnGetAsync()
         {
-            // Încarcă datele necesare
+            // Incarcarea datelor necesare
             var oferte = await _context.oferte.ToListAsync();
             var tururi = await _context.tururi.ToListAsync();
             var rezervari = await _context.rezervari.ToListAsync();
             var puncte_plecare = await _context.puncte_plecare.ToListAsync();
 
-            // Construiește view models
+            // Construirea modelelor
             var viewModels = oferte.Select(o =>
             {
                 var tur = tururi.FirstOrDefault(t => t.cod_tur == o.cod_tur);
@@ -87,7 +89,7 @@ namespace Lucrare_de_licenta.Pages.Admin.Tours.Oferte
                 };
             }).ToList();
 
-            // Aplică filtrele
+            // Aplicarea filtrelor
             if (!string.IsNullOrEmpty(FilterCod) && int.TryParse(FilterCod, out int codFilter))
             {
                 viewModels = viewModels.Where(o => o.cod_oferta == codFilter).ToList();
@@ -127,7 +129,7 @@ namespace Lucrare_de_licenta.Pages.Admin.Tours.Oferte
                 }
             }
 
-            // Aplică sortarea
+            // Aplicarea sortaruii
             viewModels = SortColumn?.ToLower() switch
             {
                 "cod_oferta" => SortOrder?.ToLower() == "desc"

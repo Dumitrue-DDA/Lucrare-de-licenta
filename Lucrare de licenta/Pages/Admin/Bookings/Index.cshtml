@@ -42,10 +42,10 @@
                     }
                     <span class="badge @(item.status_rezervare switch { 1 => "bg-warning", 2 => "bg-success", 3 => "bg-danger", 4 => "bg-info", _ => "bg-secondary" })">@status</span>
                 </td>
-                <td>@(item.Oferta?.Tur?.den_tur ?? "N/A")</td>
-                <td>@(item.Oferta?.data_plecare.ToString("dd/MM/yyyy") ?? "N/A")</td>
-                <td>@(item.Oferta?.data_intoarcere.ToString("dd/MM/yyyy") ?? "N/A")</td>
-                <td>@(item.Utilizator?.ToString() ?? "Guest")</td>
+                <td>@(item.Oferta?.Tur?.den_tur ?? "NULL")</td>
+                <td>@(item.Oferta?.data_plecare.ToString("dd/MM/yyyy") ?? "NULL")</td>
+                <td>@(item.Oferta?.data_intoarcere.ToString("dd/MM/yyyy") ?? "NULL")</td>
+                <td>@(item.Utilizator?.ToString() ?? "NULL")</td>
                 <td>
                     <div class="btn-group">
                         <a asp-page="./Edit" asp-route-id="@item.cod_rezervare" class="btn btn-sm btn-primary">Edit</a>

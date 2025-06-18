@@ -1,5 +1,6 @@
 ﻿using Adventour.Data;
 using Lucrare_de_licenta.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -8,6 +9,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Lucrare_de_licenta.Pages.Admin.Tours.Tururi
 {
+    [Authorize(Roles = "admin, spec_dez")]
     public class AddModel : PageModel
     {
         private readonly AppDbContext _context;

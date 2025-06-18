@@ -109,15 +109,15 @@ namespace Lucrare_de_licenta.Pages.Booking
                 data_rezervare = DateOnly.FromDateTime(DateTime.Now),
                 email_contact = FormData.Email,
                 tel_contact = FormData.Telefon,
-                status_rezervare = 1, // Initial status
+                status_rezervare = 1, // status initial
                 cod_oferta = cod_oferta,
                 nr_utilizator = nrUtilizator
             };
 
             _context.rezervari.Add(rezervare);
-            await _context.SaveChangesAsync(); // Save to get the reservation ID
+            await _context.SaveChangesAsync(); // Salvare pentru a prelua codul rezervarii
 
-            // Create rooms
+            // Crearea de camere
             foreach (var camera_form in FormData.Camere)
             {
                 var camera = new Camera
@@ -126,9 +126,9 @@ namespace Lucrare_de_licenta.Pages.Booking
                 };
 
                 _context.camere.Add(camera);
-                await _context.SaveChangesAsync(); // Save to get the camera ID
+                await _context.SaveChangesAsync(); // Salvam camera pentru a prelua codul
 
-                // Create beneficiaries for this room
+                // Adaugare beneficiar in camera
                 foreach (var beneficiar_form in camera_form.Beneficiari)
                 {
                     var beneficiar = new Beneficiar
@@ -151,7 +151,7 @@ namespace Lucrare_de_licenta.Pages.Booking
         {
             int age = referenceDate.Year - birthDate.Year;
 
-            // Check if birthday has occurred this year
+            // Verificam daca ziua de nastere a avut loc anul acesta
             if (birthDate.Month > referenceDate.Month ||
                 (birthDate.Month == referenceDate.Month && birthDate.Day > referenceDate.Day))
             {
