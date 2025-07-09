@@ -14,6 +14,7 @@
                     <th>Tur</th>
                     <th>Data Plecare</th>
                     <th>Data Intoarcere</th>
+                    <th>Persoane</th>
                     <th>Actiuni</th>
                 </tr>
             </thead>
@@ -46,6 +47,7 @@
                         <td>@(item.Oferta?.Tur?.den_tur ?? "N/A")</td>
                         <td>@(item.Oferta?.data_plecare.ToString("dd/MM/yyyy") ?? "N/A")</td>
                         <td>@(item.Oferta?.data_intoarcere.ToString("dd/MM/yyyy") ?? "N/A")</td>
+                        <td>@(Model.Count_beneficiari[item.cod_rezervare])</td>
                         <td>
                             <div class="btn-group">
                                 <a asp-page="/Tour" asp-route-id="@item.Oferta.Tur.cod_tur" 

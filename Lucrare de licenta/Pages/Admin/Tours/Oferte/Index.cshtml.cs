@@ -39,7 +39,7 @@ namespace Lucrare_de_licenta.Pages.Admin.Tours.Oferte
         [BindProperty(SupportsGet = true)]
         public string SortOrder { get; set; } = "asc";
 
-        // Model de afișare pentru o ofertă
+        // Model de afisare pentru o ofertă
         public class OfertaViewModel
         {
             public int cod_oferta { get; set; }
@@ -70,7 +70,7 @@ namespace Lucrare_de_licenta.Pages.Admin.Tours.Oferte
             {
                 var tur = tururi.FirstOrDefault(t => t.cod_tur == o.cod_tur);
                 var nrRezervari = rezervari.Count(r => r.cod_oferta == o.cod_oferta);
-                var locuriDisponibile = o.loc_libere - nrRezervari;
+                var locuriDisponibile = o.loc_libere;
                 var punct = puncte_plecare.FirstOrDefault(p => p.cod_punct == o.cod_punct);
 
                 return new OfertaViewModel

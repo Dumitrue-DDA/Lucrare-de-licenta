@@ -1,11 +1,12 @@
 ﻿@page
 @model Lucrare_de_licenta.Pages.Admin.Tours.Oferte.AddModel
 @{
-    ViewData["Title"] = "Adaugă Ofertă Nouă";
+    ViewData["Title"] = "Adauga Oferta Noua";
 }
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
 <div class="container-fluid mt-4">
-    <h2>Adaugă Ofertă Nouă</h2>
+    <h2>Adauga Oferta Noua</h2>
     <div class="card">
         <div class="card-body">
             <form method="post" class="row g-3">
@@ -30,7 +31,7 @@
                     <label asp-for="Oferta.cod_tur" class="form-label">Tur</label>
                     <div class="input-group d-flex align-items-center">
                         <select class="form-select" asp-for="Oferta.cod_tur">
-                            <option value="">-- Selectează un tur --</option>
+                            <option value="">-- Selecteaza un tur --</option>
                             @foreach(var t in Model.Tururi)
                             {
                                 <option value="@t.cod_tur">
@@ -51,7 +52,7 @@
                     <label asp-for="Oferta.cod_punct" class="form-label">Punct de Plecare</label>
                     <div class="input-group">
                         <select class="form-select" id="punctePlecareSelect" asp-for="Oferta.cod_punct">
-                            <option value="">-- Selectează un punct de plecare --</option>
+                            <option value="">-- Selecteaza un punct de plecare --</option>
                             @foreach (var p in Model.Puncte_Plecare)
                             {
                                 <option value="@p.cod_punct" 
@@ -69,7 +70,7 @@
                 </div>
 
                 <div class="col-md-6">
-                    <label asp-for="Oferta.pret_adult" class="form-label">Preț Adult (€)</label>
+                    <label asp-for="Oferta.pret_adult" class="form-label">Pret Adult (€)</label>
                     <div class="input-group">
                         <input type="number" step="0.05" min="0" class="form-control"
                         asp-for="Oferta.pret_adult">
@@ -78,7 +79,7 @@
                 </div>
 
                 <div class="col-md-6">
-                    <label asp-for="Oferta.pret_copil" class="form-label">Preț Copil (€)</label>
+                    <label asp-for="Oferta.pret_copil" class="form-label">Pret Copil (€)</label>
                     <div class="input-group">
                         <div class="input-group-text">
                             <input class="form-check-input mt-0" type="checkbox"
@@ -100,10 +101,10 @@
 
                 <div class="col-12 mt-4">
                     <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-save"></i> Salvează Oferta
+                        <i class="fas fa-save"></i> Salveaza Oferta
                     </button>
                     <a asp-page="./Index" class="btn btn-outline-secondary">
-                        <i class="fas fa-arrow-left"></i> Înapoi la listă
+                        <i class="fas fa-arrow-left"></i> Inapoi la lista
                     </a>
                 </div>
             </form>

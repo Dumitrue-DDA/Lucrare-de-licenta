@@ -25,26 +25,26 @@ namespace Lucrare_de_licenta.Pages.Admin.Tours.Tururi
         public Tur Tur { get; set; } = new Tur();
 
         [BindProperty]
-        public List<ItineraryViewModel> Itinerarii { get; set; } = new List<ItineraryViewModel>();
+        public List<Itin_ViewModel> Itinerarii { get; set; } = new List<Itin_ViewModel>();
 
         [BindProperty]
         [Display(Name = "Imagine Tur")]
-        public IFormFile ImageFile { get; set; }
+        public IFormFile Img_Tur { get; set; }
 
         [BindProperty]
-        public List<IFormFile> ItineraryImages { get; set; } = new List<IFormFile>();
+        public List<IFormFile> Img_Itinerarii { get; set; } = new List<IFormFile>();
 
         [BindProperty]
-        public int[] SelectedDestinatii { get; set; }
+        public int[] Dest_Selectate { get; set; }
 
         [BindProperty]
-        public int[] SelectedCategorii { get; set; }
+        public int[] Categ_Selectate { get; set; }
 
-        public SelectList CazariList { get; set; }
-        public SelectList DestinatiiList { get; set; }
-        public SelectList CategoriiList { get; set; }
+        public SelectList Cazari_List { get; set; }
+        public SelectList Destinatii_List { get; set; }
+        public SelectList Categorii_List { get; set; }
 
-        public Dictionary<string, short> CazariDestinatii { get; set; } = new Dictionary<string, short>();
+        public Dictionary<string, short> Cazari_Destinatii { get; set; } = new Dictionary<string, short>();
 
         public async Task OnGetAsync()
         {
@@ -63,72 +63,72 @@ namespace Lucrare_de_licenta.Pages.Admin.Tours.Tururi
 
             try
             {
-                // Salvăm imaginea turului
-                if (ImageFile != null)
+                // Salvam imaginea turului
+                if (Img_Tur != null)
                 {
-                    var uniqueFileName = await SaveImage(ImageFile, "tours");
+                    var uniqueFileName = await SaveImage(Img_Tur, "tours");
                     Tur.img_tur = uniqueFileName;
                 }
 
-                // Adăugăm turul
+                // Adaugam turul
                 _context.tururi.Add(Tur);
                 await _context.SaveChangesAsync();
 
-                // Adăugăm itinerariile
+                // Adaugam itinerariile
                 for (int i = 0; i < Itinerarii.Count; i++)
                 {
-                    var itineraryViewModel = Itinerarii[i];
-                    var itinerariu = itineraryViewModel.Itinerariu;
+                    var itinerariu_ViewModel = Itinerarii[i];
+                    var itinerariu = itinerariu_ViewModel.Itinerariu;
                     itinerariu.cod_tur = Tur.cod_tur;
 
-                    // Salvăm imaginea pentru itinerariu
-                    if (i < ItineraryImages.Count && ItineraryImages[i] != null)
+                    // Salvam imaginea pentru itinerariu
+                    if (i < Img_Itinerarii.Count && Img_Itinerarii[i] != null)
                     {
-                        var uniqueFileName = await SaveImage(ItineraryImages[i], "itineraries");
-                        itinerariu.img_itin = uniqueFileName;
+                        var nume_fisier = await SaveImage(Img_Itinerarii[i], "itineraries");
+                        itinerariu.img_itin = nume_fisier;
                     }
 
                     _context.itinerarii.Add(itinerariu);
                 }
                 await _context.SaveChangesAsync();
 
-                // Procesăm destinațiile pentru fiecare itinerariu
+                // Procesam destinatiile pentru fiecare itinerariu
                 for (int i = 0; i < Itinerarii.Count; i++)
                 {
                     var itinerariu = Itinerarii[i];
 
-                    // Procesăm destinațiile selectate pentru acest itinerariu
-                    var key = $"Itinerarii[{i}].SelectedDestinatii";
+                    // Procesam destinatiile selectate pentru acest itinerariu
+                    var key = $"Itinerarii[{i}].Dest_Selectate";
                     if (Request.Form.ContainsKey(key))
                     {
-                        var selectedDestinatiiForItinerary = Request.Form[key]
+                        var Dest_Itin = Request.Form[key]
                             .Select(int.Parse)
                             .ToArray();
 
-                        foreach (var destId in selectedDestinatiiForItinerary)
+                        foreach (var cod_dest in Dest_Itin)
                         {
-                            var destItin = new Destinatie_itinerariu
+                            var dest_itin = new Destinatie_itinerariu
                             {
                                 cod_itinerariu = itinerariu.Itinerariu.cod_itinerariu,
-                                cod_destinatie = (short)destId
+                                cod_destinatie = (short)cod_dest
                             };
-                            _context.destinatii_itinerarii.Add(destItin);
+                            _context.destinatii_itinerarii.Add(dest_itin);
                         }
                     }
                 }
                 await _context.SaveChangesAsync();
 
-                // Adăugăm categoriile selectate
-                if (SelectedCategorii != null)
+                // Adaugam categoriile selectate
+                if (Categ_Selectate != null)
                 {
-                    foreach (var catId in SelectedCategorii)
+                    foreach (var cod_categ in Categ_Selectate)
                     {
-                        var turCat = new Tur_categorie
+                        var tur_categ = new Tur_categorie
                         {
                             cod_tur = Tur.cod_tur,
-                            cod_categ = (byte)catId
+                            cod_categ = (byte)cod_categ
                         };
-                        _context.tur_categorii.Add(turCat);
+                        _context.tur_categorii.Add(tur_categ);
                     }
                     await _context.SaveChangesAsync();
                 }
@@ -140,7 +140,7 @@ namespace Lucrare_de_licenta.Pages.Admin.Tours.Tururi
             catch (Exception ex)
             {
                 await transaction.RollbackAsync();
-                ModelState.AddModelError(string.Empty, "A apărut o eroare la salvarea turului: " + ex.Message);
+                ModelState.AddModelError(string.Empty, "A aparut o eroare la salvarea turului: " + ex.Message);
                 await LoadSelectLists();
                 return Page();
             }
@@ -148,66 +148,66 @@ namespace Lucrare_de_licenta.Pages.Admin.Tours.Tururi
 
         private async Task LoadSelectLists()
         {
-            // Încărcăm listele pentru dropdown-uri
-            CazariList = new SelectList(
+            // Incarcam listele pentru dropdown-uri
+            Cazari_List = new SelectList(
                 await _context.cazari
                     .OrderBy(c => c.den_cazare)
                     .Select(c => new { c.cod_cazare, Display = c.den_cazare })
                     .ToListAsync(),
                 "cod_cazare", "Display");
 
-            DestinatiiList = new SelectList(
+            Destinatii_List = new SelectList(
                 await _context.destinatii
                     .OrderBy(d => d.den_destinatie)
                     .Select(d => new { d.cod_destinatie, Display = d.den_destinatie })
                     .ToListAsync(),
                 "cod_destinatie", "Display");
 
-            CategoriiList = new SelectList(
+            Categorii_List = new SelectList(
                 await _context.categorii
                     .OrderBy(c => c.den_categ)
                     .Select(c => new { c.cod_categ, Display = c.den_categ })
                     .ToListAsync(),
                 "cod_categ", "Display");
 
-            // Încărcăm destinațiile pentru fiecare cazare
-            var cazariWithDestinatii = await _context.cazari
+            // Incarcam destinatiile pentru fiecare cazare
+            var cazari_dest = await _context.cazari
                 .Select(c => new { c.cod_cazare, c.cod_destinatie })
                 .ToListAsync();
 
-            foreach (var cazare in cazariWithDestinatii)
+            foreach (var cazare in cazari_dest)
             {
-                CazariDestinatii[cazare.cod_cazare.ToString()] = cazare.cod_destinatie;
+                Cazari_Destinatii[cazare.cod_cazare.ToString()] = cazare.cod_destinatie;
             }
         }
 
-        private async Task<string> SaveImage(IFormFile imageFile, string subfolder)
+        private async Task<string> SaveImage(IFormFile image_file, string subfolder)
         {
-            var uploadsFolder = Path.Combine(_environment.WebRootPath, "images", subfolder);
+            var folder_path = Path.Combine(_environment.WebRootPath, "Resources", subfolder);
 
-            // Asigură-te că folderul există
-            if (!Directory.Exists(uploadsFolder))
+            // Asigura-te ca folderul exista
+            if (!Directory.Exists(folder_path))
             {
-                Directory.CreateDirectory(uploadsFolder);
+                Directory.CreateDirectory(folder_path);
             }
 
-            // Generează un nume unic pentru fișier
-            var uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(imageFile.FileName);
-            var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+            // Genereaza un nume unic pentru fisier
+            var nume_fisier = Guid.NewGuid().ToString() + "_" + Path.GetFileName(image_file.FileName);
+            var file_path = Path.Combine(folder_path, nume_fisier);
 
-            // Salvează fișierul
-            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            // Salveaza fisierul
+            using (var fileStream = new FileStream(file_path, FileMode.Create))
             {
-                await imageFile.CopyToAsync(fileStream);
+                await image_file.CopyToAsync(fileStream);
             }
 
-            return $"/images/{subfolder}/{uniqueFileName}";
+            return $"/Resources/{subfolder}/{nume_fisier}";
         }
     }
 
-    public class ItineraryViewModel
+    public class Itin_ViewModel
     {
         public Itinerariu Itinerariu { get; set; } = new Itinerariu();
-        public int[] SelectedDestinatii { get; set; }
+        public int[] Dest_Selectate { get; set; }
     }
 }

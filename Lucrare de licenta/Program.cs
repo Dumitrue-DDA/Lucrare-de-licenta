@@ -96,7 +96,6 @@ app.Lifetime.ApplicationStarted.Register(async () =>
         using var scope = app.Services.CreateScope();
         var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole<int>>>();
 
-
         // in ordinea codurilor
         string[] roleNames = {
             "admin", // Administrator Web
@@ -106,6 +105,7 @@ app.Lifetime.ApplicationStarted.Register(async () =>
             "spec_dez", // Specialist Dezvoltare servicii turistice
             "fin" // (departament) Finante
         };
+
         foreach (var roleName in roleNames)
         {
             if (!await roleManager.RoleExistsAsync(roleName))

@@ -21,14 +21,14 @@
                             </div>
                         </div>
                         <div class="row mb-2">
-                            <div class="col-md-4 fw-bold">Întoarcere:</div>
+                            <div class="col-md-4 fw-bold">Intoarcere:</div>
                             <div class="col-md-8">@Model.Oferta.data_intoarcere.ToString("dd MMMM yyyy")
                             </div>
                         </div>
                     @if (Model.Oferta.Punct?.adresa != null)
                         {
                             <div class="row mb-2">
-                                <div class="col-md-4 fw-bold">Punct de întâlnire:</div>
+                                <div class="col-md-4 fw-bold">Punct de intalnire:</div>
                                 <div class="col-md-8">
                                     @Model.Oferta.Punct.localitate, <br/>
                                     @Model.Oferta.Punct.adresa
@@ -54,6 +54,9 @@
         </div>
         <div class="text-danger my-3">Campurile obligatorii sunt marcate cu <i>*</i></div>
     <form method="post" id="bookingForm">
+        @* Daca clientul nu este autentificat, trebuie sa completeze datele de contact *@
+        @if(!User.Identity.IsAuthenticated)
+        {        
         <div class="card mb-4">
             <div class="card-header bg-primary text-white">
                 <h4>Detalii de contact</h4>
@@ -75,7 +78,7 @@
                 </div>
             </div>
         </div>
-
+        }
         <div id="camereContainer">
             @for (int i = 0; i < Model.FormData.Camere.Count; i++)
             {
@@ -185,7 +188,7 @@
             // Adaugare camera
             $("#addCameraBtn").click(function() {
                 if ($(".camera-card").length >= MAX_CAMERE) {
-                    alert(`Ați atins numărul maxim de ${MAX_CAMERE} camere.`);
+                    alert(`Ați atins numarul maxim de ${MAX_CAMERE} camere.`);
                     return;
                 }
 
@@ -237,7 +240,7 @@
                 const beneficiarCount = beneficiariContainer.find(".beneficiar-card").length;
 
                 if (beneficiarCount >= MAX_BENEFICIARI_PER_CAMERA) {
-                    alert(`Ați atins numărul maxim de ${MAX_BENEFICIARI_PER_CAMERA} persoane pentru această cameră.`);
+                    alert(`Ați atins numarul maxim de ${MAX_BENEFICIARI_PER_CAMERA} persoane pentru aceasta camera.`);
                     return;
                 }
 

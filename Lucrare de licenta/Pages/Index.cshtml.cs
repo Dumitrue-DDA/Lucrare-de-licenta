@@ -65,6 +65,7 @@ public class IndexModel : PageModel
         Puncte_Plecare = await _context.puncte_plecare
             .OrderBy(pp => pp.cod_punct)
             .ToListAsync();
+
         Destinatii = await _context.destinatii
             .OrderBy(d => d.cod_tara)
             .Include("Tara")
@@ -124,7 +125,7 @@ public class IndexModel : PageModel
 
 public class SearchSuggestion
 {
-    // Textul principal (numele localitatii destinatie / plecare
+    // Textul principal (numele localitatii destinatie / plecare)
     public string Text { get; set; } = string.Empty;
 
     // Subtextul (1 = judet/tara)

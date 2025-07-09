@@ -1,12 +1,13 @@
 ﻿class Autocomplete {
+    // Constructorul componentei
     constructor(inputId, dropdownId, sourceIdentifier = "default") {
         this.input = document.getElementById(inputId);
         this.dropdown = document.getElementById(dropdownId);
         this.sourceIdentifier = sourceIdentifier;
         this.currentFocus = -1;
-        this.debounceTimer = null;
-        this.minCharacters = 2;
-        this.debounceDelay = 300;
+        this.debounceTimer = null; // intarzierea cautarii
+        this.minCharacters = 2; // incepem cautarea cand sunt introduse minim 2 caractere
+        this.debounceDelay = 300; // intarziere de cautare (in ms)
 
         if (!this.input || !this.dropdown) {
             console.error(
@@ -18,12 +19,14 @@
         this.init();
     }
 
+    // Configuram EventListener-ii necesari
     init() {
         this.input.addEventListener("input", (e) => this.handleInput(e));
         this.input.addEventListener("keydown", (e) => this.handleKeydown(e));
         document.addEventListener("click", (e) => this.handleOutsideClick(e));
     }
 
+    // Gestionarea introducerii de text in input
     handleInput(e) {
         const query = e.target.value.trim();
 
@@ -34,11 +37,13 @@
             return;
         }
 
+        // intarziem cautarea pentru a evita cautari multiple
         this.debounceDelay = setTimeout(() => {
             this.searchSuggestions(query);
         }, this.debounceDelay);
     }
 
+    // Asteptam raspunsul de la modelul paginii pentru textul introdus
     async searchSuggestions(query) {
         try {
             const response = await fetch(
@@ -68,10 +73,12 @@
         }
     }
 
+    // Afisam rezultatele obtinute
     displaySuggestions(suggestions) {
         this.dropdown.innerHTML = "";
         this.currentFocus = -1;
 
+        // mesajul daca nu au fost gasite sugestii
         if (!suggestions || suggestions.length === 0) {
             const noResults = document.createElement("div");
             noResults.className = "no-results";
@@ -81,6 +88,7 @@
             return;
         }
 
+        // construim elementele de afisarea  fiecarui rezultat
         suggestions.forEach((suggestion) => {
             const item = document.createElement("div");
             item.className = "suggestion-item";
@@ -107,6 +115,7 @@
         this.showDropdown();
     }
 
+    // Evidentiem textul regasit in input
     highlightMatch(text, query) {
         if (!text || !query) return text || "";
         try {
@@ -117,10 +126,12 @@
         }
     }
 
+    // Eliminam caracterele speciale ce afecteaza cautarea regex
     escapeRegExp(string) {
         return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); 
     }
 
+    // Gestionam navigarea listei de la tastatura
     handleKeydown(e) {
         const items = this.dropdown.querySelectorAll(".suggestion-item");
         if (
@@ -134,7 +145,7 @@
             return;
         }
 
-
+        // navigarea in jos
         if (e.key === "ArrowDown") {
             e.preventDefault();
             if (items.length === 0 && this.input.value.length >= this.minCharacters) {
@@ -144,13 +155,17 @@
             this.currentFocus++;
             if (this.currentFocus >= items.length) this.currentFocus = 0;
             this.setActiveItem(items);
-        } else if (e.key === "ArrowUp") {
+        }
+        // navigarea in sus
+        else if (e.key === "ArrowUp") {
             e.preventDefault();
             if (items.length === 0) return;
             this.currentFocus--;
             if (this.currentFocus < 0) this.currentFocus = items.length - 1;
             this.setActiveItem(items);
-        } else if (e.key === "Enter") {
+        }
+        // selectarea unei sugestii
+        else if (e.key === "Enter") {
             if (this.currentFocus > -1 && items[this.currentFocus]) {
                 e.preventDefault(); 
                 const text = items[this.currentFocus].querySelector(
@@ -160,12 +175,15 @@
             } else {
                 this.hideDropdown(); 
             }
-        } else if (e.key === "Escape") {
+        }
+        // ascunderea listei
+        else if (e.key === "Escape") {
             e.preventDefault();
             this.hideDropdown();
         }
     }
 
+    // selectarea elementului activ din lista
     setActiveItem(items) {
         items.forEach((item) => item.classList.remove("active"));
         if (items[this.currentFocus]) {
@@ -177,20 +195,24 @@
         }
     }
 
+    // selectarea sugestiei si actualizarea campului de cautare
     selectSuggestion(text) {
         this.input.value = text;
         this.hideDropdown();
     }
 
+    // afisarea meniului cu sugestii
     showDropdown() {
         this.dropdown.classList.remove("hidden");
     }
 
+    // ascunderea meniului cu sugestii
     hideDropdown() {
         this.dropdown.classList.add("hidden");
         this.currentFocus = -1;
     }
 
+    // ascunderea la apasarea in afara componentei
     handleOutsideClick(e) {
         if (
             this.input &&
@@ -202,6 +224,7 @@
         }
     }
 
+    // obtinerea tokenului anti-falsificare pentru cererile ajax
     getAntiForgeryToken() {
         const tokenElement = document.querySelector(
             'input[name="__RequestVerificationToken"]'
@@ -210,7 +233,7 @@
     }
 }
 
-// Initialize when DOM is loaded
+// Initializarea autocompletarii pentru pagina principala
 document.addEventListener("DOMContentLoaded", () => {
     new Autocomplete("input-destinatie", "dropdown-destinatie", "destinatii");
     new Autocomplete("input-puncte-plecare", "dropdown-puncte-plecare", "puncte_plecare");

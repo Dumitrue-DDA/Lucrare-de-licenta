@@ -1,13 +1,13 @@
 ﻿@page
 @model Lucrare_de_licenta.Pages.Admin.Tours.Tururi.AddModel
 @{
-    ViewData["Title"] = "Adaugă Tur Nou";
+    ViewData["Title"] = "Adauga Tur Nou";
 }
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
 <div class="container-fluid mt-4">
-    <h2>Adaugă Tur Nou</h2>
+    <h2>Adauga Tur Nou</h2>
     <form asp-action="Add" method="post" enctype="multipart/form-data">
         <div class="row">
             <div class="col-md-8">
@@ -33,15 +33,15 @@
                                 <span asp-validation-for="Tur.desc_tur" class="text-danger"></span>
                             </div>
                             <div class="col-md-4">
-                                <label asp-for="Tur.sol_fiz" class="form-label">Solicitare Fizică 
+                                <label asp-for="Tur.sol_fiz" class="form-label">Solicitare Fizica 
                                     <span class="text-danger">*</span></label>
                                 <select class="form-select" asp-for="Tur.sol_fiz" required>
-                                    <option value="">-- Selectează --</option>
+                                    <option value="">-- Selecteaza --</option>
                                     @for (int i = 1; i <= 5; i++)
                                     {
                                         <option value="@i">
-                                            @i - @(i == 1 ? "Foarte Ușor" : i == 2 ? 
-                                            "Ușor" : i == 3 ? "Moderat" : i == 4 ? "Dificil" : 
+                                            @i - @(i == 1 ? "Foarte Usor" : i == 2 ? 
+                                            "Usor" : i == 3 ? "Moderat" : i == 4 ? "Dificil" : 
                                             "Foarte Dificil")
                                         </option>
                                     }
@@ -63,12 +63,12 @@
                                 <span asp-validation-for="Tur.grup_maxim" class="text-danger"></span>
                             </div>
                             <div class="col-md-12">
-                                <label asp-for="ImageFile" class="form-label">Imagine Tur 
+                                <label asp-for="Img_Tur" class="form-label">Imagine Tur 
                                     <span class="text-danger">*</span></label>
-                                <input type="file" class="form-control" asp-for="ImageFile" 
-                                accept="image/*" required>
+                                <input type="file" class="form-control" asp-for="Img_Tur"
+                                       accept="image/*" required>
                                 <small class="form-text text-muted">Format recomandat: JPEG, PNG</small>
-                                <span asp-validation-for="ImageFile" class="text-danger"></span>
+                                <span asp-validation-for="Img_Tur" class="text-danger"></span>
                             </div>
                         </div>
                     </div>
@@ -80,7 +80,7 @@
                                 justify-content-between align-items-center">
                         <h5 class="mb-0">Itinerariu</h5>
                         <button type="button" class="btn btn-sm btn-light" id="addItineraryBtn">
-                            <i class="fas fa-plus"></i> Adaugă Zi
+                            <i class="fas fa-plus"></i> Adauga Zi
                         </button>
                     </div>
                     <div class="card-body">
@@ -115,7 +115,7 @@
                                                 <div class="destination-search-container mb-2">
                                                     <div class="input-group">
                                                         <input type="text" class="form-control destination-search" 
-                                                        placeholder="Caută destinație...">
+                                                        placeholder="Cauta destinație...">
                                                         <button type="button" class="btn btn-outline-primary search-destination-btn">
                                                             <i class="fas fa-search"></i>
                                                         </button>
@@ -130,10 +130,10 @@
                                                 <label class="form-label">Cazare</label>
                                                 <div class="input-group">
                                                     <select class="form-select cazare-select" name="Itinerarii[INDEX].cod_cazare">
-                                                        <option value="">-- Fără cazare --</option>
-                                                        @foreach (var cazare in Model.CazariList)
+                                                        <option value="">-- Fara cazare --</option>
+                                                        @foreach (var cazare in Model.Cazari_List)
                                                         {
-                                                            <option value="@cazare.Value" data-destinatie="@Model.CazariDestinatii[cazare.Value]">
+                                                            <option value="@cazare.Value" data-destinatie="@Model.Cazari_Destinatii[cazare.Value]">
                                                                 @cazare.Text
                                                                 </option>
                                                         }
@@ -152,15 +152,15 @@
                             </div>
                             <div class="text-center" id="noItineraryMessage">
                                 <p class="text-muted">
-                                    Nu există zile în itinerariu. 
-                                    Apăsați pe "Adaugă Zi" pentru a adăuga prima zi.
+                                    Nu exista zile in itinerariu. 
+                                    Apasați pe "Adauga Zi" pentru a adauga prima zi.
                                     </p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- Destinatii și categorii -->
+            <!-- Destinatii si categorii -->
             <div class="col-md-4">
                 <div class="card mb-4">
                     <div class="card-header bg-primary text-white">
@@ -172,7 +172,7 @@
                             <div class="category-search-container mb-2">
                                 <div class="input-group">
                                     <input type="text" class="form-control category-search" 
-                                    placeholder="Caută categorie...">
+                                    placeholder="Cauta categorie...">
                                     <button type="button" class="btn btn-outline-primary 
                                                                  search-category-btn">
                                         <i class="fas fa-search"></i>
@@ -192,10 +192,10 @@
         </div>
         <div class="d-flex justify-content-between mt-3 mb-5">
             <a asp-page="./Index" class="btn btn-secondary">
-                <i class="fas fa-arrow-left"></i> Înapoi la listă
+                <i class="fas fa-arrow-left"></i> Inapoi la lista
             </a>
             <button type="submit" class="btn btn-primary">
-                <i class="fas fa-save"></i> Salvează Tur
+                <i class="fas fa-save"></i> Salveaza Tur
             </button>
         </div>
     </form>
@@ -207,7 +207,7 @@
         $(document).ready(function() {
             let dayCounter = 0;
 
-            // Adaugam o noua zi în itinerariu
+            // Adaugam o noua zi in itinerariu
             $("#addItineraryBtn").click(function() {
                 dayCounter++;
 
@@ -217,7 +217,7 @@
                 const template = $(".itinerary-template").clone();
                 template.removeClass("itinerary-template d-none").addClass("itinerary-day");
 
-                // Actualizeazam numarul zilei și numele câmpurilor
+                // Actualizeazam numarul zilei si numele campurilor
                 template.find(".day-number").text(dayCounter);
                 template.find(".day-input").val(dayCounter);
 
@@ -314,7 +314,7 @@
                 const max = parseInt($("#Tur_grup_maxim").val()) || 0;
 
                 if (min > max && max > 0) {
-                    alert("Grupul minim nu poate fi mai mare decât grupul maxim!");
+                    alert("Grupul minim nu poate fi mai mare decat grupul maxim!");
                     $("#Tur_grup_minim").val(max);
                 }
             });
@@ -354,7 +354,7 @@
                 });
             } else {
                 $resultsContainer.append(`
-                    <div class="p-2 text-muted">Nu s-au găsit rezultate</div>
+                    <div class="p-2 text-muted">Nu s-au gasit rezultate</div>
                 `);
             }
         });
@@ -391,8 +391,8 @@
             const $itineraryItem = $(this).closest('.itinerary-item');
             $badge.remove();
 
-            const remainingDestinations = $itineraryItem.find('.selected-itinerary-destinations 
-            input[type="hidden"]');
+            const remainingDestinations = $itineraryItem.find
+            ('.selected-itinerary-destinations input[type="hidden"]');
             if (remainingDestinations.length === 0) {
                 resetCazareOptions($itineraryItem);
             }
@@ -450,7 +450,7 @@
             $resultsContainer.removeClass('d-none').empty();
 
             const categories = [];
-            @foreach (var category in Model.CategoriiList)
+            @foreach (var category in Model.Categorii_List)
             {
                     <text>
                     if ("@category.Text".toLowerCase().includes(searchTerm)) {
@@ -473,7 +473,7 @@
                 });
             } else {
                 $resultsContainer.append(`
-                    <div class="p-2 text-muted">Nu s-au găsit rezultate</div>
+                    <div class="p-2 text-muted">Nu s-au gasit rezultate</div>
                 `);
             }
         });

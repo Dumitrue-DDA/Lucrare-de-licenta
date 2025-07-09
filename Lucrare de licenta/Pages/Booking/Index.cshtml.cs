@@ -33,7 +33,7 @@ namespace Lucrare_de_licenta.Pages.Booking
         {
             if (cod_oferta <= 0)
             {
-                return RedirectToPage("/Error", new { message = "Ofertă invalidă" });
+                return RedirectToPage("/Error", new { message = "Oferta invalida" });
             }
 
             // Initializam cu o camera cu un beneficiar
@@ -52,13 +52,23 @@ namespace Lucrare_de_licenta.Pages.Booking
 
         public async Task<IActionResult> OnPostAsync()
         {
+            // daca utilizatorul este autentificat, eliminam emailul din datele de formular
+            if (User.Identity.IsAuthenticated)
+            {
+                ModelState.Remove("FormData.Email");
+            }
+
             if (!ModelState.IsValid)
             {
+                Oferta = _context.oferte
+                 .Include(o => o.Tur)
+                 .Include(o => o.Punct)
+                 .FirstOrDefault(o => o.cod_oferta == cod_oferta);
                 return Page();
             }
 
             // Calculul sumei totale de plata
-            decimal sumaTotal = 0;
+            decimal suma_totala = 0;
             var oferta = _context.oferte.FirstOrDefault(o => o.cod_oferta == cod_oferta);
             if (oferta == null)
             {
@@ -88,20 +98,37 @@ namespace Lucrare_de_licenta.Pages.Booking
                 }
             }
 
+            var total_beneficiari = adult_cnt + copil_cnt;
+
             if ((oferta.pret_copil == 0 || oferta.pret_copil == null) && (copil_cnt > 0))
             {
                 ModelState.AddModelError(string.Empty, "Oferta nu a fost gasita.");
                 return Page();
             }
 
-            sumaTotal = (adult_cnt * oferta.pret_adult) + (copil_cnt * oferta.pret_copil);
+            if (total_beneficiari > oferta.loc_libere)
+            {
+                ModelState.AddModelError(string.Empty, $"Locuri insuficiente! Locuri disponibile: {oferta.loc_libere}");
 
-            // Preluam nuamrul de utilizator daca este logat
-            int? nrUtilizator = null;
+                Oferta = _context.oferte
+                        .Include(o => o.Tur)
+                        .Include(o => o.Punct)
+                        .FirstOrDefault(o => o.cod_oferta == cod_oferta);
+
+                return Page();
+            }
+
+            suma_totala = (adult_cnt * oferta.pret_adult) + (copil_cnt * oferta.pret_copil);
+
+            // Preluam emailul si nr de utilizator daca acesta este logat
+            int? nr_utilizator = null;
+            string? email = FormData.Email ?? null;
+
             if (User.Identity.IsAuthenticated)
             {
                 var user = await _userManager.GetUserAsync(User);
-                nrUtilizator = user?.Id;
+                nr_utilizator = user?.Id;
+                email = user?.Email;
             }
 
             var rezervare = new Rezervare
@@ -111,7 +138,7 @@ namespace Lucrare_de_licenta.Pages.Booking
                 tel_contact = FormData.Telefon,
                 status_rezervare = 1, // status initial
                 cod_oferta = cod_oferta,
-                nr_utilizator = nrUtilizator
+                nr_utilizator = nr_utilizator
             };
 
             _context.rezervari.Add(rezervare);
@@ -145,6 +172,11 @@ namespace Lucrare_de_licenta.Pages.Booking
                 await _context.SaveChangesAsync();
             }
 
+            // actualizarea nr de locuri libere
+            oferta.loc_libere -= (byte)total_beneficiari;
+            _context.oferte.Update(oferta);
+            await _context.SaveChangesAsync();
+
             return RedirectToPage("/Booking/Confirmation", new { id = rezervare.cod_rezervare });
         }
         private int CalculateAge(DateOnly birthDate, DateOnly referenceDate)
@@ -168,8 +200,8 @@ namespace Lucrare_de_licenta.Pages.Booking
         [EmailAddress(ErrorMessage = "Email invalid")]
         public string Email { get; set; }
 
-        [Phone(ErrorMessage = "Număr de telefon invalid")]
-        public string Telefon { get; set; }
+        [Phone(ErrorMessage = "Numar de telefon invalid")]
+        public string? Telefon { get; set; } = null;
 
         public List<Camera_Form> Camere { get; set; } = new List<Camera_Form>();
     }
@@ -187,7 +219,7 @@ namespace Lucrare_de_licenta.Pages.Booking
         [Required(ErrorMessage = "Prenumele este obligatoriu")]
         public string Prenume { get; set; }
 
-        [Required(ErrorMessage = "Data nașterii este obligatorie")]
+        [Required(ErrorMessage = "Data nasterii este obligatorie")]
         [DataType(DataType.Date)]
         public DateOnly Data_Nastere { get; set; }
     }

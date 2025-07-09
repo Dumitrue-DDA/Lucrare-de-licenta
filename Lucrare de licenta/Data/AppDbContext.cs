@@ -115,6 +115,7 @@ namespace Adventour.Data
             user.Property(e => e.LockoutEnabled).HasColumnName("blocare_activata");
             user.Property(e => e.AccessFailedCount).HasColumnName("incercari_esuate");
 
+            // Construirea tabelelor pe baza claselor Identity<int>
             builder.Entity<IdentityRole<int>>().ToTable("Roluri");
             builder.Entity<IdentityUserRole<int>>().ToTable("UtilizatorRoluri");
             builder.Entity<IdentityUserClaim<int>>().ToTable("CereriUtilizator");

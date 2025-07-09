@@ -13,6 +13,8 @@ namespace Lucrare_de_licenta.Services
         private readonly ILogger<EmailSender> _logger;
         private readonly SendGridOptions _sendGridOptions;
         private readonly IHttpClientFactory _httpClientFactory;
+
+        // Constructor
         public EmailSender(IOptions<SendGridOptions> sendGridOptionsAccessor, ILogger<EmailSender> logger,
             IHttpClientFactory httpClientFactory)
         {
@@ -31,6 +33,13 @@ namespace Lucrare_de_licenta.Services
 
             _httpClientFactory = httpClientFactory;
         }
+        /// <summary>
+        /// Trimite un email folosind setarile implicite.
+        /// </summary>
+        /// <param name="email">Emailul destinatar</param>
+        /// <param name="subject">Subiectul/Titlul emailului</param>
+        /// <param name="htmlMessage">Textul din email cu posibilitatea de a folosi html pentru stilizare</param>
+        /// <returns></returns>
         public async Task SendEmailAsync(string email, string subject, string htmlMessage)
         {
             _logger.LogInformation("Constructor EmailSender: ApiKey = '{ApiKey}', FromEmail = '{FromEmail}'",
@@ -75,6 +84,7 @@ namespace Lucrare_de_licenta.Services
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             try
             {
+                // Trimitem post request la api-ul sendgrid
                 var response = await client.PostAsync(
                     "https://api.sendgrid.com/v3/mail/send",
                     content

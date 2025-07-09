@@ -1,13 +1,14 @@
 ﻿@page
-@model Lucrare_de_licenta.Pages.Admin.Clients.IndexModel
+@model Lucrare_de_licenta.Pages.Admin.Users.IndexModel
 @{
+    ViewData["Title"] = "Utilizatori";
 }
 <div class="row gap-3">
     <partial name="_AdminNavPartial" />
-    <div class="col-9 table-container">
+    <div class="col-9 table-responsive">
         <h3>@ViewData["Title"]</h3>
-        <table class="table">
-            <thead>
+        <table class="table table-striped table-hover">
+            <thead class="table-dark">
                 <tr>
                     <th>Numar Utilizator</th>
                     <th>Nume</th>

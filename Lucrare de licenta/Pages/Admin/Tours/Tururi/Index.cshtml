@@ -9,7 +9,7 @@
     <h2>Administrare Tururi</h2>
     <div class="mb-3 d-flex justify-content-between align-items-center">
         <a asp-page="./Add" class="btn btn-primary">
-            <i class="fas fa-plus"></i> Adaugă Tur Nou
+            <i class="fas fa-plus"></i> Adauga Tur Nou
         </a>
         <button class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse" 
         data-bs-target="#filterPanel">
@@ -31,7 +31,7 @@
                     name="FilterDenumire" value="@Model.FilterDenumire">
                 </div>
                 <div class="col-md-2">
-                    <label for="filterSolFizica" class="form-label">Sol. Fizică</label>
+                    <label for="filterSolFizica" class="form-label">Sol. Fizica</label>
                     <select class="form-select form-select-sm" id="filterSolFizica" 
                     name="FilterSolFizica">
                         <option value="" selected="@string.IsNullOrEmpty(Model.FilterSolFizica)">
@@ -46,7 +46,7 @@
                     </select>
                 </div>
                 <div class="col-md-3">
-                    <label for="filterTara" class="form-label">Țara</label>
+                    <label for="filterTara" class="form-label">tara</label>
                     <input type="text" class="form-control form-control-sm" id="filterTara" 
                     name="FilterTara" value="@Model.FilterTara">
                 </div>
@@ -55,15 +55,15 @@
                     <select class="form-select form-select-sm" id="filterOferte" name="FilterOferte">
                         <option value="" selected="@(Model.FilterOferte == null)">Toate</option>
                         <option value="yes" selected="@(Model.FilterOferte == "yes")">Cu oferte</option>
-                        <option value="no" selected="@(Model.FilterOferte == "no")">Fără oferte</option>
+                        <option value="no" selected="@(Model.FilterOferte == "no")">Fara oferte</option>
                     </select>
                 </div>
                 <div class="col-12">
                     <button type="submit" class="btn btn-primary btn-sm">
-                        <i class="fas fa-search"></i> Caută
+                        <i class="fas fa-search"></i> Cauta
                     </button>
                     <a asp-page="./ViewTururi" class="btn btn-outline-secondary btn-sm">
-                        <i class="fas fa-times"></i> Resetează filtrele
+                        <i class="fas fa-times"></i> Reseteaza filtrele
                     </a>
                 </div>
             </form>
@@ -121,7 +121,7 @@
                            asp-route-FilterTara="@Model.FilterTara"
                            asp-route-FilterOferte="@Model.FilterOferte"
                            class="text-white text-decoration-none">
-                            Sol. Fizică
+                            Sol. Fizica
                             @if (Model.SortColumn == "sol_fiz")
                             {
                                 <i class="fas fa-sort-@(Model.SortOrder == "asc" ? "up" : "down")"></i>
@@ -147,8 +147,8 @@
                         </a>
                     </th>
                     <th>Categorii</th>
-                    <th>Țări</th>
-                    <th>Destinații</th>
+                    <th>tari</th>
+                    <th>Destinatii</th>
                     <th>
                         <a asp-page="./ViewTururi"
                            asp-route-sortColumn="nr_oferte"
@@ -178,21 +178,21 @@
                            asp-route-FilterTara="@Model.FilterTara"
                            asp-route-FilterOferte="@Model.FilterOferte"
                            class="text-white text-decoration-none">
-                            Rezervări
+                            Rezervari
                             @if (Model.SortColumn == "nr_rezervari")
                             {
                                 <i class="fas fa-sort-@(Model.SortOrder == "asc" ? "up" : "down")"></i>
                             }
                         </a>
                     </th>
-                    <th>Acțiuni</th>
+                    <th>Actiuni</th>
                 </tr>
             </thead>
             <tbody>
                 @if (!Model.Tururi.Any())
                 {
                     <tr>
-                        <td colspan="11" class="text-danger">Nu au fost găsite tururi!</td>
+                        <td colspan="11" class="text-danger">Nu au fost gasite tururi!</td>
                     </tr>
                 }
                 else
@@ -249,7 +249,7 @@
                                     </a>
                                     <a asp-page="./Delete" asp-route-id="@tur.cod_tur" 
                                     class="btn btn-sm btn-danger">
-                                        <i class="fas fa-trash"></i> Șterge
+                                        <i class="fas fa-trash"></i> sterge
                                     </a>
                                 </div>
                             </td>

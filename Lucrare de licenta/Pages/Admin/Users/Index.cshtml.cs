@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
-namespace Lucrare_de_licenta.Pages.Admin.Clients
+namespace Lucrare_de_licenta.Pages.Admin.Users
 {
     [Authorize(Roles = "admin, man_soft, ing_soft")]
     public class IndexModel : PageModel

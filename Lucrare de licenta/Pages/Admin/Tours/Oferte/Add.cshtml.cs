@@ -73,7 +73,7 @@ namespace Lucrare_de_licenta.Pages.Admin.Tours.Oferte
 
             if (tour == null)
             {
-                ModelState.AddModelError("Oferta.cod_tur", "Turul selectat nu există");
+                ModelState.AddModelError("Oferta.cod_tur", "Turul selectat nu exista");
                 await LoadReferenceData();
                 return Page();
             }
