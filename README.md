@@ -5,7 +5,7 @@
 **University:** Romanian-American University<br>
 *Bucharest 2025*<br>
 
-**Final Thesis Grade:** 90%.
+**Final Thesis Grade:** 90%. <br>
 **Overall Degree Grade:** 87%.
 
 <br>*Due to time limitation, I was unable to fully finish the implementation. However, the written thesis was fully finished and submitted.*
